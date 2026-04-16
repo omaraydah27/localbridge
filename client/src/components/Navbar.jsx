@@ -21,6 +21,7 @@ export default function Navbar() {
           <Link to="/mentors" className="text-sm text-stone-600 hover:text-stone-900 transition-colors">
             Browse Mentors
           </Link>
+
           <Link to="/pricing" className="text-sm text-stone-600 hover:text-stone-900 transition-colors">
             Pricing
           </Link>
