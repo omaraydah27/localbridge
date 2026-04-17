@@ -2,26 +2,10 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getFeaturedMentors } from '../api/mentors';
 import LoadingSpinner from '../components/LoadingSpinner';
-import useInView from '../utils/useInView';
+import Reveal from '../components/Reveal';
 import SessionTypeCard from '../components/SessionTypeCard';
 import { SESSION_TYPES } from '../constants/sessionTypes';
-
-function Reveal({ children, className = '', delay = 0 }) {
-  const [ref, inView] = useInView();
-  return (
-    <div
-      ref={ref}
-      className={className}
-      style={{
-        opacity: inView ? 1 : 0,
-        transform: inView ? 'translateY(0)' : 'translateY(28px)',
-        transition: `opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1) ${delay}ms, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1) ${delay}ms`,
-      }}
-    >
-      {children}
-    </div>
-  );
-}
+import { useAuth } from '../context/useAuth';
 
 const AVATAR_COLORS = [
   'bg-violet-200 text-violet-900',
@@ -96,6 +80,8 @@ function MarqueeStrip() {
 }
 
 function Hero() {
+  const { user } = useAuth();
+
   return (
     <section
       aria-labelledby="landing-heading"
@@ -150,12 +136,14 @@ function Hero() {
             >
               Browse mentors
             </Link>
-            <Link
-              to="/register"
-              className={`inline-flex items-center justify-center rounded-full border-2 border-stone-900/12 bg-white/95 px-9 py-4 text-sm font-semibold text-stone-900 shadow-sm backdrop-blur-sm transition hover:border-orange-300/70 hover:shadow-md ${focusRing}`}
-            >
-              I want to mentor
-            </Link>
+            {!user ? (
+              <Link
+                to="/register?intent=mentor"
+                className={`inline-flex items-center justify-center rounded-full border-2 border-stone-900/12 bg-white/95 px-9 py-4 text-sm font-semibold text-stone-900 shadow-sm backdrop-blur-sm transition hover:border-orange-300/70 hover:shadow-md ${focusRing}`}
+              >
+                I want to mentor
+              </Link>
+            ) : null}
           </div>
 
           <div className="mt-12 flex flex-col gap-8 border-t border-stone-200/90 pt-10 sm:flex-row sm:items-center sm:justify-between">
