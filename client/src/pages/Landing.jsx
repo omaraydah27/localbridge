@@ -1,5 +1,7 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import mockMentors from '../api/mockMentors';
+import { getFeaturedMentors } from '../api/mentors';
+import LoadingSpinner from '../components/LoadingSpinner';
 import useInView from '../utils/useInView';
 import SessionTypeCard, { SESSION_TYPES } from '../components/SessionTypeCard';
 
@@ -250,7 +252,39 @@ function SessionTypes() {
 // ─── Featured Mentors ─────────────────────────────────────────────────────────
 
 function FeaturedMentors() {
-  const featured = mockMentors.slice(0, 3);
+  const [featured, setFeatured] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [reloadKey, setReloadKey] = useState(0);
+
+  useEffect(() => {
+    let cancelled = false;
+    /* eslint-disable react-hooks/set-state-in-effect */
+    setLoading(true);
+    setError(null);
+    /* eslint-enable react-hooks/set-state-in-effect */
+
+    void (async () => {
+      const { data, error: fetchError } = await getFeaturedMentors();
+      if (cancelled) return;
+      setLoading(false);
+      if (fetchError) {
+        setFeatured([]);
+        setError(fetchError.message || 'Could not load featured mentors.');
+        return;
+      }
+      setFeatured(data ?? []);
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [reloadKey]);
+
+  function loadFeatured() {
+    setReloadKey((k) => k + 1);
+  }
+
   return (
     <section className="bg-amber-50 py-24 px-6">
       <div className="max-w-5xl mx-auto">
@@ -267,13 +301,29 @@ function FeaturedMentors() {
           </Link>
         </Reveal>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-          {featured.map((m, i) => (
-            <Reveal key={m.id} delay={i * 100}>
-              <MentorPreviewCard mentor={m} />
-            </Reveal>
-          ))}
-        </div>
+        {loading ? (
+          <LoadingSpinner label="Loading featured mentors…" className="py-8" />
+        ) : error ? (
+          <div className="rounded-xl border border-red-200 bg-red-50 text-red-900 px-4 py-3 text-sm max-w-xl">
+            <p className="font-semibold">Couldn&apos;t load mentors</p>
+            <p className="mt-1 text-red-800/90">{error}</p>
+            <button
+              type="button"
+              onClick={loadFeatured}
+              className="mt-3 text-sm font-medium px-4 py-2 rounded-full bg-red-900 text-white hover:bg-red-800 transition-colors"
+            >
+              Try again
+            </button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+            {featured.map((m, i) => (
+              <Reveal key={m.id} delay={i * 100}>
+                <MentorPreviewCard mentor={m} />
+              </Reveal>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );

@@ -1,6 +1,7 @@
-import { useState, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import mockMentors from '../api/mockMentors';
+import { getAllMentors } from '../api/mentors';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 const INDUSTRIES = [
   { label: 'All', value: '' },
@@ -125,24 +126,71 @@ function MentorCard({ mentor }) {
   );
 }
 
+function FetchErrorBanner({ message, onRetry }) {
+  return (
+    <div className="rounded-xl border border-red-200 bg-red-50 text-red-900 px-4 py-3 text-sm mb-8">
+      <p className="font-semibold">Couldn&apos;t load mentors</p>
+      <p className="mt-1 text-red-800/90">{message}</p>
+      {onRetry ? (
+        <button
+          type="button"
+          onClick={onRetry}
+          className="mt-3 text-sm font-medium px-4 py-2 rounded-full bg-red-900 text-white hover:bg-red-800 transition-colors"
+        >
+          Try again
+        </button>
+      ) : null}
+    </div>
+  );
+}
+
 export default function Mentors() {
   const [search, setSearch] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
   const [activeIndustry, setActiveIndustry] = useState('');
+  const [mentors, setMentors] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [reloadKey, setReloadKey] = useState(0);
 
-  const filtered = useMemo(() => {
-    const q = search.trim().toLowerCase();
-    return mockMentors.filter((m) => {
-      const matchesIndustry = activeIndustry === '' || m.industry === activeIndustry;
-      const matchesSearch =
-        q === '' ||
-        m.name.toLowerCase().includes(q) ||
-        m.company.toLowerCase().includes(q) ||
-        m.title.toLowerCase().includes(q) ||
-        m.bio.toLowerCase().includes(q) ||
-        m.expertise.some((e) => e.toLowerCase().includes(q));
-      return matchesIndustry && matchesSearch;
-    });
-  }, [search, activeIndustry]);
+  useEffect(() => {
+    const t = setTimeout(() => setDebouncedSearch(search), 350);
+    return () => clearTimeout(t);
+  }, [search]);
+
+  useEffect(() => {
+    let cancelled = false;
+    /* Sync loading UI before awaiting Supabase (eslint data-fetch pattern) */
+    /* eslint-disable react-hooks/set-state-in-effect */
+    setLoading(true);
+    setError(null);
+    /* eslint-enable react-hooks/set-state-in-effect */
+
+    void (async () => {
+      const { data, error: fetchError } = await getAllMentors({
+        search: debouncedSearch,
+        industry: activeIndustry,
+      });
+      if (cancelled) return;
+      setLoading(false);
+      if (fetchError) {
+        setMentors([]);
+        setError(fetchError.message || 'Something went wrong.');
+        return;
+      }
+      setMentors(data ?? []);
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [debouncedSearch, activeIndustry, reloadKey]);
+
+  function loadMentors() {
+    setLoading(true);
+    setError(null);
+    setReloadKey((k) => k + 1);
+  }
 
   return (
     <main className="max-w-6xl mx-auto px-6 py-12">
@@ -151,6 +199,8 @@ export default function Mentors() {
         <h1 className="text-3xl font-bold text-stone-900">Browse Mentors</h1>
         <p className="text-stone-500 mt-1">Find the right mentor for where you want to go.</p>
       </div>
+
+      {error ? <FetchErrorBanner message={error} onRetry={loadMentors} /> : null}
 
       {/* Search */}
       <div className="relative mb-6">
@@ -200,31 +250,39 @@ export default function Mentors() {
       </div>
 
       {/* Result count */}
-      <p className="text-sm text-stone-500 mb-5">
-        Showing <span className="font-semibold text-stone-700">{filtered.length}</span>{' '}
-        {filtered.length === 1 ? 'mentor' : 'mentors'}
-      </p>
+      {!loading && !error ? (
+        <p className="text-sm text-stone-500 mb-5">
+          Showing <span className="font-semibold text-stone-700">{mentors.length}</span>{' '}
+          {mentors.length === 1 ? 'mentor' : 'mentors'}
+        </p>
+      ) : null}
 
       {/* Grid */}
-      {filtered.length > 0 ? (
+      {loading ? (
+        <LoadingSpinner label="Loading mentors…" />
+      ) : mentors.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filtered.map((mentor) => (
+          {mentors.map((mentor) => (
             <MentorCard key={mentor.id} mentor={mentor} />
           ))}
         </div>
-      ) : (
+      ) : !error ? (
         <div className="flex flex-col items-center justify-center py-24 text-center">
           <div className="text-4xl mb-4">🔍</div>
           <p className="text-stone-700 font-medium">No mentors found.</p>
           <p className="text-stone-400 text-sm mt-1">Try adjusting your search or filters.</p>
           <button
-            onClick={() => { setSearch(''); setActiveIndustry(''); }}
+            type="button"
+            onClick={() => {
+              setSearch('');
+              setActiveIndustry('');
+            }}
             className="mt-5 text-sm px-4 py-2 rounded-full border border-stone-300 text-stone-600 hover:bg-stone-100 transition-colors"
           >
             Clear filters
           </button>
         </div>
-      )}
+      ) : null}
     </main>
   );
 }
