@@ -171,25 +171,6 @@ export default function MentorProfile() {
         );
     }
 
-    if (!mentor) {
-        return (
-            <main className="max-w-3xl mx-auto px-6 py-12">
-                <h1 className="text-3xl font-semibold text-stone-900 mb-4">
-                    Mentor Not Found
-                </h1>
-                <p className="text-stone-600 mb-6">
-                    We couldn&apos;t find the mentor profile you were looking for.
-                </p>
-                <Link
-                    to="/mentors"
-                    className="inline-block px-6 py-3 rounded-full bg-stone-900 text-amber-50 hover:bg-stone-700 transition-colors"
-                >
-                    Back to Mentors
-                </Link>
-            </main>
-        );
-    }
-
     return (
         <>
             <main className="max-w-4xl mx-auto px-6 py-12">
