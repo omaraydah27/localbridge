@@ -24,6 +24,24 @@ const INDUSTRIES = [
   { label: 'Law', value: 'law' },
 ];
 
+const TIERS = [
+  { label: 'All tiers', value: '' },
+  { label: 'Rising', value: 'rising' },
+  { label: 'Established', value: 'established' },
+  { label: 'Expert', value: 'expert' },
+  { label: 'Elite', value: 'elite' },
+];
+
+function tierBadgeClasses(tier) {
+  switch (tier) {
+    case 'rising':      return 'bg-emerald-50 text-emerald-800 border border-emerald-200/80';
+    case 'established': return 'bg-sky-50 text-sky-800 border border-sky-200/80';
+    case 'expert':      return 'bg-violet-50 text-violet-800 border border-violet-200/80';
+    case 'elite':       return 'bg-gradient-to-r from-amber-500 to-orange-500 text-white';
+    default:            return 'bg-stone-100 text-stone-600';
+  }
+}
+
 const SORT_OPTIONS = [
   { label: 'Best reviews first', value: 'rating' },
   { label: 'Most years in the game', value: 'experience' },
@@ -187,7 +205,14 @@ function MentorCard({ mentor, isFavorite, onToggleFavorite, user, navigate, favo
 
         <div className="flex items-center justify-between">
           <StarRating rating={mentor.rating} />
-          <span className="text-xs text-stone-400">{mentor.years_experience} yrs in</span>
+          <div className="flex items-center gap-2">
+            {mentor.tier ? (
+                <span className={`rounded-full px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide ${tierBadgeClasses(mentor.tier)}`}>
+                  {mentor.tier.charAt(0).toUpperCase() + mentor.tier.slice(1)}
+                </span>
+            ) : null}
+            <span className="text-xs text-stone-400">{mentor.years_experience} yrs in</span>
+          </div>
         </div>
 
         <p className="line-clamp-2 text-sm leading-relaxed text-stone-600">{mentor.bio}</p>
@@ -209,7 +234,12 @@ function MentorCard({ mentor, isFavorite, onToggleFavorite, user, navigate, favo
         </div>
 
         <div className="mt-auto flex items-center justify-between border-t border-stone-100/90 pt-4">
-          <span className="text-xs text-stone-400">{mentor.total_sessions} sessions</span>
+          <div className="flex flex-col gap-0.5">
+            <span className="text-xs text-stone-400">{mentor.total_sessions} sessions</span>
+            {mentor.session_rate ? (
+                <span className="text-xs font-semibold text-stone-700">${mentor.session_rate} / session</span>
+            ) : null}
+          </div>
           <Link
               to={`/mentors/${mentor.id}`}
               className={`rounded-full bg-gradient-to-r from-stone-900 to-stone-800 px-4 py-2 text-sm font-semibold text-amber-50 shadow-md transition hover:from-stone-800 hover:to-stone-700 ${focusRing}`}
@@ -246,6 +276,7 @@ export default function Mentors() {
   const [search, setSearch] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const [activeIndustry, setActiveIndustry] = useState('');
+  const [activeTier, setActiveTier] = useState('');
   const [sortBy, setSortBy] = useState('rating');
   const [page, setPage] = useState(0);
   const [mentors, setMentors] = useState([]);
@@ -257,7 +288,12 @@ export default function Mentors() {
   const [favoriteBusyId, setFavoriteBusyId] = useState(null);
   const [favoriteMessage, setFavoriteMessage] = useState(null);
   const [filterPanelOpen, setFilterPanelOpen] = useState(false);
+  const [sortOpen, setSortOpen] = useState(false);
+  const [rateMin, setRateMin] = useState('');
+  const [rateMax, setRateMax] = useState('');
+  const [availableOnly, setAvailableOnly] = useState(false);
   const gridRef = useRef(null);
+  const sortRef = useRef(null);
 
   useEffect(() => {
     const t = setTimeout(() => setDebouncedSearch(search), 350);
@@ -292,6 +328,15 @@ export default function Mentors() {
       setFavoriteIds(new Set(data ?? []));
     });
   }, [user]);
+
+  useEffect(() => {
+    if (!sortOpen) return;
+    function handleOutside(e) {
+      if (sortRef.current && !sortRef.current.contains(e.target)) setSortOpen(false);
+    }
+    document.addEventListener('mousedown', handleOutside);
+    return () => document.removeEventListener('mousedown', handleOutside);
+  }, [sortOpen]);
 
   useEffect(() => {
     let cancelled = false;
@@ -363,7 +408,11 @@ export default function Mentors() {
   function resetFilters() {
     setSearch('');
     setActiveIndustry('');
+    setActiveTier('');
     setSortBy('rating');
+    setRateMin('');
+    setRateMax('');
+    setAvailableOnly(false);
     setPage(0);
   }
 
@@ -371,7 +420,19 @@ export default function Mentors() {
   const endIdx = Math.min((page + 1) * PAGE_SIZE, totalCount);
   const canPrev = page > 0;
   const canNext = endIdx < totalCount;
-  const activeFilterCount = (activeIndustry ? 1 : 0) + (debouncedSearch ? 1 : 0);
+  const activeFilterCount =
+    (activeIndustry ? 1 : 0) +
+    (activeTier ? 1 : 0) +
+    (debouncedSearch ? 1 : 0) +
+    (rateMin !== '' || rateMax !== '' ? 1 : 0) +
+    (availableOnly ? 1 : 0);
+  const visibleMentors = mentors.filter((m) => {
+    if (activeTier && m.tier !== activeTier) return false;
+    if (rateMin !== '' && (m.session_rate == null || m.session_rate < Number(rateMin))) return false;
+    if (rateMax !== '' && (m.session_rate == null || m.session_rate > Number(rateMax))) return false;
+    if (availableOnly && !m.available) return false;
+    return true;
+  });
 
   return (
       <main id="mentors-directory" aria-label="Mentor directory" className="relative min-h-screen overflow-x-hidden">
@@ -422,7 +483,7 @@ export default function Mentors() {
                       <>
                         <span className="font-semibold text-stone-900">{totalCount.toLocaleString()}</span>{' '}
                         {totalCount === 1 ? 'person' : 'people'} ready to talk
-                        {debouncedSearch || activeIndustry ? (
+                        {activeFilterCount > 0 ? (
                             <span className="text-stone-500"> · filtered</span>
                         ) : null}
                       </>
@@ -465,21 +526,58 @@ export default function Mentors() {
                 </div>
 
                 <div className="flex gap-2.5">
-                  <label htmlFor="sort-mentors" className="sr-only">
-                    Sort mentors
-                  </label>
-                  <select
-                      id="sort-mentors"
-                      value={sortBy}
-                      onChange={(e) => setSortBy(e.target.value)}
-                      className="flex-1 rounded-full border border-stone-200 bg-white px-4 py-2.5 text-sm text-stone-800 shadow-sm focus:border-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-400/25 sm:flex-initial"
-                  >
-                    {SORT_OPTIONS.map((o) => (
-                        <option key={o.value} value={o.value}>
-                          {o.label}
-                        </option>
-                    ))}
-                  </select>
+                  {/* Custom sort dropdown */}
+                  <div ref={sortRef} className="relative flex-1 sm:flex-initial">
+                    <button
+                        type="button"
+                        onClick={() => setSortOpen((o) => !o)}
+                        aria-haspopup="listbox"
+                        aria-expanded={sortOpen}
+                        className={`inline-flex w-full items-center justify-between gap-2 rounded-full border border-stone-200 bg-white px-4 py-2.5 text-sm font-semibold text-stone-800 shadow-sm transition hover:border-orange-300/70 sm:w-auto ${focusRing}`}
+                    >
+                      <span className="truncate">{SORT_OPTIONS.find((o) => o.value === sortBy)?.label ?? 'Sort'}</span>
+                      <svg
+                          className={`h-3.5 w-3.5 shrink-0 text-stone-400 transition-transform duration-150 ${sortOpen ? 'rotate-180' : ''}`}
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          viewBox="0 0 24 24"
+                          aria-hidden
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                      </svg>
+                    </button>
+
+                    {sortOpen ? (
+                        <div
+                            role="listbox"
+                            aria-label="Sort mentors"
+                            className="absolute right-0 top-full z-20 mt-1.5 min-w-[220px] overflow-hidden rounded-2xl border border-stone-200/80 bg-white shadow-lg ring-1 ring-stone-900/[0.04]"
+                        >
+                          {SORT_OPTIONS.map((opt) => (
+                              <button
+                                  key={opt.value}
+                                  type="button"
+                                  role="option"
+                                  aria-selected={sortBy === opt.value}
+                                  onClick={() => { setSortBy(opt.value); setSortOpen(false); }}
+                                  className={`flex w-full items-center justify-between px-4 py-3 text-left text-sm transition first:pt-3.5 last:pb-3.5 ${
+                                      sortBy === opt.value
+                                          ? 'bg-orange-50/80 font-semibold text-orange-900'
+                                          : 'font-medium text-stone-700 hover:bg-stone-50'
+                                  } ${focusRing}`}
+                              >
+                                {opt.label}
+                                {sortBy === opt.value ? (
+                                    <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-orange-500 text-[10px] font-bold text-white" aria-hidden>
+                                      ✓
+                                    </span>
+                                ) : null}
+                              </button>
+                          ))}
+                        </div>
+                    ) : null}
+                  </div>
 
                   <button
                       type="button"
@@ -487,7 +585,7 @@ export default function Mentors() {
                       aria-expanded={filterPanelOpen}
                       aria-controls="mentors-filter-panel"
                       className={`inline-flex items-center gap-2 rounded-full border px-4 py-2.5 text-sm font-semibold shadow-sm transition ${
-                          filterPanelOpen || activeIndustry
+                          filterPanelOpen || activeFilterCount > 0
                               ? 'border-transparent bg-gradient-to-r from-stone-900 to-stone-800 text-amber-50 hover:from-stone-800 hover:to-stone-700'
                               : 'border-stone-200 bg-white text-stone-800 hover:border-orange-300/70'
                       } ${focusRing}`}
@@ -497,56 +595,142 @@ export default function Mentors() {
                     </svg>
                     Filter
                     {activeFilterCount > 0 ? (
-                        <span
-                            className={`ml-0.5 flex h-5 min-w-[1.25rem] items-center justify-center rounded-full px-1.5 text-[10px] font-bold ${
-                                filterPanelOpen || activeIndustry
-                                    ? 'bg-amber-400 text-stone-900'
-                                    : 'bg-orange-500 text-white'
-                            }`}
-                        >
-                      {activeFilterCount}
-                    </span>
+                        <span className="ml-0.5 flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-amber-400 px-1.5 text-[10px] font-bold text-stone-900">
+                          {activeFilterCount}
+                        </span>
                     ) : null}
                   </button>
                 </div>
               </div>
             </div>
 
-            {/* Collapsible industry chips — only when user wants them */}
+            {/* Collapsible filter panel */}
             {filterPanelOpen ? (
-                <div
-                    id="mentors-filter-panel"
-                    className="relative mt-1 pb-6"
-                >
-                  <div className="flex flex-col gap-3 rounded-2xl border border-stone-200/80 bg-white/90 p-4 shadow-sm backdrop-blur-sm sm:flex-row sm:items-center sm:justify-between sm:p-5">
-                    <div className="flex flex-wrap items-center gap-2">
-                  <span className="mr-1 text-xs font-semibold uppercase tracking-[0.18em] text-stone-500">
-                    Industry
-                  </span>
-                      {INDUSTRIES.map(({ label, value }) => (
+                <div id="mentors-filter-panel" className="relative mt-1 pb-6">
+                  <div className="rounded-2xl border border-stone-200/80 bg-white/90 p-4 shadow-sm backdrop-blur-sm sm:p-5">
+
+                    {/* Panel header row */}
+                    <div className="mb-4 flex items-center justify-between">
+                      <span className="text-xs font-semibold uppercase tracking-[0.18em] text-stone-500">Filters</span>
+                      {activeFilterCount > 0 ? (
                           <button
-                              key={value || 'all'}
                               type="button"
-                              onClick={() => setActiveIndustry(value)}
-                              className={`rounded-full border px-3.5 py-1.5 text-xs font-medium transition ${
-                                  activeIndustry === value
-                                      ? `border-transparent bg-gradient-to-r from-stone-900 to-stone-800 text-amber-50 shadow-sm ${focusRingDarkChip}`
-                                      : `border-stone-200 bg-white text-stone-600 hover:border-orange-300/60 ${focusRing}`
-                              }`}
+                              onClick={resetFilters}
+                              className={`rounded-full px-3 py-1 text-xs font-semibold text-stone-600 transition hover:bg-stone-100 hover:text-stone-900 ${focusRing}`}
                           >
-                            {label}
+                            Clear all
                           </button>
-                      ))}
+                      ) : null}
                     </div>
-                    {activeFilterCount > 0 ? (
+
+                    <div className="flex flex-col gap-4">
+
+                      {/* Industry */}
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="mr-1 w-[4.5rem] shrink-0 text-xs font-semibold uppercase tracking-[0.16em] text-stone-400">
+                          Industry
+                        </span>
+                        {INDUSTRIES.map(({ label, value }) => (
+                            <button
+                                key={value || 'all'}
+                                type="button"
+                                onClick={() => setActiveIndustry(value)}
+                                className={`rounded-full border px-3.5 py-1.5 text-xs font-medium transition ${
+                                    activeIndustry === value
+                                        ? `border-transparent bg-gradient-to-r from-stone-900 to-stone-800 text-amber-50 shadow-sm ${focusRingDarkChip}`
+                                        : `border-stone-200 bg-white text-stone-600 hover:border-orange-300/60 ${focusRing}`
+                                }`}
+                            >
+                              {label}
+                            </button>
+                        ))}
+                      </div>
+
+                      {/* Tier */}
+                      <div className="flex flex-wrap items-center gap-2 border-t border-stone-100 pt-4">
+                        <span className="mr-1 w-[4.5rem] shrink-0 text-xs font-semibold uppercase tracking-[0.16em] text-stone-400">
+                          Tier
+                        </span>
+                        {TIERS.map(({ label, value }) => (
+                            <button
+                                key={value || 'all-tiers'}
+                                type="button"
+                                onClick={() => setActiveTier(value)}
+                                className={`rounded-full border px-3.5 py-1.5 text-xs font-medium transition ${
+                                    activeTier === value
+                                        ? `border-transparent bg-gradient-to-r from-stone-900 to-stone-800 text-amber-50 shadow-sm ${focusRingDarkChip}`
+                                        : `border-stone-200 bg-white text-stone-600 hover:border-orange-300/60 ${focusRing}`
+                                }`}
+                            >
+                              {label}
+                            </button>
+                        ))}
+                      </div>
+
+                      {/* Session rate range */}
+                      <div className="flex flex-wrap items-center gap-3 border-t border-stone-100 pt-4">
+                        <span className="w-[4.5rem] shrink-0 text-xs font-semibold uppercase tracking-[0.16em] text-stone-400">
+                          Rate
+                        </span>
+                        <div className="flex items-center gap-2">
+                          <div className="relative">
+                            <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-xs text-stone-400" aria-hidden>$</span>
+                            <input
+                                type="number"
+                                min="0"
+                                placeholder="Min"
+                                value={rateMin}
+                                onChange={(e) => setRateMin(e.target.value)}
+                                aria-label="Minimum session rate"
+                                className="w-24 rounded-full border border-stone-200 bg-white py-1.5 pl-6 pr-3 text-sm text-stone-800 shadow-sm placeholder:text-stone-400 focus:border-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-400/25"
+                            />
+                          </div>
+                          <span className="text-stone-300" aria-hidden>—</span>
+                          <div className="relative">
+                            <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-xs text-stone-400" aria-hidden>$</span>
+                            <input
+                                type="number"
+                                min="0"
+                                placeholder="Max"
+                                value={rateMax}
+                                onChange={(e) => setRateMax(e.target.value)}
+                                aria-label="Maximum session rate"
+                                className="w-24 rounded-full border border-stone-200 bg-white py-1.5 pl-6 pr-3 text-sm text-stone-800 shadow-sm placeholder:text-stone-400 focus:border-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-400/25"
+                            />
+                          </div>
+                          <span className="text-xs text-stone-400">per session</span>
+                        </div>
+                      </div>
+
+                      {/* Availability toggle */}
+                      <div className="flex items-center gap-3 border-t border-stone-100 pt-4">
+                        <span className="w-[4.5rem] shrink-0 text-xs font-semibold uppercase tracking-[0.16em] text-stone-400">
+                          Status
+                        </span>
                         <button
                             type="button"
-                            onClick={resetFilters}
-                            className={`shrink-0 self-start rounded-full px-3 py-1.5 text-xs font-semibold text-stone-600 transition hover:bg-stone-100 hover:text-stone-900 sm:self-auto ${focusRing}`}
+                            role="switch"
+                            aria-checked={availableOnly}
+                            onClick={() => setAvailableOnly((v) => !v)}
+                            className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ${
+                                availableOnly ? 'bg-orange-500' : 'bg-stone-200'
+                            } ${focusRing}`}
                         >
-                          Clear all
+                          <span
+                              className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow ring-0 transition duration-200 ${
+                                  availableOnly ? 'translate-x-4' : 'translate-x-0'
+                              }`}
+                          />
                         </button>
-                    ) : null}
+                        <span
+                            className="cursor-pointer select-none text-sm font-medium text-stone-700"
+                            onClick={() => setAvailableOnly((v) => !v)}
+                        >
+                          Available now
+                        </span>
+                      </div>
+
+                    </div>
                   </div>
                 </div>
             ) : null}
@@ -603,10 +787,10 @@ export default function Mentors() {
 
           {loading ? (
               <MentorGridSkeleton />
-          ) : mentors.length > 0 ? (
+          ) : visibleMentors.length > 0 ? (
               <>
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                  {mentors.map((mentor, i) => (
+                  {visibleMentors.map((mentor, i) => (
                       <Reveal key={mentor.id} delay={Math.min(i * 40, 240)} className="h-full">
                         <MentorCard
                             mentor={mentor}

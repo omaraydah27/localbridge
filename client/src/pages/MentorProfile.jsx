@@ -11,6 +11,16 @@ import Reveal from '../components/Reveal';
 
 const focusRing =
     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:ring-offset-[#fffaf3]';
+
+function tierBadgeClasses(tier) {
+    switch (tier) {
+        case 'rising':      return 'bg-emerald-50 text-emerald-800 border border-emerald-200/80';
+        case 'established': return 'bg-sky-50 text-sky-800 border border-sky-200/80';
+        case 'expert':      return 'bg-violet-50 text-violet-800 border border-violet-200/80';
+        case 'elite':       return 'bg-gradient-to-r from-amber-500 to-orange-500 text-white';
+        default:            return 'bg-stone-100 text-stone-600';
+    }
+}
 const focusRingDark =
     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-900';
 const focusRingWhite =
@@ -592,6 +602,11 @@ export default function MentorProfile() {
                         {industryLabel}
                       </span>
                                         ) : null}
+                                        {mentor.tier ? (
+                                            <span className={`rounded-full px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide ${tierBadgeClasses(mentor.tier)}`}>
+                        {mentor.tier.charAt(0).toUpperCase() + mentor.tier.slice(1)}
+                      </span>
+                                        ) : null}
                                         {mentor.available ? (
                                             <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200/80 bg-emerald-50 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-800">
                         <span className="relative flex h-1.5 w-1.5">
@@ -815,6 +830,16 @@ export default function MentorProfile() {
                                             </div>
                                             <p className="mt-3 text-[11px] leading-relaxed text-stone-500">
                                                 Tap any open day to prefill it. Or just hit the button — you can pick a time next.
+                                            </p>
+                                        </div>
+                                    ) : null}
+
+                                    {mentor.session_rate ? (
+                                        <div className="mt-5 rounded-xl border border-white/10 bg-white/[0.05] px-4 py-3.5">
+                                            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-amber-300">Session rate</p>
+                                            <p className="mt-1 font-display text-2xl font-semibold text-white">
+                                                ${mentor.session_rate}
+                                                <span className="ml-1.5 text-sm font-normal text-stone-400">per session</span>
                                             </p>
                                         </div>
                                     ) : null}
