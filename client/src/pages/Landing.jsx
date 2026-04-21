@@ -79,6 +79,38 @@ const PERSONAS = [
   },
 ];
 
+function IconBriefcase({ className = 'h-5 w-5' }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24" aria-hidden>
+      <rect x="2" y="7" width="20" height="14" rx="2" /><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2M12 12v4M8 12h8" />
+    </svg>
+  );
+}
+
+function IconCheck({ className = 'h-4 w-4 shrink-0' }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24" aria-hidden>
+      <path d="M5 13l4 4L19 7" />
+    </svg>
+  );
+}
+
+function IconChevronDown({ className = 'h-4 w-4' }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24" aria-hidden>
+      <path d="m6 9 6 6 6-6" />
+    </svg>
+  );
+}
+
+// ─── Hero ─────────────────────────────────────────────────────────────────────
+
+const HERO_PREVIEW = [
+  { name: 'Maya Chen', role: 'Director of Product', co: 'Lattice', grad: 'from-rose-400 to-orange-500' },
+  { name: 'Jordan Reeves', role: 'Sr. Recruiter', co: 'Google', grad: 'from-sky-500 to-indigo-500', highlight: true },
+  { name: 'Elena Voss', role: 'UX Lead', co: 'Epic Health', grad: 'from-emerald-500 to-teal-600' },
+];
+
 function Hero() {
   const { user } = useAuth();
   const [activePersona, setActivePersona] = useState(PERSONAS[0].id);
@@ -130,8 +162,8 @@ function Hero() {
 
             <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
               <Link
-                  to="/mentors"
-                  className={`inline-flex items-center justify-center rounded-full bg-gradient-to-r from-orange-600 to-amber-500 px-9 py-4 text-sm font-semibold text-white shadow-lg shadow-orange-500/35 transition hover:from-orange-500 hover:to-amber-400 hover:shadow-xl ${focusRing}`}
+                to="/mentors"
+                className={`mt-5 block w-full rounded-xl bg-stone-900 py-3 text-center text-sm font-semibold text-amber-50 transition hover:bg-stone-800 ${focusRing}`}
               >
                 Browse 2,400+ mentors
                 <span className="ml-2" aria-hidden>→</span>
@@ -171,6 +203,11 @@ function Hero() {
               </p>
             </div>
           </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
 
           {/* RIGHT — persona chooser. Self-identification, not a decorative mockup. */}
           <div className="relative lg:col-span-6">
@@ -243,11 +280,14 @@ function Hero() {
                     + {Math.floor(Math.random() * 40) + 180} more for this path
                   </p>
                 </div>
-              </div>
-            </div>
-          </div>
+                <h3 className="mt-5 font-display text-lg font-semibold text-stone-900 sm:text-xl">{title}</h3>
+                <p className="mt-2.5 text-sm leading-relaxed text-stone-600 sm:text-base">{desc}</p>
+              </motion.div>
+            </Reveal>
+          ))}
         </div>
-      </section>
+      </div>
+    </section>
   );
 }
 
@@ -272,6 +312,7 @@ function FeaturedMentor({ mentor, loading }) {
       };
   const color = avatarColor(display.name);
 
+function SessionTypes() {
   return (
       <section className="relative px-4 py-20 sm:px-6 sm:py-24 lg:px-8">
         <div className="mx-auto max-w-6xl">
@@ -386,7 +427,8 @@ function FeaturedMentor({ mentor, loading }) {
             </div>
           </Reveal>
         </div>
-      </section>
+      </div>
+    </section>
   );
 }
 
@@ -562,6 +604,7 @@ function WhyBridge() {
     { label: 'Commitment', dm: 'None', coaching: 'Multi-session packages', bridge: 'One session at a time' },
   ];
 
+function Testimonials() {
   return (
       <section id="why-bridge" className="relative scroll-mt-20 px-4 py-20 sm:px-6 sm:py-24 lg:px-8">
         <div className="mx-auto max-w-6xl">
@@ -621,7 +664,8 @@ function WhyBridge() {
             </div>
           </Reveal>
         </div>
-      </section>
+      </div>
+    </section>
   );
 }
 
@@ -714,7 +758,17 @@ function Outcomes() {
             ))}
           </div>
         </div>
-      </section>
+
+        <Reveal className="mt-8 text-center">
+          <Link
+            to="/pricing"
+            className={`inline-flex items-center gap-1.5 text-sm font-medium text-stone-500 transition hover:text-orange-700 ${focusRing}`}
+          >
+            Compare all plan features →
+          </Link>
+        </Reveal>
+      </div>
+    </section>
   );
 }
 
@@ -822,10 +876,13 @@ function FinalCTA() {
               )}
             </div>
           </div>
-        </Reveal>
-      </section>
+        </div>
+      </Reveal>
+    </section>
   );
 }
+
+// ─── Page root ────────────────────────────────────────────────────────────────
 
 export default function Landing() {
   const [featured, setFeatured] = useState([]);
