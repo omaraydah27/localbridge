@@ -112,15 +112,16 @@ export default function Pricing() {
   const tiers = [
     {
       name: 'Free',
-      tagline: 'Just looking around',
+      tagline: 'Explore the platform',
       monthly: 0,
-      blurb: 'Explore profiles, save people you like, and try one session request per month.',
+      blurb:
+          'Browse mentors, read reviews, and get started with one AI resume review before deciding how much support you need.',
       features: [
-        'Full directory & bios',
-        'Save up to 10 mentors',
-        '1 session request / month',
-        'Reviews & ratings',
-        'Email session reminders',
+        'Browse mentor profiles',
+        'View ratings and reviews',
+        '1 AI resume review',
+        'Basic career exploration tools',
+        'Mentor sessions booked separately',
       ],
       cta: user ? 'Current plan' : 'Sign up free',
       href: user ? '/dashboard' : '/register',
@@ -128,16 +129,17 @@ export default function Pricing() {
     },
     {
       name: 'Starter',
-      tagline: 'Occasional booking',
+      tagline: 'Light AI support',
       monthly: 12,
-      blurb: 'For when you book once or twice a month and want the basics unlocked.',
+      blurb:
+          'For users who want more AI help polishing resumes and profiles while still booking mentor sessions separately.',
       features: [
         'Everything in Free',
-        '3 session requests / month',
+        '3 AI resume reviews / month',
+        'Resume improvement suggestions',
+        'LinkedIn profile tips',
         'Unlimited mentor favorites',
-        'Direct messages with mentors',
-        'Session recap notes',
-        'Calendar sync',
+        'Mentor sessions booked separately',
       ],
       cta: 'Choose Starter',
       onClick: handlePaidClick,
@@ -145,16 +147,17 @@ export default function Pricing() {
     },
     {
       name: 'Pro',
-      tagline: 'Regular rhythm',
+      tagline: 'Consistent career help',
       monthly: 19,
-      blurb: 'Unlimited bookings, priority in mentors\u2019 inboxes, and tools that stick with you between sessions.',
+      blurb:
+          'More AI tools, stronger recommendations, and smarter guidance for users actively applying and networking.',
       features: [
         'Everything in Starter',
-        'Unlimited session requests',
-        'Priority in mentor request queues',
-        'AI-matched mentor suggestions',
-        'Session transcripts (searchable)',
-        'Early access to new mentors',
+        '5 AI resume reviews / month',
+        'AI-powered resume suggestions',
+        'Priority mentor matching',
+        'Job application assistance',
+        'Mentor sessions booked separately',
       ],
       cta: 'Choose Pro',
       onClick: handlePaidClick,
@@ -163,16 +166,17 @@ export default function Pricing() {
     },
     {
       name: 'Premium',
-      tagline: 'Deep, high-touch use',
+      tagline: 'Advanced AI support',
       monthly: 49,
-      blurb: 'A closer lane with one mentor, a resume pass, and human support when you need it.',
+      blurb:
+          'Our strongest plan for users who want ongoing AI help with resumes, LinkedIn, and job applications.',
       features: [
         'Everything in Pro',
-        'Dedicated mentor lane',
-        'Resume & LinkedIn review',
-        '1:1 onboarding call',
-        'Exportable session notes',
-        'Priority human support',
+        'Unlimited AI resume reviews',
+        'AI autofill for job applications',
+        'Resume + LinkedIn optimization',
+        'Priority support',
+        'Mentor sessions booked separately',
       ],
       cta: 'Choose Premium',
       onClick: handlePaidClick,
@@ -182,39 +186,37 @@ export default function Pricing() {
 
   const comparisonRows = [
     { label: 'Browse directory & profiles', free: true, starter: true, pro: true, premium: true },
-    { label: 'Mentor favorites', free: '10', starter: 'Unlimited', pro: 'Unlimited', premium: 'Unlimited' },
-    { label: 'Session requests / month', free: '1', starter: '3', pro: 'Unlimited', premium: 'Unlimited' },
-    { label: 'Direct messages with mentors', free: false, starter: true, pro: true, premium: true },
-    { label: 'Session recap notes', free: false, starter: true, pro: true, premium: true },
-    { label: 'Calendar sync', free: false, starter: true, pro: true, premium: true },
-    { label: 'Priority in request queues', free: false, starter: false, pro: true, premium: true },
-    { label: 'AI-matched suggestions', free: false, starter: false, pro: true, premium: true },
-    { label: 'Searchable session transcripts', free: false, starter: false, pro: true, premium: true },
-    { label: 'Dedicated mentor lane', free: false, starter: false, pro: false, premium: true },
-    { label: 'Resume & LinkedIn review', free: false, starter: false, pro: false, premium: true },
-    { label: 'Priority human support', free: false, starter: false, pro: false, premium: true },
+    { label: 'View ratings & reviews', free: true, starter: true, pro: true, premium: true },
+    { label: 'AI resume reviews / month', free: '1', starter: '3', pro: '5', premium: 'Unlimited' },
+    { label: 'Resume improvement suggestions', free: false, starter: true, pro: true, premium: true },
+    { label: 'LinkedIn optimization tips', free: false, starter: true, pro: true, premium: true },
+    { label: 'Priority mentor matching', free: false, starter: false, pro: true, premium: true },
+    { label: 'Job application assistance', free: false, starter: false, pro: true, premium: true },
+    { label: 'AI autofill for job applications', free: false, starter: false, pro: false, premium: true },
+    { label: 'Priority support', free: false, starter: false, pro: false, premium: true },
+    { label: 'Mentor sessions booked separately', free: true, starter: true, pro: true, premium: true },
   ];
 
   const faq = [
     {
       q: 'Can I switch plans later?',
-      a: 'Yes. Move up or down between tiers whenever. Upgrades are prorated, downgrades kick in at the next billing cycle.',
+      a: 'Yes. You can move between plans later. Upgrades can start right away, and downgrades can begin with the next billing cycle.',
     },
     {
       q: 'Do mentors set their own rates?',
-      a: 'These plans are for Bridge platform access. Mentor session fees are separate — set by each mentor and shown on their profile before you book.',
+      a: 'Yes. Subscription plans cover Bridge AI tools and platform features. Mentor session fees are separate, set by each mentor, and shown on their profile before booking.',
+    },
+    {
+      q: 'Are mentor sessions included in any subscription?',
+      a: 'No. Subscriptions unlock AI features and platform benefits. Mentor sessions are always paid separately during booking.',
     },
     {
       q: 'Is there a free trial for paid plans?',
-      a: 'The Free tier already covers real usage. If we add trials later we\u2019ll say so loudly — no hidden timers.',
+      a: 'The Free plan already gives real access to the platform and one AI resume review. If we introduce trials for paid plans later, we will make that clear.',
     },
     {
       q: 'What about refunds?',
-      a: 'Cancel anytime and you won\u2019t be billed again. For mid-cycle refunds, contact support — we handle these case by case.',
-    },
-    {
-      q: 'Do session fees stack with my plan?',
-      a: 'Your plan covers Bridge access and features. Each session you book has its own fee, paid directly to the mentor through the booking flow.',
+      a: 'You can cancel a plan before the next billing cycle to avoid future charges. Refund handling can be reviewed case by case once payment is fully integrated.',
     },
   ];
 
@@ -256,7 +258,7 @@ export default function Pricing() {
                   Simple <span className="text-gradient-bridge">pricing</span>, pick what fits
                 </h1>
                 <p className="mt-2 max-w-2xl text-base leading-relaxed text-stone-600 sm:text-lg">
-                  Plans cover Bridge access and features. Mentor session fees are separate and shown on each profile.
+                  Subscription plans unlock AI career tools and platform access. Mentor sessions are paid separately based on each mentor’s rate.
                 </p>
               </div>
 
@@ -372,7 +374,9 @@ export default function Pricing() {
                             </li>
                         ))}
                       </ul>
-
+                      <p className="relative z-[1] mt-5 text-xs leading-relaxed text-stone-500">
+                        Mentor sessions are not included in the subscription price.
+                      </p>
                       {tier.href ? (
                           <Link
                               to={tier.href}
@@ -407,12 +411,14 @@ export default function Pricing() {
 
           {/* Comparison table + FAQ in a responsive split */}
           <div className="mt-14 grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-start lg:gap-10">
+            <p className="mt-6 text-center text-sm text-stone-500">
+              Mentor sessions are paid separately based on each mentor’s rate.
+            </p>
             <Reveal delay={60} className="lg:col-span-8">
               <div className="overflow-hidden rounded-2xl border border-stone-300/45 bg-[#fdf7f0]/88 shadow-sm ring-1 ring-stone-900/[0.02]">
                 <div className="border-b border-stone-300/40 bg-gradient-to-r from-[#fef9f1] via-[#fdf7ef] to-[#fef9f1] px-6 py-5 sm:px-8">
                   <h2 className="font-display text-lg font-semibold text-stone-900 sm:text-xl">Compare plans</h2>
-                  <p className="mt-1 text-sm text-stone-600">Every Bridge feature, side by side.</p>
-                </div>
+                  <p className="mt-1 text-sm text-stone-600">AI tools and platform features, side by side.</p>                </div>
                 <div className="overflow-x-auto">
                   <table className="min-w-full text-left text-sm">
                     <thead>
