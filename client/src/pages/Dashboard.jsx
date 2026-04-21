@@ -405,7 +405,7 @@ export default function Dashboard() {
           if (ids.length > 0) {
             const { data: profiles, error: profErr } = await supabase
               .from('mentor_profiles')
-              .select('id, name, title, company, image_url, tier')
+              .select('id, name, title, company, image_url')
               .in('id', ids);
             if (profErr) throw profErr;
             setMentorMap(Object.fromEntries((profiles ?? []).map((p) => [p.id, p])));
