@@ -88,7 +88,6 @@ function formatMoney(n) {
 function tierMonthlyEquivalent(monthly, annual) {
   if (monthly === 0) return 0;
   if (!annual) return monthly;
-  // .5 precision for $12/mo annual ($9.60 → show $10)
   return Math.round(monthly * (1 - ANNUAL_DISCOUNT));
 }
 
@@ -108,7 +107,10 @@ function CheckCell({ included, highlight }) {
     );
   }
   return (
-      <span className="inline-flex h-7 w-7 items-center justify-center text-stone-300" aria-label="Not included">
+      <span
+          className="inline-flex h-7 w-7 items-center justify-center text-stone-300"
+          aria-label="Not included"
+      >
       —
     </span>
   );
@@ -167,15 +169,16 @@ export default function Pricing() {
   const tiers = [
     {
       name: 'Free',
-      tagline: 'Just looking around',
+      tagline: 'Explore the platform',
       monthly: 0,
-      blurb: 'Explore profiles, save people you like, and try one session request per month.',
+      blurb:
+          'Browse mentors, read reviews, and use the platform at no cost. Mentor sessions are still paid separately during booking.',
       features: [
-        'Full directory & bios',
+        'Browse mentor profiles',
+        'View ratings and reviews',
         'Save up to 10 mentors',
-        '1 session request / month',
-        'Reviews & ratings',
-        'Email session reminders',
+        'Basic platform access',
+        'Mentor sessions booked separately',
       ],
       cta: user ? 'Current plan' : 'Sign up free',
       href: user ? '/dashboard' : '/register',
@@ -183,16 +186,17 @@ export default function Pricing() {
     },
     {
       name: 'Starter',
-      tagline: 'Occasional booking',
+      tagline: 'Extra platform access',
       monthly: 12,
-      blurb: 'For when you book once or twice a month and want the basics unlocked.',
+      blurb:
+          'For users who want more platform convenience and better account features while still paying mentors separately per session.',
       features: [
         'Everything in Free',
-        '3 session requests / month',
         'Unlimited mentor favorites',
         'Direct messages with mentors',
         'Session recap notes',
         'Calendar sync',
+        'Mentor sessions booked separately',
       ],
       cta: 'Choose Starter',
       onClick: handlePaidClick,
@@ -200,16 +204,17 @@ export default function Pricing() {
     },
     {
       name: 'Pro',
-      tagline: 'Regular rhythm',
+      tagline: 'Most active users',
       monthly: 19,
-      blurb: 'Unlimited bookings, priority in mentors\u2019 inboxes, and tools that stick with you between sessions.',
+      blurb:
+          'Best for active users who want stronger matching, priority platform features, and a better booking experience.',
       features: [
         'Everything in Starter',
-        'Unlimited session requests',
+        'Priority mentor matching',
         'Priority in mentor request queues',
-        'AI-matched mentor suggestions',
-        'Session transcripts (searchable)',
+        'Advanced platform tools',
         'Early access to new mentors',
+        'Mentor sessions booked separately',
       ],
       cta: 'Choose Pro',
       onClick: handlePaidClick,
@@ -218,16 +223,17 @@ export default function Pricing() {
     },
     {
       name: 'Premium',
-      tagline: 'Deep, high-touch use',
+      tagline: 'Highest support level',
       monthly: 49,
-      blurb: 'A closer lane with one mentor, a resume pass, and human support when you need it.',
+      blurb:
+          'For users who want the strongest level of platform support and premium account benefits while booking mentor sessions separately.',
       features: [
         'Everything in Pro',
-        'Dedicated mentor lane',
-        'Resume & LinkedIn review',
-        '1:1 onboarding call',
-        'Exportable session notes',
         'Priority human support',
+        'Highest platform access tier',
+        'Priority scheduling tools',
+        'Enhanced account support',
+        'Mentor sessions booked separately',
       ],
       cta: 'Choose Premium',
       onClick: handlePaidClick,
@@ -237,17 +243,16 @@ export default function Pricing() {
 
   const comparisonRows = [
     { label: 'Browse directory & profiles', free: true, starter: true, pro: true, premium: true },
+    { label: 'View ratings & reviews', free: true, starter: true, pro: true, premium: true },
     { label: 'Mentor favorites', free: '10', starter: 'Unlimited', pro: 'Unlimited', premium: 'Unlimited' },
-    { label: 'Session requests / month', free: '1', starter: '3', pro: 'Unlimited', premium: 'Unlimited' },
     { label: 'Direct messages with mentors', free: false, starter: true, pro: true, premium: true },
     { label: 'Session recap notes', free: false, starter: true, pro: true, premium: true },
     { label: 'Calendar sync', free: false, starter: true, pro: true, premium: true },
+    { label: 'Priority mentor matching', free: false, starter: false, pro: true, premium: true },
     { label: 'Priority in request queues', free: false, starter: false, pro: true, premium: true },
-    { label: 'AI-matched suggestions', free: false, starter: false, pro: true, premium: true },
-    { label: 'Searchable session transcripts', free: false, starter: false, pro: true, premium: true },
-    { label: 'Dedicated mentor lane', free: false, starter: false, pro: false, premium: true },
-    { label: 'Resume & LinkedIn review', free: false, starter: false, pro: false, premium: true },
-    { label: 'Priority human support', free: false, starter: false, pro: false, premium: true },
+    { label: 'Early access to new mentors', free: false, starter: false, pro: true, premium: true },
+    { label: 'Priority support', free: false, starter: false, pro: false, premium: true },
+    { label: 'Mentor sessions booked separately', free: true, starter: true, pro: true, premium: true },
   ];
 
   const faq = [
@@ -257,19 +262,19 @@ export default function Pricing() {
     },
     {
       q: 'Do mentors set their own rates?',
-      a: 'These plans are for Bridge platform access. Mentor session fees are separate — set by each mentor and shown on their profile before you book.',
+      a: 'Yes. Each mentor has their own booking rate shown on their profile. Subscription plans do not include mentor sessions.',
+    },
+    {
+      q: 'Are mentor sessions included in subscriptions?',
+      a: 'No. Subscriptions cover Bridge platform access and features. Mentor sessions are paid separately when booked.',
     },
     {
       q: 'Is there a free trial for paid plans?',
-      a: 'The Free tier already covers real usage. If we add trials later we\u2019ll say so loudly — no hidden timers.',
+      a: 'The Free tier already covers real usage. If we add trials later we’ll say so clearly.',
     },
     {
       q: 'What about refunds?',
-      a: 'Cancel anytime and you won\u2019t be billed again. For mid-cycle refunds, contact support — we handle these case by case.',
-    },
-    {
-      q: 'Do session fees stack with my plan?',
-      a: 'Your plan covers Bridge access and features. Each session you book has its own fee, paid directly to the mentor through the booking flow.',
+      a: 'Cancel anytime and you won’t be billed again. For mid-cycle refunds, contact support — we handle these case by case.',
     },
   ];
 
@@ -280,7 +285,6 @@ export default function Pricing() {
       >
         <PricingBackdrop />
 
-        {/* Compact header — title + subhead + inline billing toggle. ~180px tall. */}
         <header className="relative z-[2] border-b border-stone-300/40 bg-[#fdf7f0]/80 backdrop-blur-md">
           <div className="relative mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
             <nav aria-label="Breadcrumb" className="mb-4">
@@ -311,11 +315,10 @@ export default function Pricing() {
                   Simple <span className="text-gradient-bridge">pricing</span>, pick what fits
                 </h1>
                 <p className="mt-2 max-w-2xl text-base leading-relaxed text-stone-600 sm:text-lg">
-                  Plans cover Bridge access and features. Mentor session fees are separate and shown on each profile.
+                  Subscription plans cover Bridge platform access and features. Mentor sessions are paid separately based on each mentor’s rate.
                 </p>
               </div>
 
-              {/* Inline billing toggle */}
               <div className="flex items-center gap-3 sm:gap-4">
                 <div
                     className="inline-flex rounded-full border border-stone-300/45 bg-[#f5efe6]/90 p-1 shadow-inner"
@@ -350,7 +353,6 @@ export default function Pricing() {
           </div>
         </header>
 
-        {/* Tiers — 4 across on large screens */}
         <div className="relative z-[2] mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-12 lg:px-8">
           <div className="grid gap-4 md:grid-cols-2 md:gap-5 lg:grid-cols-4 lg:items-stretch">
             {tiers.map((tier, idx) => {
@@ -428,6 +430,10 @@ export default function Pricing() {
                         ))}
                       </ul>
 
+                      <p className="relative z-[1] mt-5 text-xs leading-relaxed text-stone-500">
+                        Mentor sessions are not included in the subscription price.
+                      </p>
+
                       {tier.href ? (
                           <Link
                               to={tier.href}
@@ -460,13 +466,16 @@ export default function Pricing() {
             })}
           </div>
 
-          {/* Comparison table + FAQ in a responsive split */}
+          <p className="mt-6 text-center text-sm text-stone-500">
+            Mentor sessions are paid separately during booking based on each mentor’s rate.
+          </p>
+
           <div className="mt-14 grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-start lg:gap-10">
             <Reveal delay={60} className="lg:col-span-8">
               <div className="overflow-hidden rounded-2xl border border-stone-300/45 bg-[#fdf7f0]/88 shadow-sm ring-1 ring-stone-900/[0.02]">
                 <div className="border-b border-stone-300/40 bg-gradient-to-r from-[#fef9f1] via-[#fdf7ef] to-[#fef9f1] px-6 py-5 sm:px-8">
                   <h2 className="font-display text-lg font-semibold text-stone-900 sm:text-xl">Compare plans</h2>
-                  <p className="mt-1 text-sm text-stone-600">Every Bridge feature, side by side.</p>
+                  <p className="mt-1 text-sm text-stone-600">Bridge platform features, side by side.</p>
                 </div>
                 <div className="overflow-x-auto">
                   <table className="min-w-full text-left text-sm">
