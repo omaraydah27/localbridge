@@ -6,8 +6,18 @@ export async function getMentorById(mentorProfileId) {
     .select("*")
     .eq("id", mentorProfileId)
     .single();
-  if (error) throw error;
-  return data;
+  if (error) return { data: null, error };
+  if (!data) return { data: null, error: null };
+  return {
+    data: {
+      mentor: data,
+      reviews: {
+        count: data.total_sessions ?? 0,
+        average: data.rating ?? null,
+      },
+    },
+    error: null,
+  };
 }
 
 export async function getAllMentors(filters = {}) {
