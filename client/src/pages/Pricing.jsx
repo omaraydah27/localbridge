@@ -8,6 +8,61 @@ const focusRing =
 
 const ANNUAL_DISCOUNT = 0.2;
 
+const MENTOR_TIERS = [
+  {
+    name: 'Rising',
+    rateRange: '$40–$70',
+    experienceDesc: '0–4 years of experience · Early-career professionals and recent grads who have earned their first real wins.',
+    useCases: [
+      'First job search and resume polish',
+      'Breaking into competitive entry-level roles',
+      'Building professional habits and early momentum',
+    ],
+    cardClass: 'border-emerald-200/60 bg-emerald-50/40',
+    accentClass: 'bg-gradient-to-r from-emerald-500/70 via-emerald-400/50 to-emerald-500/70',
+    badgeClass: 'bg-emerald-100 text-emerald-800',
+  },
+  {
+    name: 'Established',
+    rateRange: '$75–$120',
+    experienceDesc: '5–9 years · Mid-career contributors with a proven track record and a clear area of focus.',
+    useCases: [
+      'Mid-level to senior career transitions',
+      'Navigating promotion cycles and leveling up',
+      'Changing industries or switching functions',
+    ],
+    cardClass: 'border-sky-200/60 bg-sky-50/40',
+    accentClass: 'bg-gradient-to-r from-sky-500/70 via-sky-400/50 to-sky-500/70',
+    badgeClass: 'bg-sky-100 text-sky-800',
+  },
+  {
+    name: 'Expert',
+    rateRange: '$125–$175',
+    experienceDesc: '10–15 years · Senior leaders with deep functional expertise and meaningful organizational scope.',
+    useCases: [
+      'Senior or staff-level interview preparation',
+      'Executive communication and cross-functional influence',
+      'High-stakes career pivots and role expansions',
+    ],
+    cardClass: 'border-violet-200/60 bg-violet-50/40',
+    accentClass: 'bg-gradient-to-r from-violet-500/70 via-violet-400/50 to-violet-500/70',
+    badgeClass: 'bg-violet-100 text-violet-800',
+  },
+  {
+    name: 'Elite',
+    rateRange: '$180–$250',
+    experienceDesc: '15+ years · C-suite executives and industry-defining practitioners at the top of their fields.',
+    useCases: [
+      'VP and C-suite transition coaching',
+      'Board-level presence and strategic positioning',
+      'Legacy career decisions, exits, and portfolio moves',
+    ],
+    cardClass: 'border-amber-300/60 bg-amber-50/50',
+    accentClass: 'bg-gradient-to-r from-amber-600/80 via-orange-500/60 to-amber-600/80',
+    badgeClass: 'bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-sm',
+  },
+];
+
 function PricingBackdrop() {
   return (
       <div aria-hidden className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
@@ -499,6 +554,65 @@ export default function Pricing() {
             <Reveal delay={100} className="lg:col-span-4 lg:sticky lg:top-24">
               <PricingFaq headingId="pricing-faq-heading" items={faq} />
             </Reveal>
+          </div>
+
+          {/* Mentor tiers — separate from mentee subscription plans above */}
+          <div className="mt-16 border-t border-stone-300/40 pt-14">
+            <Reveal delay={60}>
+              <div className="mb-8 text-center">
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-orange-200/70 bg-orange-50/70 px-3 py-1.5 text-xs font-semibold text-orange-900">
+                  <span className="h-1.5 w-1.5 rounded-full bg-orange-600" aria-hidden />
+                  How Bridge categorizes mentors
+                </span>
+                <h2
+                    id="mentor-tiers-heading"
+                    className="mt-4 font-display text-2xl font-semibold tracking-tight text-stone-900 sm:text-3xl"
+                >
+                  Mentor tiers
+                </h2>
+                <p className="mx-auto mt-2 max-w-xl text-base leading-relaxed text-stone-600">
+                  Each mentor is placed in a tier based on their experience and seniority. Session rates are set by each mentor individually and shown on their profile — not by Bridge.
+                </p>
+              </div>
+            </Reveal>
+
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4" aria-labelledby="mentor-tiers-heading">
+              {MENTOR_TIERS.map((tier, idx) => (
+                  <Reveal key={tier.name} delay={40 + idx * 40}>
+                    <div
+                        className={`group relative flex h-full flex-col overflow-hidden rounded-2xl border p-6 shadow-sm transition duration-300 hover:-translate-y-0.5 hover:shadow-md ${tier.cardClass}`}
+                    >
+                      <div
+                          aria-hidden
+                          className={`absolute inset-x-0 top-0 h-1 ${tier.accentClass}`}
+                      />
+                      <div className="relative">
+                        <span
+                            className={`inline-flex rounded-full px-2.5 py-1 text-xs font-bold uppercase tracking-wide ${tier.badgeClass}`}
+                        >
+                          {tier.name}
+                        </span>
+                        <p className="mt-3 font-display text-xl font-semibold text-stone-900">{tier.rateRange}</p>
+                        <p className="text-xs text-stone-500">typical rate per session</p>
+                        <p className="mt-3 text-sm leading-snug text-stone-700">{tier.experienceDesc}</p>
+                        <ul className="mt-4 flex flex-col gap-2">
+                          {tier.useCases.map((uc) => (
+                              <li key={uc} className="flex items-start gap-2 text-sm text-stone-600">
+                                <span
+                                    className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-stone-200/70 text-[10px] font-bold text-orange-950/90 ring-1 ring-stone-400/40"
+                                    aria-hidden
+                                >
+                                  ✓
+                                </span>
+                                <span className="leading-snug">{uc}</span>
+                              </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  </Reveal>
+              ))}
+            </div>
           </div>
         </div>
       </main>
