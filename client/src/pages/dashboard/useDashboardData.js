@@ -65,6 +65,8 @@ export function useDashboardData(user, authLoading) {
   const [actionLoading, setActionLoading] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [showAllHistory, setShowAllHistory] = useState(false);
+  const [refetchNonce, setRefetchNonce] = useState(0);
+  const refetch = useCallback(() => setRefetchNonce((n) => n + 1), []);
 
   // Re-fetch when user logs in/out or role changes (isMentor flips register vs mentor account).
   useEffect(() => {
@@ -152,7 +154,7 @@ export function useDashboardData(user, authLoading) {
         setDataLoading(false);
       }
     })();
-  }, [user, authLoading, isMentor]);
+  }, [user, authLoading, isMentor, refetchNonce]);
 
   /** Pending or accepted, and still in the future (or missing date treated as upcoming). */
   const upcomingSessions = useMemo(() => {
@@ -267,5 +269,6 @@ export function useDashboardData(user, authLoading) {
     uniqueMentors,
     menteeCards,
     handleStatusUpdate,
+    refetch,
   };
 }

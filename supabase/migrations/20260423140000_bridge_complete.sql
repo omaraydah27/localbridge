@@ -13,7 +13,8 @@ ALTER TABLE public.sessions ADD CONSTRAINT sessions_status_check
 ALTER TABLE public.mentor_profiles
   ADD COLUMN IF NOT EXISTS linkedin_url text,
   ADD COLUMN IF NOT EXISTS github_url text,
-  ADD COLUMN IF NOT EXISTS website_url text;
+  ADD COLUMN IF NOT EXISTS website_url text,
+  ADD COLUMN IF NOT EXISTS availability_schedule jsonb;
 
 -- ── mentee may cancel / update own session rows ─────────────────────────────
 DROP POLICY IF EXISTS "sessions_update_mentee_own" ON public.sessions;

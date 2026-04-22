@@ -117,6 +117,8 @@ ALTER TABLE public.mentor_profiles ADD COLUMN IF NOT EXISTS website_url text;
 ALTER TABLE public.mentor_profiles ADD COLUMN IF NOT EXISTS tier text DEFAULT 'rising';
 ALTER TABLE public.mentor_profiles ADD COLUMN IF NOT EXISTS session_rate integer DEFAULT 0;
 
+ALTER TABLE public.mentor_profiles ADD COLUMN IF NOT EXISTS availability_schedule jsonb;
+
 DROP POLICY IF EXISTS mentor_profiles_delete_own_user ON public.mentor_profiles;
 CREATE POLICY mentor_profiles_delete_own_user ON public.mentor_profiles
   FOR DELETE TO authenticated USING (auth.uid() = user_id);

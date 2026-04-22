@@ -27,7 +27,6 @@ import {
   Search,
   ExternalLink,
   Users,
-  Settings,
 } from 'lucide-react';
 import {
   StatCard,
@@ -37,8 +36,9 @@ import {
   SectionHeading,
 } from './dashboardShared';
 import { formatSessionDate } from './dashboardUtils';
+import DashboardSettingsPanel from './DashboardSettingsPanel';
 
-export function MenteeDashboardContent({ dash, activeTab, setActiveTab, logout }) {
+export function MenteeDashboardContent({ dash, activeTab, setActiveTab, logout, user }) {
   const navigate = useNavigate();
   const {
     sessions,
@@ -211,7 +211,7 @@ export function MenteeDashboardContent({ dash, activeTab, setActiveTab, logout }
             <MenteeConnectionsTab uniqueMentors={uniqueMentors} searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
         )}
 
-        {activeTab === 'settings' && <MenteeSettingsTab logout={logout} />}
+        {activeTab === 'settings' && <DashboardSettingsPanel user={user} logout={logout} isMentor={false} />}
       </>
   );
 }
@@ -318,28 +318,4 @@ function MenteeConnectionsTab({ uniqueMentors, searchQuery, setSearchQuery }) {
   );
 }
 
-/** Minimal settings: sign out only (no public profile link — mentees use browse/book flows elsewhere). */
-function MenteeSettingsTab({ logout }) {
-  return (
-      <div className="pb-10">
-        <div className="mx-auto max-w-md py-20 text-center">
-          <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-stone-100 text-stone-400">
-            <Settings className="h-8 w-8" />
-          </div>
-          <h1 className="font-display text-2xl font-bold text-stone-900">Settings</h1>
-          <p className="mt-2 text-sm text-stone-500">
-            Profile and account settings are coming soon. For now, you can view your public profile.
-          </p>
-          <div className="mt-8 flex flex-col gap-3">
-            <button
-                type="button"
-                onClick={logout}
-                className="w-full rounded-xl border border-red-200 py-3 text-sm font-bold text-red-600 transition hover:bg-red-50"
-            >
-              Sign Out
-            </button>
-          </div>
-        </div>
-      </div>
-  );
-}
+// Settings tab renders DashboardSettingsPanel directly (see MenteeDashboardContent above).
