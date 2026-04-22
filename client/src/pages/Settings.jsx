@@ -123,7 +123,7 @@ export default function Settings() {
           .from('user_settings')
           .select('*')
           .eq('user_id', user.id)
-          .single();
+          .maybeSingle();
 
       if (error && isUserSettingsTableMissingError(error)) {
         setServerSettingsAvailable(false);
@@ -137,7 +137,7 @@ export default function Settings() {
           },
           appearance: localTheme ? { ...prev.appearance, ...localTheme } : prev.appearance,
         }));
-      } else if (error && error.code !== 'PGRST116') {
+      } else if (error) {
         console.error('Error loading settings:', error);
       } else if (data?.settings) {
         // Merge with defaults so newly-added fields don't break old saved rows
@@ -279,10 +279,11 @@ export default function Settings() {
   const exportData = async () => {
     try {
       const [profileData, settingsData] = await Promise.all([
-        supabase.from('user_profiles').select('*').eq('user_id', user.id).single(),
-        supabase.from('user_settings').select('*').eq('user_id', user.id).single()
+        supabase.from('user_profiles').select('*').eq('user_id', user.id).maybeSingle(),
+        supabase.from('user_settings').select('*').eq('user_id', user.id).maybeSingle()
       ]);
 
+      if (profileData.error) throw profileData.error;
       if (settingsData.error && !isUserSettingsTableMissingError(settingsData.error)) {
         throw settingsData.error;
       }
