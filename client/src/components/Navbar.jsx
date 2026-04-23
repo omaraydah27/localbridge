@@ -17,6 +17,7 @@ export default function Navbar() {
   const { user, loading, logout } = useAuth();
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [notifOpen, setNotifOpen] = useState(false);
   const asMentor = user ? isMentorAccount(user) : false;
 
   async function handleLogout() {
@@ -33,7 +34,7 @@ export default function Navbar() {
     'rounded-full px-3.5 py-2.5 text-sm font-semibold text-stone-700 transition-colors hover:bg-stone-100 hover:text-stone-950 dark:text-stone-200 dark:hover:bg-white/10 dark:hover:text-white sm:px-4';
 
   return (
-    <header className="sticky top-0 z-50 border-b border-stone-200/90 bg-white/90 shadow-[0_1px_0_rgb(0_0_0/0.03)] backdrop-blur-xl dark:border-white/[0.08] dark:bg-stone-950/90 dark:shadow-[0_1px_0_rgb(255_255_255/0.04)]">
+    <header className="sticky top-0 z-50 border-b border-[color-mix(in_srgb,var(--bridge-border)_80%,transparent)] bg-[color-mix(in_srgb,var(--bridge-canvas)_76%,transparent)] shadow-none backdrop-blur-xl backdrop-saturate-150 supports-[backdrop-filter]:bg-[color-mix(in_srgb,var(--bridge-canvas)_68%,transparent)] dark:border-white/[0.1] dark:bg-[color-mix(in_srgb,var(--bridge-canvas)_72%,transparent)] dark:supports-[backdrop-filter]:bg-[color-mix(in_srgb,var(--bridge-canvas)_64%,transparent)]">
       <nav className="mx-auto grid h-[3.75rem] w-full max-w-bridge grid-cols-3 items-center px-4 sm:h-16 sm:px-6 lg:px-8 xl:px-10">
 
         {/* Left — logo */}
@@ -83,16 +84,38 @@ export default function Navbar() {
             <div className="h-9 w-24 animate-pulse rounded-full bg-stone-200/70" aria-hidden />
           ) : user ? (
             <div className="flex items-center gap-1">
-              {/* Notification bell */}
-              <button
-                type="button"
-                onClick={() => alert('You have no new notifications.')}
-                className="relative rounded-full p-2 text-stone-500 transition hover:bg-stone-100 hover:text-stone-800 dark:text-stone-400 dark:hover:bg-white/10 dark:hover:text-stone-100"
-                aria-label="Notifications"
-              >
-                <Bell className="h-5 w-5" />
-                <span className="absolute right-2 top-2 h-2 w-2 rounded-full border-2 border-white bg-orange-500 dark:border-stone-900" />
-              </button>
+              <div className="relative">
+                <button
+                  type="button"
+                  onClick={() => setNotifOpen((v) => !v)}
+                  className="relative rounded-full p-2 text-[var(--bridge-text-muted)] transition hover:bg-[color-mix(in_srgb,var(--bridge-surface)_55%,transparent)] hover:text-[var(--bridge-text)]"
+                  aria-expanded={notifOpen}
+                  aria-label="Notifications"
+                >
+                  <Bell className="h-5 w-5" />
+                </button>
+                {notifOpen && (
+                  <>
+                    <button
+                      type="button"
+                      className="fixed inset-0 z-40 cursor-default bg-transparent"
+                      aria-label="Close notifications"
+                      onClick={() => setNotifOpen(false)}
+                    />
+                    <div className="absolute right-0 top-11 z-50 w-72 rounded-2xl border border-[var(--bridge-border)] bg-[var(--bridge-surface)] p-4 text-sm shadow-xl shadow-black/10 dark:shadow-black/40">
+                      <p className="font-semibold text-[var(--bridge-text)]">Notifications</p>
+                      <p className="mt-2 text-[var(--bridge-text-muted)]">You&apos;re all caught up—no new alerts.</p>
+                      <button
+                        type="button"
+                        className="mt-3 text-xs font-semibold text-orange-600 hover:text-orange-500 dark:text-orange-400"
+                        onClick={() => setNotifOpen(false)}
+                      >
+                        Close
+                      </button>
+                    </div>
+                  </>
+                )}
+              </div>
 
               {/* Avatar + dropdown */}
               <div className="relative">

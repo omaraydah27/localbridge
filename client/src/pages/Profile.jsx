@@ -284,6 +284,11 @@ export default function Profile() {
   const saveProfileData = async () => {
     setSaving(true);
     try {
+      const name = profileData.personal?.full_name?.trim();
+      if (name && name !== (user.user_metadata?.full_name ?? '')) {
+        const { error: authErr } = await supabase.auth.updateUser({ data: { full_name: name } });
+        if (authErr) throw authErr;
+      }
       const row = {
         user_id: user.id,
         personal_info: toJsonbSafe(profileData.personal),
@@ -318,6 +323,11 @@ export default function Profile() {
   const saveMentorProfile = async () => {
     setSavingMentor(true);
     try {
+      const mentorName = mentorProfile.name?.trim();
+      if (mentorName && mentorName !== (user.user_metadata?.full_name ?? '')) {
+        const { error: authErr } = await supabase.auth.updateUser({ data: { full_name: mentorName } });
+        if (authErr) throw authErr;
+      }
       const insertPayload = {
         user_id: user.id,
         name: mentorProfile.name || user.user_metadata?.full_name || '',
@@ -556,39 +566,53 @@ export default function Profile() {
   };
 
   return (
-    <div className="min-h-screen bg-bridge-page">
+    <div data-route-atmo="profile" className="relative isolate min-h-screen">
       <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
         {/* ── Hero header ──────────────────────────────────────────────────── */}
-        <div className="mb-8 overflow-hidden rounded-3xl border border-stone-200 bg-white shadow-bridge-card">
-          <div className="relative h-32 bg-gradient-to-r from-orange-500 via-amber-500 to-orange-400">
-            <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_30%_50%,rgba(255,255,255,0.8),transparent_45%)]" />
+        <div className="profile-hero relative mb-8 overflow-hidden rounded-[2rem] border border-[var(--bridge-border-strong)] bg-[color-mix(in_srgb,var(--bridge-surface)_78%,transparent)] shadow-bridge-glow backdrop-blur-xl">
+          <div aria-hidden className="profile-hero-banner relative h-40 sm:h-48">
+            <div className="absolute inset-0 bg-gradient-to-br from-orange-500 via-amber-400 to-rose-500" />
+            <div className="absolute -left-20 -top-16 h-64 w-64 rounded-full bg-white/25 blur-3xl" />
+            <div className="absolute -right-10 top-8 h-56 w-56 rounded-full bg-rose-200/40 blur-3xl" />
+            <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[var(--bridge-surface)] via-[color-mix(in_srgb,var(--bridge-surface)_55%,transparent)] to-transparent" />
+            <div className="absolute inset-0 opacity-30 mix-blend-overlay" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(255,255,255,0.35) 1px, transparent 1px)', backgroundSize: '18px 18px' }} />
           </div>
-          <div className="px-6 pb-6 -mt-12 sm:px-8 sm:pb-8">
+          <div className="relative px-6 pb-7 -mt-16 sm:px-10 sm:pb-9">
             <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
-              <div className="flex items-end gap-4">
+              <div className="flex items-end gap-4 sm:gap-5">
                 {avatarUrl ? (
                   <img
                     src={avatarUrl}
                     alt=""
-                    className="h-24 w-24 shrink-0 rounded-2xl object-cover ring-4 ring-white shadow-lg"
+                    className="h-28 w-28 shrink-0 rounded-[1.5rem] object-cover ring-4 ring-[var(--bridge-surface)] shadow-2xl shadow-orange-900/20"
                     onError={(e) => (e.currentTarget.style.display = 'none')}
                   />
                 ) : (
-                  <div className="h-24 w-24 shrink-0 rounded-2xl ring-4 ring-white shadow-lg bg-gradient-to-br from-stone-800 to-stone-900 text-white flex items-center justify-center text-2xl font-display font-bold">
-                    {avatarInitials}
+                  <div className="relative h-28 w-28 shrink-0 overflow-hidden rounded-[1.5rem] ring-4 ring-[var(--bridge-surface)] shadow-2xl shadow-orange-900/20">
+                    <div className="absolute inset-0 bg-gradient-to-br from-stone-800 via-stone-900 to-black" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-orange-500/35 via-transparent to-rose-500/20" />
+                    <span className="absolute inset-0 flex items-center justify-center text-3xl font-display font-bold text-white">
+                      {avatarInitials}
+                    </span>
                   </div>
                 )}
                 <div className="min-w-0 pb-1">
                   <div className="flex flex-wrap items-center gap-2">
-                    <h1 className="text-2xl font-bold font-display text-stone-900 truncate">{displayName}</h1>
-                    <span className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider ${isMentor ? 'bg-orange-100 text-orange-700' : 'bg-stone-100 text-stone-600'}`}>
+                    <h1 className="truncate font-display text-3xl font-bold tracking-tight text-[var(--bridge-text)]">
+                      {displayName}
+                    </h1>
+                    <span className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.12em] shadow-sm ${
+                      isMentor
+                        ? 'bg-gradient-to-r from-orange-500 to-amber-500 text-white'
+                        : 'border border-[var(--bridge-border-strong)] bg-[var(--bridge-surface-raised)] text-[var(--bridge-text-secondary)]'
+                    }`}>
                       {isMentor ? <Star className="h-3 w-3" /> : <User className="h-3 w-3" />}
                       {isMentor ? 'Mentor' : 'Member'}
                     </span>
                   </div>
-                  <p className="mt-1 text-sm text-stone-600 truncate">{displayTitle}</p>
+                  <p className="mt-1.5 truncate text-sm font-medium text-[var(--bridge-text-secondary)]">{displayTitle}</p>
                   {displaySubtitle && displaySubtitle !== displayTitle && (
-                    <p className="text-xs text-stone-500 truncate mt-0.5">{displaySubtitle}</p>
+                    <p className="mt-0.5 truncate text-xs text-[var(--bridge-text-muted)]">{displaySubtitle}</p>
                   )}
                 </div>
               </div>
@@ -596,7 +620,7 @@ export default function Profile() {
                 {!isMentorTab && (
                   <button
                     onClick={() => setShowPreview(true)}
-                    className="inline-flex items-center gap-2 px-4 py-2.5 bg-white border border-stone-200 rounded-xl text-sm font-semibold text-stone-700 hover:bg-stone-50 transition-colors shadow-sm"
+                    className="inline-flex items-center gap-2 rounded-xl border border-[var(--bridge-border-strong)] bg-[color-mix(in_srgb,var(--bridge-surface)_85%,transparent)] px-4 py-2.5 text-sm font-semibold text-[var(--bridge-text-secondary)] shadow-sm transition hover:bg-[var(--bridge-surface-raised)]"
                   >
                     <Eye className="h-4 w-4" />
                     Preview
@@ -605,28 +629,32 @@ export default function Profile() {
                 <button
                   onClick={handleSave}
                   disabled={isSaving}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-orange-600 to-amber-500 rounded-xl text-sm font-bold text-white hover:from-orange-500 hover:to-amber-400 transition-colors disabled:opacity-50 shadow-md shadow-orange-600/30"
+                  className="group relative inline-flex items-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-orange-600 via-amber-500 to-rose-500 px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-orange-600/30 transition hover:shadow-xl disabled:opacity-50"
                 >
-                  <Save className="h-4 w-4" />
-                  {isSaving ? 'Saving…' : 'Save changes'}
+                  <span aria-hidden className="absolute inset-0 bg-[linear-gradient(110deg,transparent_20%,rgba(255,255,255,0.4)_50%,transparent_80%)] opacity-0 transition group-hover:translate-x-full group-hover:opacity-100" />
+                  <Save className="relative h-4 w-4" />
+                  <span className="relative">{isSaving ? 'Saving…' : 'Save changes'}</span>
                 </button>
               </div>
             </div>
 
             {/* Completion bar */}
-            <div className="mt-6 rounded-2xl bg-stone-50 border border-stone-100 p-4">
-              <div className="flex items-center justify-between mb-2">
-                <p className="text-xs font-semibold uppercase tracking-wider text-stone-500">Profile completion</p>
-                <p className="text-sm font-bold text-stone-900 tabular-nums">{completionPct}%</p>
+            <div className="mt-7 rounded-2xl border border-[var(--bridge-border)] bg-[color-mix(in_srgb,var(--bridge-surface-muted)_82%,transparent)] p-4 backdrop-blur-sm">
+              <div className="mb-2 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span className={`inline-flex h-2 w-2 rounded-full ${completionPct === 100 ? 'bg-emerald-500' : 'bg-amber-500'} shadow-[0_0_0_3px_rgba(245,158,11,0.2)]`} />
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--bridge-text-muted)]">Profile completion</p>
+                </div>
+                <p className="text-sm font-bold tabular-nums text-[var(--bridge-text)]">{completionPct}%</p>
               </div>
-              <div className="h-2 w-full rounded-full bg-stone-200 overflow-hidden">
+              <div className="h-2 w-full overflow-hidden rounded-full bg-[var(--bridge-surface-raised)]">
                 <div
-                  className="h-full rounded-full bg-gradient-to-r from-orange-500 to-amber-500 transition-all duration-500"
+                  className="h-full rounded-full bg-gradient-to-r from-orange-500 via-amber-400 to-rose-500 shadow-[0_0_12px_-2px_rgba(251,146,60,0.7)] transition-all duration-700"
                   style={{ width: `${completionPct}%` }}
                 />
               </div>
               {completionPct < 100 && (
-                <p className="mt-2 text-xs text-stone-500">
+                <p className="mt-2 text-xs text-[var(--bridge-text-muted)]">
                   {isMentor
                     ? 'Complete your mentor profile so mentees can find and book you.'
                     : 'A complete profile helps mentors understand what you need.'}
@@ -649,7 +677,7 @@ export default function Profile() {
 
         {/* ── Pill tabs ──────────────────────────────────────────────────── */}
         <div className="mb-6 overflow-x-auto">
-          <nav className="inline-flex min-w-full gap-1 rounded-2xl bg-white border border-stone-200 p-1.5 shadow-sm sm:min-w-0">
+          <nav className="inline-flex min-w-full gap-1 rounded-2xl border border-[var(--bridge-border)] bg-[color-mix(in_srgb,var(--bridge-surface)_82%,transparent)] p-1.5 shadow-sm backdrop-blur-xl sm:min-w-0">
             {sections.map((section) => {
               const Icon = sectionMeta[section]?.icon ?? User;
               const active = activeSection === section;
@@ -657,10 +685,10 @@ export default function Profile() {
                 <button
                   key={section}
                   onClick={() => setActiveSection(section)}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold whitespace-nowrap transition-all ${
+                  className={`flex items-center gap-2 whitespace-nowrap rounded-xl px-4 py-2 text-sm font-semibold transition-all ${
                     active
                       ? 'bg-gradient-to-r from-orange-600 to-amber-500 text-white shadow-md shadow-orange-600/30'
-                      : 'text-stone-600 hover:bg-stone-100 hover:text-stone-900'
+                      : 'text-[var(--bridge-text-secondary)] hover:bg-[var(--bridge-surface-raised)] hover:text-[var(--bridge-text)]'
                   }`}
                 >
                   <Icon className="h-4 w-4" />
@@ -671,7 +699,7 @@ export default function Profile() {
           </nav>
         </div>
 
-        <div className="bg-white rounded-3xl shadow-bridge-card border border-stone-100 p-6 sm:p-8">
+        <div className="rounded-[1.75rem] border border-[var(--bridge-border)] bg-[color-mix(in_srgb,var(--bridge-surface)_86%,transparent)] p-6 shadow-bridge-card backdrop-blur-xl sm:p-8">
 
           {/* ── Personal Information ── */}
           {activeSection === 'personal' && (
@@ -1125,7 +1153,7 @@ function ProfilePreview({ profileData, onBack }) {
   const handlePrint = () => window.print();
 
   return (
-    <div className="min-h-screen bg-bridge-page">
+    <div data-route-atmo="profile" className="relative isolate min-h-screen">
       {/* Hide action bar on print */}
       <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8 print:hidden">
         <div className="mb-8 flex items-center justify-between">

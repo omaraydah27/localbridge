@@ -43,6 +43,7 @@ import { useState } from 'react';
 export function MentorDashboardContent({ dash, activeTab, setActiveTab, logout, user }) {
   const navigate = useNavigate();
   const [availabilityOpen, setAvailabilityOpen] = useState(false);
+  const [heroHint, setHeroHint] = useState(null);
   const {
     sessions,
     mentorMap,
@@ -134,16 +135,24 @@ export function MentorDashboardContent({ dash, activeTab, setActiveTab, logout, 
                               <>
                                 <button
                                     type="button"
-                                    onClick={() => nextSession.video_room_url
-                                      ? navigate(`/session/${nextSession.id}/video`)
-                                      : alert('Video room is not ready yet. Refresh in a moment.')}
+                                    onClick={() => {
+                                      if (nextSession.video_room_url) {
+                                        setHeroHint(null);
+                                        navigate(`/session/${nextSession.id}/video`);
+                                      } else {
+                                        setHeroHint('Video link is still preparing—wait a few seconds and try again.');
+                                      }
+                                    }}
                                     className="rounded-xl bg-white px-6 py-2.5 text-sm font-bold text-stone-900 transition hover:bg-orange-50"
                                 >
                                   Join Meeting
                                 </button>
                                 <button
                                     type="button"
-                                    onClick={() => alert('Please contact your mentee to reschedule.')}
+                                    onClick={() => {
+                                      setActiveTab('connections');
+                                      setHeroHint('Open a mentee card below to reach out about a new time.');
+                                    }}
                                     className="flex items-center justify-center rounded-xl bg-white/10 px-6 py-2.5 text-sm font-bold text-white backdrop-blur-sm transition hover:bg-white/20"
                                 >
                                   Reschedule
@@ -151,6 +160,11 @@ export function MentorDashboardContent({ dash, activeTab, setActiveTab, logout, 
                               </>
                             )}
                           </div>
+                          {heroHint && (
+                            <p className="mt-4 max-w-xl rounded-xl bg-white/10 px-3 py-2 text-sm text-amber-100 backdrop-blur-sm">
+                              {heroHint}
+                            </p>
+                          )}
                         </div>
                       </div>
                   ) : (

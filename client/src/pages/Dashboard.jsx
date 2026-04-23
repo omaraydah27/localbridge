@@ -65,7 +65,7 @@ export default function Dashboard() {
   ];
 
   return (
-      <div className="min-h-[calc(100vh-4rem)] bg-[var(--bridge-canvas)] selection:bg-orange-200/50 selection:text-stone-900 dark:selection:bg-orange-900/50 dark:selection:text-orange-50">
+      <div data-route-atmo="dashboard" className="relative min-h-[calc(100vh-4rem)] selection:bg-orange-200/50 selection:text-stone-900 dark:selection:bg-orange-900/50 dark:selection:text-orange-50">
         <PageGutterAtmosphere />
 
         <div className="sticky top-16 z-30 border-b border-[var(--bridge-border)] bg-[var(--bridge-surface)]/80 backdrop-blur-md supports-[backdrop-filter]:bg-[var(--bridge-surface)]/72">

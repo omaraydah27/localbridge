@@ -37,9 +37,11 @@ import {
 } from './dashboardShared';
 import { formatSessionDate } from './dashboardUtils';
 import DashboardSettingsPanel from './DashboardSettingsPanel';
+import { useState } from 'react';
 
 export function MenteeDashboardContent({ dash, activeTab, setActiveTab, logout, user }) {
   const navigate = useNavigate();
+  const [heroHint, setHeroHint] = useState(null);
   const {
     sessions,
     mentorMap,
@@ -90,9 +92,14 @@ export function MenteeDashboardContent({ dash, activeTab, setActiveTab, logout, 
                           <div className="mt-8 flex gap-3">
                             <button
                                 type="button"
-                                onClick={() => nextSession.video_room_url
-                                  ? navigate(`/session/${nextSession.id}/video`)
-                                  : alert('The video room will be available once your mentor accepts the session.')}
+                                onClick={() => {
+                                  if (nextSession.video_room_url) {
+                                    setHeroHint(null);
+                                    navigate(`/session/${nextSession.id}/video`);
+                                  } else {
+                                    setHeroHint('Your mentor needs to accept the session before the video room opens.');
+                                  }
+                                }}
                                 className="rounded-xl bg-white px-6 py-2.5 text-sm font-bold text-stone-900 transition hover:bg-orange-50"
                             >
                               Join Meeting
@@ -104,6 +111,11 @@ export function MenteeDashboardContent({ dash, activeTab, setActiveTab, logout, 
                               View Profile
                             </Link>
                           </div>
+                          {heroHint && (
+                            <p className="mt-4 max-w-xl rounded-xl bg-white/10 px-3 py-2 text-sm text-amber-100 backdrop-blur-sm">
+                              {heroHint}
+                            </p>
+                          )}
                         </div>
                       </div>
                   ) : (

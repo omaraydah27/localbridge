@@ -102,7 +102,8 @@ Deno.serve(async (req) => {
           id: user.id,
           name: displayName,
           email: user.email ?? "",
-          moderator: isMentor ? "true" : "false",
+          // Boolean: string "true"/"false" makes some Jitsi builds treat everyone as guests → moderator login prompt.
+          moderator: isMentor,
         },
         features: {
           livestreaming: "false",
