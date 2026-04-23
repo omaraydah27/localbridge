@@ -165,7 +165,7 @@ function Hero() {
           <div className="relative mx-auto max-w-4xl text-center">
             <h1
                 id="landing-heading"
-                className="font-display text-balance text-[2.9rem] font-semibold leading-[0.98] tracking-[-0.02em] text-[var(--bridge-text)] sm:text-[4rem] sm:leading-[0.96] lg:text-[5rem] lg:leading-[0.95]"
+                className="font-display text-balance text-[2.9rem] font-semibold leading-[0.98] tracking-[-0.01em] text-[var(--bridge-text)] sm:text-[4rem] sm:leading-[0.96] lg:text-[5rem] lg:leading-[0.95]"
             >
               The person you need to talk to{' '}
               <span className="relative mx-1 inline-block sm:mx-2">

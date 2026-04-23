@@ -53,7 +53,7 @@ export default function FAQ() {
                         <HelpCircle className="h-3.5 w-3.5 text-orange-500" />
                         <span className="text-[11px] font-bold uppercase tracking-[0.22em] text-[var(--bridge-text-secondary)]">Help center</span>
                     </div>
-                    <h1 className="font-display text-[2.5rem] font-semibold leading-[1.02] tracking-[-0.022em] text-[var(--bridge-text)] sm:text-[3.25rem] lg:text-[3.75rem]">
+                    <h1 className="font-display text-[2.5rem] font-semibold leading-[1.02] tracking-[-0.012em] text-[var(--bridge-text)] sm:text-[3.25rem] lg:text-[3.75rem]">
                         Questions,{' '}
                         <span className="italic text-gradient-bridge">answered</span>.
                     </h1>

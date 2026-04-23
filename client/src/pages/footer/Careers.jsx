@@ -43,7 +43,7 @@ export default function Careers() {
                         <Briefcase className="h-3.5 w-3.5 text-orange-500" />
                         <span className="text-[11px] font-bold uppercase tracking-[0.22em] text-[var(--bridge-text-secondary)]">Careers at Bridge</span>
                     </div>
-                    <h1 className="font-display text-[2.75rem] font-semibold leading-[1.02] tracking-[-0.022em] text-[var(--bridge-text)] sm:text-[3.5rem] lg:text-[4rem]">
+                    <h1 className="font-display text-[2.75rem] font-semibold leading-[1.02] tracking-[-0.012em] text-[var(--bridge-text)] sm:text-[3.5rem] lg:text-[4rem]">
                         Build the platform careers are{' '}
                         <span className="italic text-gradient-bridge">actually</span> built on.
                     </h1>

@@ -206,7 +206,7 @@ export default function Login() {
               </div>
               <h1
                 id="login-heading"
-                className="mt-5 font-display text-[2.25rem] font-semibold leading-[1.02] tracking-[-0.022em] text-[var(--bridge-text)] sm:text-[2.85rem] sm:leading-[1.02] lg:text-[3.2rem]"
+                className="mt-5 font-display text-[2.25rem] font-semibold leading-[1.02] tracking-[-0.012em] text-[var(--bridge-text)] sm:text-[2.85rem] sm:leading-[1.02] lg:text-[3.2rem]"
               >
                 Hey again —{' '}
                 <span className="italic text-gradient-bridge">pick up where you left off</span>.

@@ -7,12 +7,27 @@
   --font-sans: "Outfit", ui-sans-serif, system-ui, sans-serif;
 }
 
-/* Fraunces: editorial display type with optical sizing. Uses tighter tracking at large sizes. */
+/* Fraunces: editorial display type with optical sizing. Bumped axes + relaxed
+   tracking for on-screen readability; tighter tracking only where a page opts in. */
 @utility font-display {
   font-family: "Fraunces", Georgia, "Times New Roman", serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 144, "SOFT" 25;
-  letter-spacing: -0.022em;
+  font-variation-settings: "opsz" 144, "SOFT" 35, "WONK" 0;
+  letter-spacing: -0.008em;
+  font-feature-settings: "ss01", "ss02";
+}
+
+/* Italic Fraunces at weight 500 reads thin on screens — pin it at 600 minimum
+   for the gradient accent spans (used in nearly every hero headline). */
+html .text-gradient-bridge {
+  font-weight: 600;
+}
+html .text-gradient-bridge.italic,
+html i.text-gradient-bridge,
+html em.text-gradient-bridge {
+  font-weight: 600;
+  font-style: italic;
+  font-variation-settings: "opsz" 144, "SOFT" 40;
 }
 
 /* Slightly wider than 7xl (1280px) for nav + page alignment on large monitors; still capped for readability */

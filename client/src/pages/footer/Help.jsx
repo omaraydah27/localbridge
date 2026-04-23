@@ -52,7 +52,7 @@ export default function Help() {
                         <ArrowLeft className="h-3.5 w-3.5" /> Back to help center
                     </button>
                     <p className="text-[11px] font-bold uppercase tracking-[0.28em] text-orange-700 dark:text-orange-300">{article.category}</p>
-                    <h1 className="mt-3 font-display text-[2.5rem] font-semibold leading-[1.02] tracking-[-0.022em] text-[var(--bridge-text)] sm:text-[3.25rem]">
+                    <h1 className="mt-3 font-display text-[2.5rem] font-semibold leading-[1.02] tracking-[-0.012em] text-[var(--bridge-text)] sm:text-[3.25rem]">
                         {article.title}
                     </h1>
                     <div className="mt-8 space-y-5 text-lg leading-relaxed text-[var(--bridge-text-secondary)]">
@@ -98,7 +98,7 @@ export default function Help() {
                         <LifeBuoy className="h-3.5 w-3.5 text-orange-500" />
                         <span className="text-[11px] font-bold uppercase tracking-[0.22em] text-[var(--bridge-text-secondary)]">Help center</span>
                     </div>
-                    <h1 className="font-display text-[2.5rem] font-semibold leading-[1.02] tracking-[-0.022em] text-[var(--bridge-text)] sm:text-[3.25rem] lg:text-[3.75rem]">
+                    <h1 className="font-display text-[2.5rem] font-semibold leading-[1.02] tracking-[-0.012em] text-[var(--bridge-text)] sm:text-[3.25rem] lg:text-[3.75rem]">
                         How can we <span className="italic text-gradient-bridge">help</span>?
                     </h1>
                 </Reveal>

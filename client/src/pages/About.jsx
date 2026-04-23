@@ -74,7 +74,7 @@ export default function About() {
               </span>
               <span className="text-[11px] font-bold uppercase tracking-[0.22em] text-[var(--bridge-text-secondary)]">About Bridge</span>
             </div>
-            <h1 className="font-display text-balance text-[2.75rem] font-semibold leading-[0.98] tracking-[-0.024em] text-[var(--bridge-text)] sm:text-[3.75rem] sm:leading-[0.95] lg:text-[4.75rem]">
+            <h1 className="font-display text-balance text-[2.75rem] font-semibold leading-[0.98] tracking-[-0.014em] text-[var(--bridge-text)] sm:text-[3.75rem] sm:leading-[0.95] lg:text-[4.75rem]">
               Careers change in{' '}
               <span className="relative inline-block">
                 <span className="relative z-10 italic text-gradient-bridge">conversation</span>

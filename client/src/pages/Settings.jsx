@@ -373,7 +373,7 @@ export default function Settings() {
               <SettingsIcon className="h-3 w-3 text-orange-500" />
               Settings
             </div>
-            <h1 className="font-display text-[2.5rem] font-semibold leading-[1.02] tracking-[-0.022em] text-[var(--bridge-text)] sm:text-[3rem]">
+            <h1 className="font-display text-[2.5rem] font-semibold leading-[1.02] tracking-[-0.012em] text-[var(--bridge-text)] sm:text-[3rem]">
               Your <span className="italic text-gradient-bridge">preferences</span>
             </h1>
             <p className="mt-2 text-[var(--bridge-text-secondary)]">Manage your account, privacy, and how Bridge looks and feels.</p>

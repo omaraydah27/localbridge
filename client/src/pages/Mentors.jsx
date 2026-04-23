@@ -770,7 +770,7 @@ export default function Mentors() {
                 </div>
                 <h1
                     id="mentors-heading"
-                    className="font-display text-[2.25rem] font-semibold leading-[1.02] tracking-[-0.022em] text-[var(--bridge-text)] sm:text-[2.75rem]"
+                    className="font-display text-[2.25rem] font-semibold leading-[1.02] tracking-[-0.012em] text-[var(--bridge-text)] sm:text-[2.75rem]"
                 >
                   Browse <span className="italic text-gradient-bridge">mentors</span>
                 </h1>
