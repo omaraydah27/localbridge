@@ -12,6 +12,7 @@ import Settings from './pages/Settings';
 import Pricing from './pages/Pricing';
 import ResumeReview from './pages/ResumeReview';
 import Footer from './components/Footer';
+import BridgeGlobalAtmosphere from './components/BridgeGlobalAtmosphere';
 import About from './pages/About';
 import Careers from './pages/footer/Careers.jsx';
 import Blog from './pages/footer/Blog.jsx';
@@ -24,7 +25,6 @@ import Privacy from './pages/footer/Privacy.jsx';
 import Terms from './pages/footer/Terms.jsx';
 import Cookies from './pages/footer/Cookies.jsx';
 import FeedbackFAB from './components/FeedbackFAB';
-import BridgeGlobalAtmosphere from './components/BridgeGlobalAtmosphere';
 import VideoCall from './pages/VideoCall';
 
 function AppContent() {
