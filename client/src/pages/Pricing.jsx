@@ -161,9 +161,11 @@ export default function Pricing() {
   const { user } = useAuth();
   const asMentor = user ? isMentorAccount(user) : false;
   const [annual, setAnnual] = useState(false);
+  const [billingNote, setBillingNote] = useState(null);
 
   function handlePaidClick() {
-    alert('Payment integration coming soon');
+    setBillingNote('Checkout is not wired up yet — you can keep using Bridge on the free tier for now.');
+    window.setTimeout(() => setBillingNote(null), 5000);
   }
 
   const tiers = [
@@ -289,12 +291,21 @@ export default function Pricing() {
 
   return (
       <main
-          className="relative min-h-screen overflow-x-hidden bg-bridge-page"
+          data-route-atmo="pricing"
+          className="relative isolate min-h-screen overflow-x-hidden"
           aria-labelledby="pricing-heading"
       >
         <PricingBackdrop />
 
-        <header className="relative z-[2] border-b border-[var(--bridge-border)] bg-[var(--bridge-surface)]/88 backdrop-blur-md supports-[backdrop-filter]:bg-[var(--bridge-surface)]/78">
+        {billingNote && (
+          <div className="relative z-[3] mx-auto max-w-bridge px-4 pt-6 sm:px-6 lg:px-8">
+            <p className="rounded-2xl border border-amber-200/80 bg-amber-50/95 px-4 py-3 text-sm text-amber-950 dark:border-amber-900/50 dark:bg-amber-950/35 dark:text-amber-50">
+              {billingNote}
+            </p>
+          </div>
+        )}
+
+        <header className="relative z-[2] border-b border-[var(--bridge-border)] bg-[color-mix(in_srgb,var(--bridge-canvas)_82%,transparent)] backdrop-blur-xl supports-[backdrop-filter]:bg-[color-mix(in_srgb,var(--bridge-canvas)_72%,transparent)]">
           <div className="relative mx-auto max-w-bridge px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
             <nav aria-label="Breadcrumb" className="mb-4">
               <ol className="flex flex-wrap items-center gap-2 text-sm text-stone-500">

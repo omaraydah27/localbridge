@@ -91,7 +91,7 @@ function Hero() {
   return (
       <section
           aria-labelledby="landing-heading"
-          className="landing-hero relative isolate overflow-hidden bg-[var(--bridge-canvas)] px-4 pb-24 pt-16 sm:px-6 sm:pb-28 sm:pt-20 lg:px-8 lg:pt-24"
+          className="landing-hero relative isolate overflow-hidden px-4 pb-24 pt-16 sm:px-6 sm:pb-28 sm:pt-20 lg:px-8 lg:pt-24"
       >
         {/* Atmosphere: always follows theme tokens so text + background stay paired */}
         <div

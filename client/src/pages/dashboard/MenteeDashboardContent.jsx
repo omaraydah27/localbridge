@@ -17,7 +17,7 @@
  * mentors see `menteeCards` and mentee names. Shared UI lives in `dashboardShared.jsx` + `dashboardUtils.js`.
  */
 
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   Calendar,
   Clock,
@@ -27,7 +27,6 @@ import {
   Search,
   ExternalLink,
   Users,
-  Settings,
 } from 'lucide-react';
 import {
   StatCard,
@@ -37,8 +36,12 @@ import {
   SectionHeading,
 } from './dashboardShared';
 import { formatSessionDate } from './dashboardUtils';
+import DashboardSettingsPanel from './DashboardSettingsPanel';
+import { useState } from 'react';
 
-export function MenteeDashboardContent({ dash, activeTab, setActiveTab, logout }) {
+export function MenteeDashboardContent({ dash, activeTab, setActiveTab, logout, user }) {
+  const navigate = useNavigate();
+  const [heroHint, setHeroHint] = useState(null);
   const {
     sessions,
     mentorMap,
@@ -89,7 +92,14 @@ export function MenteeDashboardContent({ dash, activeTab, setActiveTab, logout }
                           <div className="mt-8 flex gap-3">
                             <button
                                 type="button"
-                                onClick={() => alert('The meeting room will be available 5 minutes before the scheduled time.')}
+                                onClick={() => {
+                                  if (nextSession.video_room_url) {
+                                    setHeroHint(null);
+                                    navigate(`/session/${nextSession.id}/video`);
+                                  } else {
+                                    setHeroHint('Your mentor needs to accept the session before the video room opens.');
+                                  }
+                                }}
                                 className="rounded-xl bg-white px-6 py-2.5 text-sm font-bold text-stone-900 transition hover:bg-orange-50"
                             >
                               Join Meeting
@@ -101,6 +111,11 @@ export function MenteeDashboardContent({ dash, activeTab, setActiveTab, logout }
                               View Profile
                             </Link>
                           </div>
+                          {heroHint && (
+                            <p className="mt-4 max-w-xl rounded-xl bg-white/10 px-3 py-2 text-sm text-amber-100 backdrop-blur-sm">
+                              {heroHint}
+                            </p>
+                          )}
                         </div>
                       </div>
                   ) : (
@@ -208,7 +223,7 @@ export function MenteeDashboardContent({ dash, activeTab, setActiveTab, logout }
             <MenteeConnectionsTab uniqueMentors={uniqueMentors} searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
         )}
 
-        {activeTab === 'settings' && <MenteeSettingsTab logout={logout} />}
+        {activeTab === 'settings' && <DashboardSettingsPanel user={user} logout={logout} isMentor={false} />}
       </>
   );
 }
@@ -315,28 +330,4 @@ function MenteeConnectionsTab({ uniqueMentors, searchQuery, setSearchQuery }) {
   );
 }
 
-/** Minimal settings: sign out only (no public profile link — mentees use browse/book flows elsewhere). */
-function MenteeSettingsTab({ logout }) {
-  return (
-      <div className="pb-10">
-        <div className="mx-auto max-w-md py-20 text-center">
-          <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-stone-100 text-stone-400">
-            <Settings className="h-8 w-8" />
-          </div>
-          <h1 className="font-display text-2xl font-bold text-stone-900">Settings</h1>
-          <p className="mt-2 text-sm text-stone-500">
-            Profile and account settings are coming soon. For now, you can view your public profile.
-          </p>
-          <div className="mt-8 flex flex-col gap-3">
-            <button
-                type="button"
-                onClick={logout}
-                className="w-full rounded-xl border border-red-200 py-3 text-sm font-bold text-red-600 transition hover:bg-red-50"
-            >
-              Sign Out
-            </button>
-          </div>
-        </div>
-      </div>
-  );
-}
+// Settings tab renders DashboardSettingsPanel directly (see MenteeDashboardContent above).
