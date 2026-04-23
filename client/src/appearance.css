@@ -17,13 +17,19 @@ html {
   --bridge-text-faint: #a8a29e;
   --bridge-accent: #ea580c;
   --bridge-accent-muted: #c2410c;
+  --bridge-accent-soft: #fb923c;
+  --bridge-accent-glow: 0 0 0 transparent;
   --bridge-mesh-1: rgb(254 243 199 / 0.55);
   --bridge-mesh-2: rgb(255 237 213 / 0.5);
   --bridge-mesh-3: rgb(254 215 170 / 0.35);
+  --bridge-aurora-1: rgb(254 215 170 / 0.5);
+  --bridge-aurora-2: rgb(253 230 138 / 0.45);
+  --bridge-aurora-3: rgb(251 191 36 / 0.3);
   --bridge-shadow-ring: rgb(255 255 255 / 0.6);
   --bridge-shadow-soft: rgb(28 25 23 / 0.06);
   --bridge-scrollbar: #e7e5e4;
   --bridge-scrollbar-hover: #d6d3d1;
+  --bridge-text-glow: rgba(251, 146, 60, 0);
   /* Landing hero dot grid (readable in both schemes) */
   --landing-hero-dot: rgba(68, 64, 60, 0.14);
   --landing-hero-highlight: rgb(253 230 138 / 0.55);
@@ -35,36 +41,42 @@ html {
 
 html.theme-dark {
   color-scheme: dark;
-  /* Dark: warm charcoal (not cold gray), layered elevation */
-  --bridge-canvas: #100e0d;
-  --bridge-surface: #1a1816;
-  --bridge-surface-raised: #22201e;
-  --bridge-surface-muted: #171514;
-  --bridge-border: rgb(255 255 255 / 0.09);
-  --bridge-border-strong: rgb(255 255 255 / 0.14);
-  --bridge-text: #f5f5f4;
-  --bridge-text-secondary: #e7e5e4;
+  /* Dark: obsidian ember — deep warm charcoal with layered elevation. Not gray, not flat. */
+  --bridge-canvas: #0c0a08;
+  --bridge-surface: #1a1614;
+  --bridge-surface-raised: #221d1a;
+  --bridge-surface-muted: #15110f;
+  --bridge-border: rgb(251 146 60 / 0.1);
+  --bridge-border-strong: rgb(251 146 60 / 0.2);
+  --bridge-text: #faf5ec;
+  --bridge-text-secondary: #e7dfd1;
   --bridge-text-muted: #a8a29e;
   --bridge-text-faint: #78716c;
   --bridge-accent: #fb923c;
   --bridge-accent-muted: #fdba74;
-  --bridge-mesh-1: rgb(194 65 12 / 0.12);
-  --bridge-mesh-2: rgb(234 88 12 / 0.08);
-  --bridge-mesh-3: rgb(251 146 60 / 0.06);
-  --bridge-shadow-ring: rgb(255 255 255 / 0.04);
-  --bridge-shadow-soft: rgb(0 0 0 / 0.45);
+  --bridge-accent-soft: #fed7aa;
+  --bridge-accent-glow: 0 0 40px rgba(251, 146, 60, 0.32);
+  --bridge-mesh-1: rgb(234 88 12 / 0.14);
+  --bridge-mesh-2: rgb(251 146 60 / 0.1);
+  --bridge-mesh-3: rgb(253 186 116 / 0.08);
+  --bridge-aurora-1: rgb(234 88 12 / 0.22);
+  --bridge-aurora-2: rgb(251 146 60 / 0.16);
+  --bridge-aurora-3: rgb(253 186 116 / 0.1);
+  --bridge-shadow-ring: rgb(255 255 255 / 0.045);
+  --bridge-shadow-soft: rgb(0 0 0 / 0.5);
   --bridge-scrollbar: #3f3b38;
   --bridge-scrollbar-hover: #57534e;
+  --bridge-text-glow: rgba(251, 146, 60, 0.18);
   --landing-hero-dot: rgba(255, 255, 255, 0.085);
-  --landing-hero-highlight: rgb(251 146 60 / 0.35);
-  --bridge-gutter-l: linear-gradient(to right, rgb(194 65 12 / 0.05), transparent 52%);
-  --bridge-gutter-r: linear-gradient(to left, rgb(194 65 12 / 0.045), transparent 52%);
-  --bridge-gutter-vline: linear-gradient(to bottom, transparent, rgb(251 146 60 / 0.1), transparent);
+  --landing-hero-highlight: rgb(251 146 60 / 0.32);
+  --bridge-gutter-l: linear-gradient(to right, rgb(234 88 12 / 0.08), transparent 55%);
+  --bridge-gutter-r: linear-gradient(to left, rgb(234 88 12 / 0.07), transparent 55%);
+  --bridge-gutter-vline: linear-gradient(to bottom, transparent, rgb(251 146 60 / 0.18), transparent);
 }
 
 html,
 html body {
-  transition: background-color 220ms ease, color 220ms ease;
+  transition: background-color 260ms ease, color 260ms ease;
 }
 
 html.theme-light body,
@@ -76,6 +88,25 @@ html:not(.theme-dark) body {
 html.theme-dark body {
   background-color: var(--bridge-canvas);
   color: var(--bridge-text);
+  /* Ambient: two low-opacity warm glows + very subtle grain fixed to the viewport.
+     The grain prevents banding on OLED-ish dark panels and adds tactile depth. */
+  background-image:
+    radial-gradient(ellipse 80% 40% at 15% 0%, rgba(234, 88, 12, 0.08), transparent 62%),
+    radial-gradient(ellipse 60% 40% at 100% 35%, rgba(251, 146, 60, 0.06), transparent 60%),
+    radial-gradient(ellipse 75% 45% at 60% 110%, rgba(253, 186, 116, 0.05), transparent 62%);
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+}
+
+html.theme-dark body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.35 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.16;
+  mix-blend-mode: overlay;
 }
 
 /* ── Tailwind bridge utilities (match index.css @utility names) ─ */
@@ -111,30 +142,86 @@ html.theme-dark .text-gradient-bridge {
   background-image: linear-gradient(
     135deg,
     #fed7aa 0%,
-    #fb923c 40%,
+    #fb923c 42%,
     #fdba74 100%
   ) !important;
+  filter: drop-shadow(0 0 22px rgba(251, 146, 60, 0.22));
 }
 
 html .shadow-bridge-glow {
   box-shadow:
     0 0 0 1px var(--bridge-shadow-ring) inset,
     0 1px 2px var(--bridge-shadow-soft),
-    0 20px 50px -12px rgb(234 88 12 / 0.14) !important;
+    0 8px 22px -6px rgb(234 88 12 / 0.14),
+    0 26px 60px -18px rgb(234 88 12 / 0.16) !important;
 }
 
 html.theme-dark .shadow-bridge-glow {
   box-shadow:
     0 0 0 1px var(--bridge-shadow-ring) inset,
-    0 1px 2px rgb(0 0 0 / 0.35),
-    0 20px 50px -12px rgb(0 0 0 / 0.55) !important;
+    0 1px 2px rgb(0 0 0 / 0.45),
+    0 6px 18px -8px rgb(0 0 0 / 0.6),
+    0 30px 60px -18px rgb(234 88 12 / 0.32) !important;
 }
 
 html .shadow-bridge-card {
   box-shadow:
     0 0 0 1px var(--bridge-border),
-    0 4px 6px -1px var(--bridge-shadow-soft),
-    0 20px 40px -12px var(--bridge-shadow-soft) !important;
+    0 1px 2px var(--bridge-shadow-soft),
+    0 6px 14px -6px var(--bridge-shadow-soft),
+    0 28px 56px -24px var(--bridge-shadow-soft) !important;
+}
+
+html.theme-dark .shadow-bridge-card {
+  box-shadow:
+    0 0 0 1px var(--bridge-border),
+    0 1px 2px rgb(0 0 0 / 0.4),
+    0 8px 18px -8px rgb(0 0 0 / 0.55),
+    0 32px 60px -24px rgb(0 0 0 / 0.55) !important;
+}
+
+html .shadow-bridge-float {
+  box-shadow:
+    0 0 0 1px var(--bridge-border) inset,
+    0 2px 4px var(--bridge-shadow-soft),
+    0 12px 28px -10px var(--bridge-shadow-soft),
+    0 40px 80px -20px rgb(234 88 12 / 0.18) !important;
+}
+
+html.theme-dark .shadow-bridge-float {
+  box-shadow:
+    0 0 0 1px var(--bridge-border-strong) inset,
+    0 2px 6px rgb(0 0 0 / 0.45),
+    0 16px 36px -14px rgb(0 0 0 / 0.6),
+    0 48px 90px -24px rgb(234 88 12 / 0.35) !important;
+}
+
+html .shadow-bridge-tile {
+  box-shadow:
+    0 0 0 1px var(--bridge-border),
+    0 1px 2px var(--bridge-shadow-soft),
+    0 10px 24px -12px var(--bridge-shadow-soft) !important;
+}
+
+html.theme-dark .shadow-bridge-tile {
+  box-shadow:
+    0 0 0 1px var(--bridge-border),
+    0 1px 2px rgb(0 0 0 / 0.45),
+    0 14px 26px -14px rgb(0 0 0 / 0.5) !important;
+}
+
+html .shadow-bridge-accent {
+  box-shadow:
+    0 1px 2px rgb(234 88 12 / 0.25),
+    0 6px 18px -4px rgb(234 88 12 / 0.3),
+    0 16px 44px -16px rgb(234 88 12 / 0.35) !important;
+}
+
+html.theme-dark .shadow-bridge-accent {
+  box-shadow:
+    0 1px 2px rgb(251 146 60 / 0.25),
+    0 6px 22px -4px rgb(251 146 60 / 0.4),
+    0 20px 50px -16px rgb(251 146 60 / 0.45) !important;
 }
 
 /* Top-of-page strip (mentors, mentor profile, etc.) */
@@ -156,18 +243,18 @@ html .shadow-bridge-card {
 }
 
 html.theme-dark .bridge-ambient-orb {
-  background: radial-gradient(circle at 35% 35%, rgb(251 146 60 / 0.08), rgb(194 65 12 / 0.04) 52%, transparent 72%);
-  opacity: 0.9;
+  background: radial-gradient(circle at 35% 35%, rgb(251 146 60 / 0.18), rgb(234 88 12 / 0.08) 52%, transparent 72%);
+  opacity: 0.95;
 }
 
 /* ── Surfaces & text (broad Tailwind stone/white overrides) ─── */
 html.theme-dark .bg-white\/80 {
-  background-color: rgb(26 24 22 / 0.82) !important;
+  background-color: rgb(26 22 20 / 0.85) !important;
   color: inherit;
 }
 
 html.theme-dark .bg-white\/85 {
-  background-color: rgb(26 24 22 / 0.88) !important;
+  background-color: rgb(26 22 20 / 0.9) !important;
   color: inherit;
 }
 
@@ -253,7 +340,7 @@ html.theme-dark .divide-stone-200\/60 > :not([hidden]) ~ :not([hidden]) {
   border-color: var(--bridge-border) !important;
 }
 
-/* Gradient stops that stay “paper white” in light mode but read as surfaces in dark */
+/* Gradient stops that stay "paper white" in light mode but read as surfaces in dark */
 html.theme-dark .from-white\/60,
 html.theme-dark .from-white\/70,
 html.theme-dark .from-white\/75 {
@@ -262,7 +349,7 @@ html.theme-dark .from-white\/75 {
 
 html.theme-dark .via-orange-50\/25,
 html.theme-dark .via-orange-50\/30 {
-  --tw-gradient-via: color-mix(in srgb, var(--bridge-accent) 9%, var(--bridge-canvas)) !important;
+  --tw-gradient-via: color-mix(in srgb, var(--bridge-accent) 12%, var(--bridge-canvas)) !important;
 }
 
 html.theme-dark .to-white {
@@ -271,39 +358,39 @@ html.theme-dark .to-white {
 
 /* Pricing / mentor tier pastels */
 html.theme-dark .bg-orange-100 {
-  background-color: rgb(234 88 12 / 0.2) !important;
+  background-color: rgb(234 88 12 / 0.22) !important;
 }
 
 html.theme-dark .bg-sky-100 {
-  background-color: rgb(14 165 233 / 0.2) !important;
+  background-color: rgb(14 165 233 / 0.22) !important;
 }
 
 html.theme-dark .bg-emerald-100 {
-  background-color: rgb(16 185 129 / 0.2) !important;
+  background-color: rgb(16 185 129 / 0.22) !important;
 }
 
 html.theme-dark .bg-emerald-50\/40 {
-  background-color: rgb(6 78 59 / 0.38) !important;
+  background-color: rgb(6 78 59 / 0.4) !important;
 }
 
 html.theme-dark .bg-sky-50\/40 {
-  background-color: rgb(12 74 110 / 0.38) !important;
+  background-color: rgb(12 74 110 / 0.4) !important;
 }
 
 html.theme-dark .bg-violet-50\/40 {
-  background-color: rgb(76 29 149 / 0.35) !important;
+  background-color: rgb(76 29 149 / 0.38) !important;
 }
 
 html.theme-dark .border-emerald-200\/60 {
-  border-color: rgb(52 211 153 / 0.35) !important;
+  border-color: rgb(52 211 153 / 0.4) !important;
 }
 
 html.theme-dark .border-sky-200\/60 {
-  border-color: rgb(56 189 248 / 0.35) !important;
+  border-color: rgb(56 189 248 / 0.4) !important;
 }
 
 html.theme-dark .border-violet-200\/60 {
-  border-color: rgb(167 139 250 / 0.35) !important;
+  border-color: rgb(167 139 250 / 0.4) !important;
 }
 
 html.theme-dark .text-emerald-800 {
@@ -319,11 +406,11 @@ html.theme-dark .text-violet-800 {
 }
 
 html.theme-dark .bg-violet-100 {
-  background-color: rgb(139 92 246 / 0.22) !important;
+  background-color: rgb(139 92 246 / 0.24) !important;
 }
 
 html.theme-dark .bg-amber-50 {
-  background-color: rgb(234 88 12 / 0.16) !important;
+  background-color: rgb(234 88 12 / 0.18) !important;
 }
 
 html.theme-dark .text-amber-800 {
@@ -334,20 +421,20 @@ html.theme-dark .bg-stone-200\/70 {
   background-color: var(--bridge-surface-raised) !important;
 }
 
-/* Backdrop / glass nav */
+/* Backdrop / glass nav — dual-layer: deep warm tint + inner highlight */
 html.theme-dark .bg-white\/60,
 html.theme-dark .bg-white\/70,
 html.theme-dark .bg-white\/75,
 html.theme-dark .supports-\[backdrop-filter\]\:bg-white\/60 {
-  background-color: rgb(26 24 22 / 0.82) !important;
+  background-color: rgb(26 22 20 / 0.86) !important;
 }
 
 html.theme-dark .backdrop-blur-xl,
 html.theme-dark .backdrop-blur-md {
-  --tw-backdrop-blur: blur(12px);
+  --tw-backdrop-blur: blur(16px);
 }
 
-/* Inputs & placeholders */
+/* Inputs & placeholders — warmer surface + focus ring matches accent glow */
 html.theme-dark input,
 html.theme-dark select,
 html.theme-dark textarea {
@@ -363,6 +450,13 @@ html.theme-dark .placeholder\:text-stone-400::placeholder {
   color: var(--bridge-text-faint) !important;
 }
 
+html.theme-dark input:focus-visible,
+html.theme-dark select:focus-visible,
+html.theme-dark textarea:focus-visible {
+  box-shadow: 0 0 0 3px rgb(251 146 60 / 0.28), 0 0 20px rgb(251 146 60 / 0.18) !important;
+  border-color: rgb(251 146 60 / 0.6) !important;
+}
+
 /* Orange UI accents stay legible on warm dark surfaces */
 html.theme-dark .bg-orange-50,
 html.theme-dark .bg-orange-50\/20,
@@ -372,7 +466,7 @@ html.theme-dark .bg-orange-50\/40,
 html.theme-dark .bg-orange-50\/80,
 html.theme-dark .bg-orange-50\/90,
 html.theme-dark .from-orange-50\/40 {
-  background-color: rgb(234 88 12 / 0.14) !important;
+  background-color: rgb(234 88 12 / 0.16) !important;
 }
 
 html.theme-dark .border-orange-200,
@@ -383,7 +477,7 @@ html.theme-dark .border-orange-200\/80,
 html.theme-dark .border-orange-300\/60,
 html.theme-dark .border-orange-300\/70,
 html.theme-dark .hover\:border-orange-200\/80:hover {
-  border-color: rgb(251 146 60 / 0.35) !important;
+  border-color: rgb(251 146 60 / 0.4) !important;
 }
 
 html.theme-dark .text-orange-700,
@@ -394,7 +488,29 @@ html.theme-dark .text-orange-900 {
 
 html.theme-dark .ring-orange-500\/15,
 html.theme-dark .ring-orange-400\/30 {
-  --tw-ring-color: rgb(251 146 60 / 0.28) !important;
+  --tw-ring-color: rgb(251 146 60 / 0.3) !important;
+}
+
+/* Gradient-stroke borders on primary cards get a luminous edge in dark mode. */
+html.theme-dark .border-gradient-bridge::before {
+  background: conic-gradient(
+    from var(--bridge-angle, 90deg),
+    rgba(251, 146, 60, 0.95),
+    rgba(234, 88, 12, 0.45),
+    rgba(253, 230, 138, 0.95),
+    rgba(251, 146, 60, 0.95)
+  );
+  opacity: 1;
+}
+
+/* Sheen overlay needs a warmer gradient on dark buttons. */
+html.theme-dark .btn-sheen::after {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 237, 213, 0.22) 50%,
+    transparent 100%
+  );
 }
 
 /* ── High contrast ───────────────────────────────────────────── */
@@ -413,6 +529,10 @@ html.high-contrast.theme-dark {
 html.high-contrast body {
   background-color: var(--hc-bg) !important;
   color: var(--hc-fg) !important;
+}
+
+html.high-contrast body::before {
+  display: none !important;
 }
 
 html.high-contrast * {

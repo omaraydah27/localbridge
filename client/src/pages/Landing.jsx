@@ -98,21 +98,38 @@ function Hero() {
             aria-hidden
             className="absolute inset-0 bg-gradient-to-b from-[var(--bridge-surface-muted)] via-[var(--bridge-canvas)] to-[var(--bridge-canvas)]"
         />
+        {/* Conic aurora — rotates extremely slowly; reads as ambient "energy" behind the headline */}
+        <div
+            aria-hidden
+            className="pointer-events-none absolute left-1/2 top-[-18%] -z-10 h-[80rem] w-[80rem] -translate-x-1/2 opacity-50 dark:opacity-60"
+            style={{
+              background:
+                'conic-gradient(from 210deg at 50% 50%, rgba(251,146,60,0.14), rgba(253,230,138,0.1), rgba(234,88,12,0.16), rgba(251,146,60,0.14))',
+              filter: 'blur(90px)',
+            }}
+        />
         <div
             aria-hidden
             className="absolute inset-0 opacity-[0.85] dark:opacity-[0.9]"
             style={{
               backgroundImage: 'radial-gradient(circle at 1px 1px, var(--landing-hero-dot) 1px, transparent 0)',
               backgroundSize: '28px 28px',
+              maskImage: 'radial-gradient(ellipse 80% 65% at 50% 40%, #000 40%, transparent 85%)',
+              WebkitMaskImage: 'radial-gradient(ellipse 80% 65% at 50% 40%, #000 40%, transparent 85%)',
             }}
         />
         <div
             aria-hidden
-            className="pointer-events-none absolute -left-32 top-[-10%] h-[38rem] w-[38rem] rounded-full bg-gradient-to-br from-orange-400/25 via-amber-300/15 to-transparent blur-[100px] dark:from-orange-600/20 dark:via-amber-600/10"
+            className="pointer-events-none absolute -left-32 top-[-10%] h-[38rem] w-[38rem] rounded-full bg-gradient-to-br from-orange-400/25 via-amber-300/15 to-transparent blur-[100px] dark:from-orange-600/30 dark:via-amber-600/15"
         />
         <div
             aria-hidden
-            className="pointer-events-none absolute -right-20 top-[30%] h-[30rem] w-[30rem] rounded-full bg-gradient-to-tl from-rose-300/20 via-orange-200/12 to-transparent blur-[90px] dark:from-orange-500/15 dark:via-rose-500/10"
+            className="pointer-events-none absolute -right-20 top-[30%] h-[30rem] w-[30rem] rounded-full bg-gradient-to-tl from-rose-300/20 via-orange-200/12 to-transparent blur-[90px] dark:from-orange-500/20 dark:via-rose-500/12"
+        />
+        {/* Grain overlay — prevents banding in dark and gives a premium print feel */}
+        <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 bg-bridge-noise opacity-[0.07] mix-blend-overlay dark:opacity-[0.13]"
         />
         <div
             aria-hidden
@@ -122,10 +139,10 @@ function Hero() {
         <div className="relative mx-auto max-w-bridge">
           {/* Top meta row */}
           <div className="mb-10 flex flex-wrap items-center justify-between gap-3 sm:mb-14">
-            <div className="inline-flex items-center gap-2.5 rounded-full border border-[var(--bridge-border)] bg-[var(--bridge-surface)] px-3.5 py-1.5 shadow-sm backdrop-blur-md dark:bg-[var(--bridge-surface-raised)]">
-              <span className="relative flex h-1.5 w-1.5">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400/70" />
-                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500" />
+            <div className="group inline-flex items-center gap-2.5 rounded-full border border-[var(--bridge-border)] bg-[var(--bridge-surface)] px-3.5 py-1.5 shadow-sm backdrop-blur-md transition hover:border-emerald-400/40 hover:shadow-[0_8px_20px_-8px_rgba(16,185,129,0.3)] dark:bg-[var(--bridge-surface-raised)] dark:hover:border-emerald-400/50 dark:hover:shadow-[0_10px_24px_-10px_rgba(16,185,129,0.45)]">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400/70 animate-pulse-soft" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.6)]" />
               </span>
               <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--bridge-text-secondary)]">
                 Live · 2,400 mentors
@@ -170,7 +187,7 @@ function Hero() {
             <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
               <Link
                   to="/mentors"
-                  className={`group inline-flex w-full min-h-[3rem] items-center justify-center gap-2 rounded-full bg-stone-900 px-8 py-3.5 text-sm font-semibold text-white shadow-[0_10px_40px_-8px_rgba(28,25,23,0.4)] transition hover:bg-stone-800 dark:bg-gradient-to-r dark:from-orange-500 dark:via-amber-500 dark:to-orange-600 dark:text-stone-950 dark:shadow-[0_12px_40px_-8px_rgba(234,88,12,0.45)] dark:hover:brightness-105 sm:w-auto ${focusRing}`}
+                  className={`group btn-sheen relative inline-flex w-full min-h-[3rem] items-center justify-center gap-2 rounded-full bg-stone-900 px-8 py-3.5 text-sm font-semibold text-white shadow-[0_10px_40px_-8px_rgba(28,25,23,0.4)] transition hover:-translate-y-0.5 hover:bg-stone-800 hover:shadow-[0_18px_50px_-10px_rgba(28,25,23,0.5)] dark:bg-gradient-to-r dark:from-orange-500 dark:via-amber-500 dark:to-orange-600 dark:text-stone-950 dark:shadow-[0_12px_40px_-8px_rgba(234,88,12,0.55)] dark:hover:shadow-[0_20px_60px_-10px_rgba(234,88,12,0.7)] dark:hover:brightness-105 sm:w-auto ${focusRing}`}
               >
                 Browse 2,400+ mentors
                 <span className="transition group-hover:translate-x-0.5" aria-hidden>
@@ -180,7 +197,7 @@ function Hero() {
               {!user ? (
                   <Link
                       to="/register?intent=mentor"
-                      className={`inline-flex w-full min-h-[3rem] items-center justify-center rounded-full border-2 border-stone-300 bg-[var(--bridge-surface)] px-8 py-3.5 text-sm font-semibold text-[var(--bridge-text)] shadow-sm transition hover:border-orange-400/90 hover:bg-[var(--bridge-surface-raised)] dark:border-white/20 dark:bg-white/5 dark:text-stone-100 dark:hover:border-orange-400/50 dark:hover:bg-white/10 sm:w-auto ${focusRing}`}
+                      className={`inline-flex w-full min-h-[3rem] items-center justify-center rounded-full border-2 border-stone-300 bg-[var(--bridge-surface)] px-8 py-3.5 text-sm font-semibold text-[var(--bridge-text)] shadow-sm transition hover:-translate-y-0.5 hover:border-orange-400/90 hover:bg-[var(--bridge-surface-raised)] hover:shadow-md dark:border-white/15 dark:bg-white/[0.04] dark:text-stone-100 dark:hover:border-orange-400/60 dark:hover:bg-white/[0.08] dark:hover:shadow-[0_14px_36px_-10px_rgba(251,146,60,0.35)] sm:w-auto ${focusRing}`}
                   >
                     Become a mentor
                   </Link>
@@ -260,34 +277,48 @@ function Hero() {
                         type="button"
                         onClick={() => setActivePersona(p.id)}
                         aria-pressed={isActive}
-                        className={`group relative min-h-[5.5rem] overflow-hidden rounded-2xl border px-4 py-4 text-left transition ${
+                        className={`group relative min-h-[5.5rem] overflow-hidden rounded-2xl border px-4 py-4 text-left transition-all duration-300 ${
                             isActive
-                                ? 'border-stone-900 bg-stone-900 text-amber-50 shadow-[0_12px_30px_-10px_rgba(28,25,23,0.45)] dark:border-orange-400/40 dark:bg-gradient-to-br dark:from-orange-600 dark:to-amber-700 dark:text-white dark:shadow-[0_12px_32px_-10px_rgba(0,0,0,0.55)]'
-                                : 'border-[var(--bridge-border)] bg-[var(--bridge-surface)] text-[var(--bridge-text)] shadow-sm hover:border-orange-300/70 hover:bg-[var(--bridge-surface-raised)] dark:hover:border-orange-500/30'
+                                ? 'border-transparent border-gradient-bridge animate-border-bridge bg-stone-900 text-amber-50 shadow-[0_12px_30px_-10px_rgba(28,25,23,0.5)] dark:bg-gradient-to-br dark:from-stone-900 dark:via-[#2a1f17] dark:to-stone-900 dark:text-white dark:shadow-[0_18px_42px_-12px_rgba(234,88,12,0.55)]'
+                                : 'border-[var(--bridge-border)] bg-[var(--bridge-surface)] text-[var(--bridge-text)] shadow-sm hover:-translate-y-0.5 hover:border-orange-300/70 hover:bg-[var(--bridge-surface-raised)] hover:shadow-md dark:hover:border-orange-500/30 dark:hover:shadow-[0_10px_26px_-10px_rgba(251,146,60,0.35)]'
                         } ${focusRing}`}
                     >
+                      {isActive && (
+                        <span
+                            aria-hidden
+                            className="pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-br from-white/10 via-transparent to-white/[0.03] dark:from-orange-400/10 dark:via-transparent dark:to-amber-300/5"
+                        />
+                      )}
                       <span
                           aria-hidden
-                          className={`absolute right-3 top-3 text-xl transition ${isActive ? 'opacity-100' : 'opacity-60 group-hover:opacity-100'}`}
+                          className={`absolute right-3 top-3 text-xl transition-all duration-300 ${
+                            isActive
+                              ? 'opacity-100 drop-shadow-[0_2px_10px_rgba(251,146,60,0.55)]'
+                              : 'opacity-60 group-hover:opacity-100'
+                          }`}
                       >
                         {p.emoji}
                       </span>
                       <span
-                          className={`block text-[10px] font-bold uppercase tracking-[0.18em] ${
+                          className={`relative block text-[10px] font-bold uppercase tracking-[0.18em] ${
                               isActive ? 'text-amber-300 dark:text-amber-100' : 'text-orange-700 dark:text-orange-300'
                           }`}
                       >
                         Path 0{PERSONAS.indexOf(p) + 1}
                       </span>
-                      <span className="mt-2 block text-sm font-semibold leading-snug">{p.label}</span>
+                      <span className="relative mt-2 block text-sm font-semibold leading-snug">{p.label}</span>
                     </button>
                 );
               })}
             </div>
 
             {/* Match preview */}
-            <div className="relative mt-5 overflow-hidden rounded-2xl border border-[var(--bridge-border)] bg-[var(--bridge-surface)] shadow-[0_20px_50px_-20px_rgba(28,25,23,0.18)] backdrop-blur-md dark:shadow-[0_24px_50px_-20px_rgba(0,0,0,0.45)]">
-              <div className="absolute left-0 right-0 top-0 h-0.5 bg-gradient-to-r from-transparent via-orange-400/80 to-transparent dark:via-orange-400/60" />
+            <div className="relative mt-5 overflow-hidden rounded-2xl border border-[var(--bridge-border)] bg-[var(--bridge-surface)] shadow-[0_20px_50px_-20px_rgba(28,25,23,0.18)] backdrop-blur-md dark:bg-[var(--bridge-surface)]/90 dark:shadow-[0_28px_70px_-24px_rgba(234,88,12,0.3)]">
+              <div className="absolute left-0 right-0 top-0 h-px bg-gradient-to-r from-transparent via-orange-400/90 to-transparent dark:via-orange-400/80" />
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-x-0 top-0 h-[1px] bg-white/50 dark:bg-white/[0.04]"
+              />
               <div className="grid gap-0 md:grid-cols-3">
                 <div className="border-b border-[var(--bridge-border)] p-5 md:border-b-0 md:border-r md:border-[var(--bridge-border)]">
                   <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[var(--bridge-text-muted)]">If you&apos;re…</p>

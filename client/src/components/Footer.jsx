@@ -9,19 +9,27 @@ export default function Footer() {
   const [email, setEmail] = useState('');
 
   return (
-    <footer className="relative z-10 mt-auto border-t border-orange-500/20 bg-gradient-to-b from-stone-900 via-stone-950 to-[#0a0908] text-stone-400 dark:border-orange-500/25 dark:from-[#0c0a09] dark:via-stone-950 dark:to-black">
+    <footer className="relative z-10 mt-auto border-t border-orange-500/20 bg-gradient-to-b from-stone-900 via-stone-950 to-[#0a0908] text-stone-400 dark:border-orange-500/30 dark:from-[#0c0a09] dark:via-stone-950 dark:to-black">
+      {/* Luminous hairline at the top */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_120%_80%_at_50%_-40%,rgba(234,88,12,0.14),transparent_55%)]"
+        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-orange-500/60 to-transparent"
       />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_120%_80%_at_50%_-40%,rgba(234,88,12,0.16),transparent_55%)]"
+      />
+      {/* Grain for premium feel */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 bg-bridge-noise opacity-[0.08] mix-blend-overlay" />
       <div className="relative mx-auto w-full max-w-bridge px-4 py-14 sm:px-6 sm:py-16 lg:px-8 xl:px-10">
         <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-12 lg:gap-10">
           <div className="space-y-5 lg:col-span-4">
-            <Link to="/" className="inline-flex items-center gap-2.5 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-950">
-              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-orange-500 to-amber-500 text-lg font-bold text-white shadow-lg shadow-orange-900/40">
-                B
+            <Link to="/" className="group inline-flex items-center gap-2.5 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-950">
+              <span className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-orange-500 via-orange-500 to-amber-500 text-lg font-bold text-white shadow-[0_8px_22px_-4px_rgba(234,88,12,0.6)] transition group-hover:shadow-[0_12px_32px_-4px_rgba(234,88,12,0.8)] group-hover:brightness-110">
+                <span aria-hidden className="pointer-events-none absolute inset-0 rounded-xl bg-gradient-to-br from-white/30 to-transparent opacity-60 transition group-hover:opacity-90" />
+                <span className="relative">B</span>
               </span>
-              <span className="font-display text-xl font-semibold tracking-tight text-stone-50">Bridge</span>
+              <span className="font-display text-xl font-semibold tracking-tight text-stone-50 text-glow-bridge">Bridge</span>
             </Link>
             <p className="max-w-sm text-sm leading-relaxed text-stone-400">
               Book real practitioners by the hour—people who&apos;ve already done the job you&apos;re trying to do.
@@ -123,11 +131,11 @@ export default function Footer() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@company.com"
-                className="min-w-0 flex-1 rounded-xl border border-white/10 bg-white/[0.06] px-4 py-3 text-sm text-stone-100 placeholder:text-stone-500 outline-none transition focus:border-orange-500/40 focus:ring-2 focus:ring-orange-500/30"
+                className="min-w-0 flex-1 rounded-xl border border-white/10 bg-white/[0.05] px-4 py-3 text-sm text-stone-100 placeholder:text-stone-500 outline-none transition focus:border-orange-400/60 focus:bg-white/[0.07] focus:shadow-[0_0_0_3px_rgba(251,146,60,0.22),0_0_24px_rgba(251,146,60,0.2)]"
               />
               <button
                 type="submit"
-                className="shrink-0 rounded-xl bg-gradient-to-r from-orange-600 to-amber-500 px-5 py-3 text-sm font-semibold text-white shadow-md shadow-orange-900/30 transition hover:from-orange-500 hover:to-amber-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-950"
+                className="btn-sheen shrink-0 rounded-xl bg-gradient-to-r from-orange-600 via-orange-500 to-amber-500 px-5 py-3 text-sm font-semibold text-white shadow-[0_8px_22px_-4px_rgba(234,88,12,0.5)] transition hover:shadow-[0_12px_32px_-4px_rgba(234,88,12,0.7)] hover:brightness-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-950"
               >
                 Subscribe
               </button>
