@@ -35,7 +35,7 @@ export default function Navbar() {
       ? location.pathname === '/'
       : location.pathname === path || location.pathname.startsWith(`${path}/`);
 
-  const navLink = (path, label, extraClass = '') => {
+  const navLink = (path, label, extraClass = '', { ai = false } = {}) => {
     const active = isActive(path);
     return (
       <Link
@@ -46,7 +46,17 @@ export default function Navbar() {
             : 'text-stone-700 hover:text-stone-950 dark:text-stone-300 dark:hover:text-stone-50'
         } ${extraClass}`}
       >
-        <span className="relative z-10">{label}</span>
+        <span className="relative z-10 inline-flex items-center gap-1.5">
+          {label}
+          {ai ? (
+            <span
+              aria-label="AI powered"
+              className="inline-flex items-center rounded-full bg-gradient-to-r from-orange-600 to-amber-500 px-1.5 py-px text-[9px] font-bold uppercase tracking-[0.1em] text-white shadow-[0_2px_8px_-1px_rgba(234,88,12,0.55)]"
+            >
+              AI
+            </span>
+          ) : null}
+        </span>
         {active && (
           <>
             <span
@@ -102,9 +112,10 @@ export default function Navbar() {
             <>
               {navLink('/mentors', 'Mentors')}
               {user ? navLink('/dashboard', 'Dashboard') : null}
+              {navLink('/resume', 'Resume', '', { ai: true })}
             </>
           )}
-          {navLink('/about', 'About')}
+          {navLink('/about', 'About', 'hidden lg:inline-flex')}
           {navLink('/pricing', 'Pricing')}
         </div>
 
