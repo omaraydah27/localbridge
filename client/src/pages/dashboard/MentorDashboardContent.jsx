@@ -14,10 +14,10 @@
  * Internal structure
  * ------------------
  * - `MentorDashboardContent` switches on `activeTab`.
- * - `MentorSessionsTab`, `MentorConnectionsTab`, `MentorSettingsTab` are private to this file (not reused by mentees).
+ * - `MentorSessionsTab`, `MentorConnectionsTab`, `MentorAvailabilityModal` (quick availability) + settings via `DashboardSettingsPanel`.
  */
 
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   Calendar,
   Clock,
@@ -28,7 +28,6 @@ import {
   Search,
   ExternalLink,
   Users,
-  Settings,
 } from 'lucide-react';
 import {
   StatCard,
@@ -37,12 +36,19 @@ import {
   SectionHeading,
 } from './dashboardShared';
 import { getAvatarColor, getInitials, formatSessionDate } from './dashboardUtils';
+import DashboardSettingsPanel from './DashboardSettingsPanel';
+import MentorAvailabilityModal from './MentorAvailabilityModal';
+import { useState } from 'react';
 
-export function MentorDashboardContent({ dash, activeTab, setActiveTab, logout }) {
+export function MentorDashboardContent({ dash, activeTab, setActiveTab, logout, user }) {
+  const navigate = useNavigate();
+  const [availabilityOpen, setAvailabilityOpen] = useState(false);
+  const [heroHint, setHeroHint] = useState(null);
   const {
     sessions,
     mentorMap,
     mentorProfileId,
+    refetch,
     actionLoading,
     searchQuery,
     setSearchQuery,
@@ -58,6 +64,12 @@ export function MentorDashboardContent({ dash, activeTab, setActiveTab, logout }
 
   return (
       <>
+        <MentorAvailabilityModal
+          open={availabilityOpen}
+          onClose={() => setAvailabilityOpen(false)}
+          mentorProfileId={mentorProfileId}
+          onSaved={() => refetch?.()}
+        />
         {activeTab === 'overview' && (
             <div className="space-y-8 pb-10">
               <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
@@ -70,13 +82,35 @@ export function MentorDashboardContent({ dash, activeTab, setActiveTab, logout }
               <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
                 <div className="space-y-6 lg:col-span-2">
                   {nextSession ? (
-                      <div className="relative overflow-hidden rounded-[2rem] bg-stone-900 p-8 text-white shadow-xl shadow-stone-900/10">
+                      <div className="group relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-stone-950 via-stone-900 to-[#1a0f08] p-8 text-white shadow-[0_30px_70px_-20px_rgba(234,88,12,0.35),0_0_0_1px_rgba(251,146,60,0.15)] cursor-glow">
+                        <div aria-hidden className="pointer-events-none absolute inset-0 bg-bridge-noise opacity-[0.12] mix-blend-overlay" />
+                        <div aria-hidden className="pointer-events-none absolute -right-16 -top-16 h-72 w-72 rounded-full bg-gradient-to-br from-orange-500/30 via-amber-400/15 to-transparent blur-3xl animate-blob-breathe" />
+                        <div aria-hidden className="pointer-events-none absolute -bottom-20 -left-16 h-64 w-64 rounded-full bg-gradient-to-tr from-amber-500/18 via-orange-500/10 to-transparent blur-3xl" />
                         <div className="absolute right-0 top-0 p-8 opacity-10">
                           <CalendarDays className="h-32 w-32" />
                         </div>
                         <div className="relative z-10">
-                          <span className="inline-block rounded-full bg-orange-600 px-3 py-1 text-[10px] font-bold uppercase tracking-wider">Next Session</span>
-                          <h3 className="mt-4 font-display text-2xl font-bold">Session with {nextSession.mentee_name}</h3>
+                          <div className="flex flex-wrap items-center gap-2">
+                            <span className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-orange-500 to-amber-500 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.14em] text-white shadow-[0_6px_20px_-4px_rgba(234,88,12,0.6)]">
+                              <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-white animate-pulse-soft" />
+                              Next Session
+                            </span>
+                            {nextSession.status === 'pending' && (
+                              <span className="inline-block rounded-full bg-amber-400/20 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-amber-200 ring-1 ring-amber-300/40">
+                                Awaiting your response
+                              </span>
+                            )}
+                            {nextSession.status === 'accepted' && (
+                              <span className="inline-block rounded-full bg-emerald-400/20 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-emerald-200 ring-1 ring-emerald-300/40">
+                                Confirmed
+                              </span>
+                            )}
+                          </div>
+                          <h3 className="mt-4 font-display text-3xl font-bold tracking-[-0.02em]">
+                            {nextSession.mentee_name
+                              ? `Session with ${nextSession.mentee_name}`
+                              : 'Your next mentee session'}
+                          </h3>
                           <div className="mt-6 flex flex-wrap gap-4">
                             <div className="flex items-center gap-2">
                               <Calendar className="h-4 w-4 text-orange-400" />
@@ -87,22 +121,60 @@ export function MentorDashboardContent({ dash, activeTab, setActiveTab, logout }
                               <span className="text-sm font-medium">{formatSessionDate(nextSession.scheduled_date).split(' · ')[1]}</span>
                             </div>
                           </div>
-                          <div className="mt-8 flex gap-3">
-                            <button
-                                type="button"
-                                onClick={() => alert('The meeting room will be available 5 minutes before the scheduled time.')}
-                                className="rounded-xl bg-white px-6 py-2.5 text-sm font-bold text-stone-900 transition hover:bg-orange-50"
-                            >
-                              Join Meeting
-                            </button>
-                            <button
-                                type="button"
-                                onClick={() => alert('Please contact your mentee to reschedule.')}
-                                className="flex items-center justify-center rounded-xl bg-white/10 px-6 py-2.5 text-sm font-bold text-white backdrop-blur-sm transition hover:bg-white/20"
-                            >
-                              Reschedule
-                            </button>
+                          <div className="mt-8 flex flex-wrap gap-3">
+                            {nextSession.status === 'pending' ? (
+                              <>
+                                <button
+                                    type="button"
+                                    onClick={() => handleStatusUpdate(nextSession.id, 'accepted')}
+                                    disabled={actionLoading === nextSession.id}
+                                    className="rounded-xl bg-emerald-500 px-6 py-2.5 text-sm font-bold text-white transition hover:bg-emerald-400 disabled:opacity-50"
+                                >
+                                  {actionLoading === nextSession.id ? 'Accepting…' : 'Accept Session'}
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => handleStatusUpdate(nextSession.id, 'declined')}
+                                    disabled={actionLoading === nextSession.id}
+                                    className="rounded-xl bg-white/10 px-6 py-2.5 text-sm font-bold text-white backdrop-blur-sm transition hover:bg-white/20 disabled:opacity-50"
+                                >
+                                  Decline
+                                </button>
+                              </>
+                            ) : (
+                              <>
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                      if (nextSession.video_room_url) {
+                                        setHeroHint(null);
+                                        navigate(`/session/${nextSession.id}/video`);
+                                      } else {
+                                        setHeroHint('Video link is still preparing—wait a few seconds and try again.');
+                                      }
+                                    }}
+                                    className="rounded-xl bg-white px-6 py-2.5 text-sm font-bold text-stone-900 transition hover:bg-orange-50"
+                                >
+                                  Join Meeting
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                      setActiveTab('connections');
+                                      setHeroHint('Open a mentee card below to reach out about a new time.');
+                                    }}
+                                    className="flex items-center justify-center rounded-xl bg-white/10 px-6 py-2.5 text-sm font-bold text-white backdrop-blur-sm transition hover:bg-white/20"
+                                >
+                                  Reschedule
+                                </button>
+                              </>
+                            )}
                           </div>
+                          {heroHint && (
+                            <p className="mt-4 max-w-xl rounded-xl bg-white/10 px-3 py-2 text-sm text-amber-100 backdrop-blur-sm">
+                              {heroHint}
+                            </p>
+                          )}
                         </div>
                       </div>
                   ) : (
@@ -149,7 +221,7 @@ export function MentorDashboardContent({ dash, activeTab, setActiveTab, logout }
                     <div className="space-y-2">
                       <button
                           type="button"
-                          onClick={() => setActiveTab('settings')}
+                          onClick={() => (mentorProfileId ? setAvailabilityOpen(true) : setActiveTab('settings'))}
                           className="flex w-full items-center gap-3 rounded-xl border border-stone-100 p-3 transition-all hover:border-orange-200 hover:bg-orange-50 group"
                       >
                         <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-orange-100 text-orange-600 transition-colors group-hover:bg-orange-600 group-hover:text-white">
@@ -218,7 +290,7 @@ export function MentorDashboardContent({ dash, activeTab, setActiveTab, logout }
         )}
 
         {activeTab === 'settings' && (
-            <MentorSettingsTab mentorProfileId={mentorProfileId} logout={logout} />
+            <DashboardSettingsPanel user={user} logout={logout} isMentor mentorProfileId={mentorProfileId} />
         )}
       </>
   );
@@ -345,34 +417,3 @@ function MentorConnectionsTab({ menteeCards, searchQuery, setSearchQuery }) {
   );
 }
 
-/** Placeholder settings + link to public mentor profile (`/mentors/:mentorProfileId`) + sign out. */
-function MentorSettingsTab({ mentorProfileId, logout }) {
-  return (
-      <div className="pb-10">
-        <div className="mx-auto max-w-md py-20 text-center">
-          <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-stone-100 text-stone-400">
-            <Settings className="h-8 w-8" />
-          </div>
-          <h1 className="font-display text-2xl font-bold text-stone-900">Settings</h1>
-          <p className="mt-2 text-sm text-stone-500">Profile and account settings are coming soon. For now, you can view your public profile.</p>
-          <div className="mt-8 flex flex-col gap-3">
-            {mentorProfileId ? (
-                <Link
-                    to={`/mentors/${mentorProfileId}`}
-                    className="flex w-full items-center justify-center rounded-xl bg-stone-900 py-3 text-sm font-bold text-white transition hover:bg-stone-800"
-                >
-                  View Public Profile
-                </Link>
-            ) : null}
-            <button
-                type="button"
-                onClick={logout}
-                className="w-full rounded-xl border border-red-200 py-3 text-sm font-bold text-red-600 transition hover:bg-red-50"
-            >
-              Sign Out
-            </button>
-          </div>
-        </div>
-      </div>
-  );
-}

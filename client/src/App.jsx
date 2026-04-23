@@ -1,6 +1,9 @@
+import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import Navbar from './components/Navbar';
+import ScrollProgress from './components/ScrollProgress';
+import MagneticPointer from './components/MagneticPointer';
 import Landing from './pages/Landing';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -12,6 +15,7 @@ import Settings from './pages/Settings';
 import Pricing from './pages/Pricing';
 import ResumeReview from './pages/ResumeReview';
 import Footer from './components/Footer';
+import BridgeGlobalAtmosphere from './components/BridgeGlobalAtmosphere';
 import About from './pages/About';
 import Careers from './pages/footer/Careers.jsx';
 import Blog from './pages/footer/Blog.jsx';
@@ -24,16 +28,28 @@ import Privacy from './pages/footer/Privacy.jsx';
 import Terms from './pages/footer/Terms.jsx';
 import Cookies from './pages/footer/Cookies.jsx';
 import FeedbackFAB from './components/FeedbackFAB';
+import VideoCall from './pages/VideoCall';
 
 function AppContent() {
   const location = useLocation();
-  const isDashboard = location.pathname.startsWith('/profile') ||
-                       location.pathname.startsWith('/settings');
+  const hideFooter =
+    location.pathname.startsWith('/profile') ||
+    location.pathname.startsWith('/settings') ||
+    location.pathname.includes('/video');
+
+  // Scroll to top on route change, but don't fight in-page anchor scrolling.
+  useEffect(() => {
+    if (location.hash) return;
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, [location.pathname, location.hash]);
 
   return (
-    <div className="min-h-screen bg-bridge-page text-stone-900 font-sans antialiased flex flex-col">
+    <div className="relative isolate min-h-screen bg-bridge-page text-stone-900 font-sans antialiased flex flex-col">
+      <BridgeGlobalAtmosphere />
+      <ScrollProgress />
+      <MagneticPointer />
       <Navbar />
-      <div className="flex-1">
+      <div key={location.pathname} className="relative z-10 flex-1 flex flex-col animate-page-enter">
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="/login" element={<Login />} />
@@ -43,6 +59,7 @@ function AppContent() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/settings" element={<Settings />} />
+          <Route path="/session/:sessionId/video" element={<VideoCall />} />
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/resume" element={<ResumeReview />} />
           <Route path="/about" element={<About />} />
@@ -58,8 +75,8 @@ function AppContent() {
           <Route path="/cookies" element={<Cookies />} />
         </Routes>
       </div>
-      <FeedbackFAB />
-      {!isDashboard && <Footer />}
+      {!location.pathname.includes('/video') && <FeedbackFAB />}
+      {!hideFooter && <Footer />}
     </div>
   );
 }
