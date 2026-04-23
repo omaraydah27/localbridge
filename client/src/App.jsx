@@ -24,17 +24,21 @@ import Privacy from './pages/footer/Privacy.jsx';
 import Terms from './pages/footer/Terms.jsx';
 import Cookies from './pages/footer/Cookies.jsx';
 import FeedbackFAB from './components/FeedbackFAB';
+import BridgeGlobalAtmosphere from './components/BridgeGlobalAtmosphere';
 import VideoCall from './pages/VideoCall';
 
 function AppContent() {
   const location = useLocation();
-  const isDashboard = location.pathname.startsWith('/profile') ||
-                       location.pathname.startsWith('/settings');
+  const hideFooter =
+    location.pathname.startsWith('/profile') ||
+    location.pathname.startsWith('/settings') ||
+    location.pathname.includes('/video');
 
   return (
-    <div className="min-h-screen bg-bridge-page text-stone-900 font-sans antialiased flex flex-col">
+    <div className="relative isolate min-h-screen bg-bridge-page text-stone-900 font-sans antialiased flex flex-col">
+      <BridgeGlobalAtmosphere />
       <Navbar />
-      <div className="flex-1">
+      <div className="relative z-10 flex-1 flex flex-col">
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="/login" element={<Login />} />
@@ -60,8 +64,8 @@ function AppContent() {
           <Route path="/cookies" element={<Cookies />} />
         </Routes>
       </div>
-      <FeedbackFAB />
-      {!isDashboard && <Footer />}
+      {!location.pathname.includes('/video') && <FeedbackFAB />}
+      {!hideFooter && <Footer />}
     </div>
   );
 }

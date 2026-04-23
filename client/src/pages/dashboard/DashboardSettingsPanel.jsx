@@ -86,13 +86,15 @@ export default function DashboardSettingsPanel({ user, logout, isMentor, mentorP
           else console.error('Load settings error:', error);
         } else if (data?.settings) {
           const s = data.settings;
+          const overlay = getStoredAppearanceOverlay() || {};
+          const mergedAppearance = { ...DEFAULTS.appearance, ...(s.appearance || {}), ...overlay };
           setPrefs((prev) => ({
-            appearance: { ...DEFAULTS.appearance, ...(s.appearance || {}), ...(getStoredAppearanceOverlay() || {}) },
+            appearance: mergedAppearance,
             notifications: { ...DEFAULTS.notifications, ...(s.notifications || {}) },
             privacy: { ...DEFAULTS.privacy, ...(s.privacy || {}) },
             _raw: s,
           }));
-          if (s.appearance) applyAppearance({ ...DEFAULTS.appearance, ...s.appearance, ...prev.appearance });
+          applyAppearance(mergedAppearance);
         }
       } finally {
         if (!cancelled) setLoading(false);
@@ -155,6 +157,10 @@ export default function DashboardSettingsPanel({ user, logout, isMentor, mentorP
         }
         throw error;
       }
+      setPrefs((p) => ({
+        ...p,
+        _raw: { ...(p._raw ?? {}), appearance: prefs.appearance, notifications: prefs.notifications, privacy: prefs.privacy },
+      }));
       flash('success', 'Preferences saved.');
     } catch (err) {
       console.error('Save settings error:', err);
@@ -179,8 +185,8 @@ export default function DashboardSettingsPanel({ user, logout, isMentor, mentorP
   return (
     <div className="space-y-8 pb-12">
       <div>
-        <h1 className="font-display text-3xl font-bold text-stone-900">Settings</h1>
-        <p className="mt-1 text-sm text-stone-500">Quick preferences — full settings live on the Settings page.</p>
+        <h1 className="font-display text-3xl font-bold text-[var(--bridge-text)]">Settings</h1>
+        <p className="mt-1 text-sm text-[var(--bridge-text-muted)]">Quick preferences — full settings live on the Settings page.</p>
       </div>
 
       {tableMissing && (
@@ -208,7 +214,7 @@ export default function DashboardSettingsPanel({ user, logout, isMentor, mentorP
 
       {/* Appearance */}
       <section className="rounded-3xl border border-[var(--bridge-border)] bg-[var(--bridge-surface)] p-6 shadow-sm">
-        <h2 className="mb-4 flex items-center gap-2 font-display text-lg font-bold text-stone-900">
+        <h2 className="mb-4 flex items-center gap-2 font-display text-lg font-bold text-[var(--bridge-text)]">
           <Sun className="h-5 w-5 text-orange-500" />
           Appearance
         </h2>
@@ -222,8 +228,8 @@ export default function DashboardSettingsPanel({ user, logout, isMentor, mentorP
                 onClick={() => update('appearance', 'theme', value)}
                 className={`flex flex-col items-center gap-2 rounded-xl border p-4 text-sm font-semibold transition ${
                   active
-                    ? 'border-orange-500 bg-orange-50 text-orange-700 shadow-sm'
-                    : 'border-stone-200 bg-white text-stone-600 hover:border-stone-300'
+                    ? 'border-orange-500 bg-orange-500/12 text-orange-800 shadow-sm dark:text-orange-100'
+                    : 'border-[var(--bridge-border)] bg-[var(--bridge-surface)] text-[var(--bridge-text-secondary)] hover:border-[var(--bridge-border-strong)]'
                 }`}
               >
                 <Icon className={`h-5 w-5 ${active ? 'text-orange-500' : 'text-stone-400'}`} />
@@ -236,7 +242,7 @@ export default function DashboardSettingsPanel({ user, logout, isMentor, mentorP
 
       {/* Notifications */}
       <section className="rounded-3xl border border-[var(--bridge-border)] bg-[var(--bridge-surface)] p-6 shadow-sm">
-        <h2 className="mb-4 flex items-center gap-2 font-display text-lg font-bold text-stone-900">
+        <h2 className="mb-4 flex items-center gap-2 font-display text-lg font-bold text-[var(--bridge-text)]">
           <Bell className="h-5 w-5 text-orange-500" />
           Notifications
         </h2>
@@ -261,13 +267,13 @@ export default function DashboardSettingsPanel({ user, logout, isMentor, mentorP
 
       {/* Privacy */}
       <section className="rounded-3xl border border-[var(--bridge-border)] bg-[var(--bridge-surface)] p-6 shadow-sm">
-        <h2 className="mb-4 flex items-center gap-2 font-display text-lg font-bold text-stone-900">
+        <h2 className="mb-4 flex items-center gap-2 font-display text-lg font-bold text-[var(--bridge-text)]">
           <Eye className="h-5 w-5 text-orange-500" />
           Privacy
         </h2>
         <div className="space-y-4">
           <div>
-            <label className="mb-2 block text-sm font-semibold text-stone-800">Profile visibility</label>
+            <label className="mb-2 block text-sm font-semibold text-[var(--bridge-text)]">Profile visibility</label>
             <div className="grid grid-cols-3 gap-2">
               {[
                 { v: 'public', l: 'Public', Icon: Eye },
@@ -282,8 +288,8 @@ export default function DashboardSettingsPanel({ user, logout, isMentor, mentorP
                     onClick={() => update('privacy', 'profile_visibility', v)}
                     className={`flex items-center justify-center gap-2 rounded-xl border px-3 py-2 text-xs font-semibold transition ${
                       active
-                        ? 'border-orange-500 bg-orange-50 text-orange-700'
-                        : 'border-stone-200 bg-white text-stone-600 hover:border-stone-300'
+                        ? 'border-orange-500 bg-orange-500/12 text-orange-800 dark:text-orange-100'
+                        : 'border-[var(--bridge-border)] bg-[var(--bridge-surface)] text-[var(--bridge-text-secondary)] hover:border-[var(--bridge-border-strong)]'
                     }`}
                   >
                     <Icon className="h-4 w-4" />
@@ -313,7 +319,7 @@ export default function DashboardSettingsPanel({ user, logout, isMentor, mentorP
         <div className="flex flex-wrap gap-2">
           <Link
             to="/profile"
-            className="inline-flex items-center gap-2 rounded-xl border border-stone-200 bg-white px-4 py-2 text-sm font-semibold text-stone-700 hover:bg-stone-50"
+            className="inline-flex items-center gap-2 rounded-xl border border-[var(--bridge-border)] bg-[var(--bridge-surface)] px-4 py-2 text-sm font-semibold text-[var(--bridge-text-secondary)] hover:bg-[color-mix(in_srgb,var(--bridge-surface-muted)_85%,transparent)]"
           >
             <UserRound className="h-4 w-4" />
             Edit profile
@@ -321,7 +327,7 @@ export default function DashboardSettingsPanel({ user, logout, isMentor, mentorP
           {isMentor && mentorProfileId && (
             <Link
               to={`/mentors/${mentorProfileId}`}
-              className="inline-flex items-center gap-2 rounded-xl border border-stone-200 bg-white px-4 py-2 text-sm font-semibold text-stone-700 hover:bg-stone-50"
+              className="inline-flex items-center gap-2 rounded-xl border border-[var(--bridge-border)] bg-[var(--bridge-surface)] px-4 py-2 text-sm font-semibold text-[var(--bridge-text-secondary)] hover:bg-[color-mix(in_srgb,var(--bridge-surface-muted)_85%,transparent)]"
             >
               <ExternalLink className="h-4 w-4" />
               View public profile
@@ -329,7 +335,7 @@ export default function DashboardSettingsPanel({ user, logout, isMentor, mentorP
           )}
           <Link
             to="/settings"
-            className="inline-flex items-center gap-2 rounded-xl border border-stone-200 bg-white px-4 py-2 text-sm font-semibold text-stone-700 hover:bg-stone-50"
+            className="inline-flex items-center gap-2 rounded-xl border border-[var(--bridge-border)] bg-[var(--bridge-surface)] px-4 py-2 text-sm font-semibold text-[var(--bridge-text-secondary)] hover:bg-[color-mix(in_srgb,var(--bridge-surface-muted)_85%,transparent)]"
           >
             <SettingsIcon className="h-4 w-4" />
             Full settings
@@ -361,10 +367,10 @@ export default function DashboardSettingsPanel({ user, logout, isMentor, mentorP
 
 function ToggleRow({ label, help, checked, onChange }) {
   return (
-    <label className="flex cursor-pointer items-center justify-between gap-4 rounded-xl border border-transparent px-1 py-2 transition hover:border-stone-100 hover:bg-stone-50">
+    <label className="flex cursor-pointer items-center justify-between gap-4 rounded-xl border border-transparent px-1 py-2 transition hover:border-[var(--bridge-border)] hover:bg-[color-mix(in_srgb,var(--bridge-surface-muted)_60%,transparent)]">
       <div>
-        <p className="text-sm font-semibold text-stone-800">{label}</p>
-        {help && <p className="mt-0.5 text-xs text-stone-500">{help}</p>}
+        <p className="text-sm font-semibold text-[var(--bridge-text)]">{label}</p>
+        {help && <p className="mt-0.5 text-xs text-[var(--bridge-text-muted)]">{help}</p>}
       </div>
       <button
         type="button"

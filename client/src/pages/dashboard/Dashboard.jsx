@@ -35,18 +35,18 @@ export default function Dashboard() {
   ];
 
   return (
-      <div className="min-h-[calc(100vh-4rem)] bg-[var(--bridge-canvas)] selection:bg-orange-200/50 selection:text-stone-900 dark:selection:bg-orange-900/50 dark:selection:text-orange-50">
+      <div data-route-atmo="dashboard" className="relative min-h-[calc(100vh-4rem)] selection:bg-orange-200/50 selection:text-stone-900 dark:selection:bg-orange-900/50 dark:selection:text-orange-50">
         <PageGutterAtmosphere />
 
-        <div className="sticky top-16 z-30 border-b border-[var(--bridge-border)] bg-[var(--bridge-surface)]/80 backdrop-blur-md supports-[backdrop-filter]:bg-[var(--bridge-surface)]/72">
+        <div className="sticky top-16 z-30 border-b border-[color-mix(in_srgb,var(--bridge-border)_75%,transparent)] bg-[color-mix(in_srgb,var(--bridge-canvas)_78%,transparent)] backdrop-blur-xl backdrop-saturate-150 supports-[backdrop-filter]:bg-[color-mix(in_srgb,var(--bridge-canvas)_68%,transparent)]">
           <div className="mx-auto max-w-bridge px-4 sm:px-6 lg:px-8">
             <div className="flex items-end justify-between pb-3 pt-6">
               <div>
-                <h1 className="font-display text-2xl font-bold text-stone-900">
+                <h1 className="font-display text-2xl font-bold text-[var(--bridge-text)]">
                   Good {greeting},{' '}
                   <span className="text-orange-600">{firstName}</span>
                 </h1>
-                <p className="mt-0.5 text-xs text-stone-400">{getTodayLabel()}</p>
+                <p className="mt-0.5 text-xs text-[var(--bridge-text-muted)]">{getTodayLabel()}</p>
               </div>
               {!isMentor && (
                   <Link
@@ -71,7 +71,7 @@ export default function Dashboard() {
                         className={`flex items-center gap-2 border-b-2 px-4 py-3 text-sm font-semibold transition-colors ${
                             active
                                 ? 'border-orange-500 text-orange-600'
-                                : 'border-transparent text-stone-500 hover:text-stone-700'
+                                : 'border-transparent text-[var(--bridge-text-muted)] hover:text-[var(--bridge-text)]'
                         }`}
                     >
                       <Icon className="h-4 w-4" />

@@ -198,6 +198,10 @@ export default function VideoCall() {
             startWithVideoMuted: false,
             enableClosePage: false,
             disableInviteFunctions: false,
+            // Avoid lobby / "waiting for moderator" flows that force a host login on meet.jit.si & JaaS.
+            enableLobby: false,
+            enableKnockingLobby: false,
+            hideLobbyButton: true,
             toolbarButtons: TOOLBAR_BUTTONS,
             // Enable Jitsi's Excalidraw-powered whiteboard (drawing live on a shared canvas).
             whiteboard: {

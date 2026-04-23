@@ -677,7 +677,7 @@ export default function Mentors() {
   });
 
   return (
-      <main id="mentors-directory" aria-label="Mentor directory" className="relative min-h-screen overflow-x-hidden bg-[var(--bridge-canvas)]">
+      <main id="mentors-directory" aria-label="Mentor directory" data-route-atmo="mentors" className="relative isolate min-h-screen overflow-x-hidden">
         <PageGutterAtmosphere />
 
         {/* Compact top strip — title + count + inline search/sort + filter toggle.
@@ -689,21 +689,21 @@ export default function Mentors() {
           <div aria-hidden className="bridge-ambient-orb absolute -right-16 -top-12 h-56 w-56" />
           <div className="relative mx-auto max-w-bridge">
             <nav aria-label="Breadcrumb" className="mb-4">
-              <ol className="flex flex-wrap items-center gap-2 text-sm text-stone-500">
+              <ol className="flex flex-wrap items-center gap-2 text-sm text-[var(--bridge-text-muted)]">
                 <li>
                   <Link
                       to="/"
-                      className={`rounded-md font-medium text-stone-600 transition hover:text-orange-800 ${focusRing}`}
+                      className={`rounded-md font-medium text-[var(--bridge-text-secondary)] transition hover:text-orange-700 dark:hover:text-orange-400 ${focusRing}`}
                   >
                     Home
                   </Link>
                 </li>
-                <li aria-hidden className="text-stone-300">
+                <li aria-hidden className="text-[var(--bridge-text-faint)]">
                   <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" d="m9 18 6-6-6-6" />
                   </svg>
                 </li>
-                <li className="font-medium text-stone-800">Mentors</li>
+                <li className="font-medium text-[var(--bridge-text)]">Mentors</li>
               </ol>
             </nav>
 
@@ -729,19 +729,19 @@ export default function Mentors() {
               <div>
                 <h1
                     id="mentors-heading"
-                    className="font-display text-3xl font-semibold leading-tight tracking-tight text-stone-900 sm:text-[2.25rem]"
+                    className="font-display text-3xl font-semibold leading-tight tracking-tight text-[var(--bridge-text)] sm:text-[2.25rem]"
                 >
                   Browse <span className="text-gradient-bridge">mentors</span>
                 </h1>
-                <p className="mt-1.5 text-sm text-stone-600 sm:text-base">
+                <p className="mt-1.5 text-sm text-[var(--bridge-text-secondary)] sm:text-base">
                   {loading ? (
-                      <span className="text-stone-500">Loading the directory…</span>
+                      <span className="text-[var(--bridge-text-muted)]">Loading the directory…</span>
                   ) : (
                       <>
-                        <span className="font-semibold text-stone-900">{totalCount.toLocaleString()}</span>{' '}
+                        <span className="font-semibold text-[var(--bridge-text)]">{totalCount.toLocaleString()}</span>{' '}
                         {totalCount === 1 ? 'person' : 'people'} ready to talk
                         {activeFilterCount > 0 ? (
-                            <span className="text-stone-500"> · filtered</span>
+                            <span className="text-[var(--bridge-text-muted)]"> · filtered</span>
                         ) : null}
                       </>
                   )}
@@ -766,7 +766,7 @@ export default function Mentors() {
                       placeholder="Name, title, company…"
                       value={search}
                       onChange={(e) => setSearch(e.target.value)}
-                      className="w-full rounded-full border border-stone-200 bg-white py-2.5 pl-10 pr-9 text-sm text-stone-900 shadow-sm placeholder:text-stone-400 focus:border-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-400/25"
+                      className="w-full rounded-full border border-[var(--bridge-border)] bg-[color-mix(in_srgb,var(--bridge-surface)_92%,transparent)] py-2.5 pl-10 pr-9 text-sm text-[var(--bridge-text)] shadow-sm placeholder:text-[var(--bridge-text-faint)] focus:border-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-400/25"
                   />
                   {search ? (
                       <button

@@ -490,7 +490,7 @@ export default function MentorProfile() {
 
     return (
         <>
-            <main id="mentor-profile" className="relative min-h-screen overflow-x-hidden bg-[var(--bridge-canvas)]" aria-labelledby="profile-heading">
+            <main id="mentor-profile" data-route-atmo="mentor-profile" className="relative isolate min-h-screen overflow-x-hidden" aria-labelledby="profile-heading">
                 <PageGutterAtmosphere />
 
                 <section className="bridge-hero-strip relative px-4 pt-6 sm:px-6 lg:px-8">

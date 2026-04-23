@@ -343,7 +343,7 @@ export default function ResumeReview() {
   }
 
   return (
-    <main className="relative min-h-screen overflow-x-hidden bg-[var(--bridge-canvas)]">
+    <main data-route-atmo="resume" className="relative isolate min-h-screen overflow-x-hidden">
       <PageGutterAtmosphere />
 
       <div className="relative mx-auto max-w-3xl px-4 pb-24 pt-10 sm:px-6 lg:px-8">
