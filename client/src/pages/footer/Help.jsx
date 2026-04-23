@@ -140,7 +140,7 @@ export default function Help() {
                             const meta = CATEGORY_META[cat.name] ?? CATEGORY_META['Getting Started'];
                             return (
                                 <Reveal key={cat.name} delay={i * 80}>
-                                    <div className="group relative overflow-hidden rounded-[1.75rem] border border-[var(--bridge-border)] bg-[var(--bridge-surface)] p-6 shadow-bridge-tile transition-all duration-500 hover:-translate-y-1 hover:shadow-bridge-card">
+                                    <div className="group relative overflow-hidden rounded-[1.75rem] border border-[var(--bridge-border)] bg-[var(--bridge-surface)] p-6 shadow-bridge-tile transition-all duration-500 hover:-translate-y-1 hover:shadow-bridge-card cursor-glow">
                                         <div aria-hidden className="pointer-events-none absolute -right-12 -top-12 h-36 w-36 rounded-full bg-gradient-to-br from-orange-400/15 to-transparent opacity-0 blur-3xl transition group-hover:opacity-100" />
                                         <div className="relative flex items-center gap-3">
                                             <div className={`flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br ${meta.hue} text-white shadow-[0_8px_22px_-4px_rgba(234,88,12,0.4)] transition group-hover:scale-[1.04]`}>

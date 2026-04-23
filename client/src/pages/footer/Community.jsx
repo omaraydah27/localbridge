@@ -56,7 +56,7 @@ export default function Community() {
                 <div className="mb-16 grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
                     {stats.map((s, i) => (
                         <Reveal key={s.label} delay={i * 70}>
-                            <div className="group relative overflow-hidden rounded-2xl border border-[var(--bridge-border)] bg-[var(--bridge-surface)] p-5 text-center shadow-bridge-tile transition-all duration-500 hover:-translate-y-0.5 hover:shadow-bridge-card">
+                            <div className="group relative overflow-hidden rounded-2xl border border-[var(--bridge-border)] bg-[var(--bridge-surface)] p-5 text-center shadow-bridge-tile transition-all duration-500 hover:-translate-y-0.5 hover:shadow-bridge-card cursor-glow">
                                 <div aria-hidden className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full bg-gradient-to-br from-orange-400/15 to-transparent opacity-0 blur-2xl transition group-hover:opacity-100" />
                                 <p className="relative font-display text-3xl font-bold text-gradient-bridge">{s.n}</p>
                                 <p className="relative mt-2 text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--bridge-text-muted)]">{s.label}</p>
@@ -82,7 +82,7 @@ export default function Community() {
                                 return (
                                     <div
                                         key={i}
-                                        className="group relative overflow-hidden rounded-2xl border border-[var(--bridge-border)] bg-[var(--bridge-surface)] p-5 shadow-bridge-tile transition-all duration-300 hover:-translate-y-0.5 hover:border-orange-300/70 hover:shadow-bridge-card"
+                                        className="group relative overflow-hidden rounded-2xl border border-[var(--bridge-border)] bg-[var(--bridge-surface)] p-5 shadow-bridge-tile transition-all duration-300 hover:-translate-y-0.5 hover:border-orange-300/70 hover:shadow-bridge-card cursor-glow"
                                     >
                                         <div aria-hidden className="pointer-events-none absolute -right-16 -top-16 h-36 w-36 rounded-full bg-gradient-to-br from-orange-400/15 to-transparent opacity-0 blur-3xl transition group-hover:opacity-100" />
                                         <div className="relative flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">

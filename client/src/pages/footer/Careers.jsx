@@ -73,7 +73,7 @@ export default function Careers() {
                 <div className="mb-16 space-y-3">
                     {filtered.map((job, i) => (
                         <Reveal key={job.title} delay={i * 60}>
-                            <div className="group relative overflow-hidden rounded-2xl border border-[var(--bridge-border)] bg-[var(--bridge-surface)] p-5 shadow-bridge-tile transition-all duration-300 hover:-translate-y-0.5 hover:border-orange-300/70 hover:shadow-bridge-card sm:p-6">
+                            <div className="group relative overflow-hidden rounded-2xl border border-[var(--bridge-border)] bg-[var(--bridge-surface)] p-5 shadow-bridge-tile transition-all duration-300 hover:-translate-y-0.5 hover:border-orange-300/70 hover:shadow-bridge-card sm:p-6 cursor-glow">
                                 <div aria-hidden className="pointer-events-none absolute -right-20 -top-20 h-44 w-44 rounded-full bg-gradient-to-br from-orange-400/15 to-transparent opacity-0 blur-3xl transition group-hover:opacity-100" />
                                 <div aria-hidden className="absolute inset-y-0 left-0 w-[3px] bg-gradient-to-b from-orange-400 to-amber-300 opacity-0 transition group-hover:opacity-100" />
                                 <div className="relative flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">

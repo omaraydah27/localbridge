@@ -86,7 +86,7 @@ export function SectionHeading({ id, children, count, action }) {
 
 export function StatCard({ label, value, icon: Icon, colorClass, hint }) {
   return (
-    <div className="group relative overflow-hidden rounded-2xl border border-[var(--bridge-border)] bg-[var(--bridge-surface)] p-5 shadow-bridge-tile transition-all duration-500 hover:-translate-y-0.5 hover:shadow-bridge-card">
+    <div className="group relative overflow-hidden rounded-2xl border border-[var(--bridge-border)] bg-[var(--bridge-surface)] p-5 shadow-bridge-tile transition-all duration-500 hover:-translate-y-0.5 hover:shadow-bridge-card cursor-glow">
       <div aria-hidden className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full bg-gradient-to-br from-orange-400/15 to-transparent opacity-0 blur-2xl transition group-hover:opacity-100" />
       <div className="relative flex items-start justify-between">
         <div className={`flex h-11 w-11 items-center justify-center rounded-2xl shadow-sm ring-1 ring-[var(--bridge-border)] transition-transform duration-500 group-hover:scale-110 ${colorClass}`}>
@@ -99,7 +99,7 @@ export function StatCard({ label, value, icon: Icon, colorClass, hint }) {
         ) : null}
       </div>
       <div className="relative mt-5">
-        <p className="font-display text-3xl font-semibold tabular-nums leading-none text-[var(--bridge-text)]">{value}</p>
+        <p className="font-display text-[2.5rem] font-bold tabular-nums leading-none tracking-[-0.04em] text-[var(--bridge-text)]">{value}</p>
         <p className="mt-2 text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--bridge-text-muted)]">{label}</p>
       </div>
       <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-orange-400/40 to-transparent opacity-0 transition group-hover:opacity-100" />
@@ -158,7 +158,7 @@ export function SessionCard({ session, isMentor = false, mentorProfile, onAccept
   const [dateLabel, timeLabel] = (formatSessionDate(session.scheduled_date) || ' · ').split(' · ');
 
   return (
-    <article className="group relative overflow-hidden rounded-2xl border border-[var(--bridge-border)] bg-[var(--bridge-surface)] shadow-bridge-tile transition-all duration-300 hover:-translate-y-0.5 hover:border-orange-300/60 hover:shadow-bridge-card">
+    <article className="group relative overflow-hidden rounded-2xl border border-[var(--bridge-border)] bg-[var(--bridge-surface)] shadow-bridge-tile transition-all duration-300 hover:-translate-y-0.5 hover:border-orange-300/60 hover:shadow-bridge-card cursor-glow">
       <div aria-hidden className={`absolute inset-y-0 left-0 w-[3px] bg-gradient-to-b ${type?.accent?.bar ?? 'from-orange-400 to-amber-300'} opacity-70 transition group-hover:opacity-100`} />
       <div className="flex flex-col gap-4 p-4 sm:flex-row sm:items-center sm:gap-5 sm:p-5">
         <div className="flex flex-1 min-w-0 items-center gap-4">

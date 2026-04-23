@@ -70,11 +70,11 @@ export default function Dashboard() {
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.55)]" />
                 {isMentor ? 'Mentor dashboard' : 'Mentee dashboard'}
               </div>
-              <h1 className="font-display text-[2rem] font-bold leading-[1.1] text-[var(--bridge-text)] sm:text-[2.5rem]">
+              <h1 className="font-display text-[2.25rem] font-bold leading-[1.05] tracking-[-0.032em] text-[var(--bridge-text)] sm:text-[2.75rem]">
                 Good {greeting},{' '}
                 <span className="font-editorial italic text-gradient-bridge">{firstName}</span>
               </h1>
-              <p className="mt-1 text-xs font-medium text-[var(--bridge-text-muted)]">{getTodayLabel()}</p>
+              <p className="mt-2 text-[13px] font-semibold uppercase tracking-[0.18em] text-[var(--bridge-text-muted)]">{getTodayLabel()}</p>
             </div>
             {!isMentor && (
               <Link

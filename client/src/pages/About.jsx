@@ -93,7 +93,7 @@ export default function About() {
               {STATS.map((s) => (
                 <div
                   key={s.l}
-                  className="group rounded-2xl border border-[var(--bridge-border)] bg-[var(--bridge-surface)] p-4 text-center shadow-bridge-tile backdrop-blur-md transition hover:-translate-y-0.5 hover:shadow-bridge-card"
+                  className="group rounded-2xl border border-[var(--bridge-border)] bg-[var(--bridge-surface)] p-4 text-center shadow-bridge-tile backdrop-blur-md transition hover:-translate-y-0.5 hover:shadow-bridge-card cursor-glow"
                 >
                   <dt className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--bridge-text-muted)]">{s.l}</dt>
                   <dd className="mt-2 font-display text-2xl font-semibold tabular-nums text-[var(--bridge-text)] sm:text-3xl">{s.v}</dd>
@@ -157,7 +157,7 @@ export default function About() {
           <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
             {VALUES.map((v, i) => (
               <Reveal key={v.title} delay={i * 80}>
-                <article className="group relative h-full overflow-hidden rounded-2xl border border-[var(--bridge-border)] bg-[var(--bridge-surface)] p-6 shadow-bridge-tile transition duration-500 hover:-translate-y-1 hover:shadow-bridge-card">
+                <article className="group relative h-full overflow-hidden rounded-2xl border border-[var(--bridge-border)] bg-[var(--bridge-surface)] p-6 shadow-bridge-tile transition duration-500 hover:-translate-y-1 hover:shadow-bridge-card cursor-glow">
                   <div className={`inline-flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br ${v.accent} text-white shadow-[0_8px_22px_-6px_rgba(234,88,12,0.45)] transition-transform group-hover:scale-105`}>
                     <v.icon className="h-5 w-5" aria-hidden />
                   </div>
@@ -190,7 +190,7 @@ export default function About() {
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
             {TEAM.map((m, i) => (
               <Reveal key={m.name} delay={i * 70}>
-                <article className="group relative flex h-full flex-col overflow-hidden rounded-[1.5rem] border border-[var(--bridge-border)] bg-[var(--bridge-surface)] p-5 shadow-bridge-tile transition duration-500 hover:-translate-y-1 hover:shadow-bridge-card">
+                <article className="group relative flex h-full flex-col overflow-hidden rounded-[1.5rem] border border-[var(--bridge-border)] bg-[var(--bridge-surface)] p-5 shadow-bridge-tile transition duration-500 hover:-translate-y-1 hover:shadow-bridge-card cursor-glow">
                   {/* Portrait placeholder */}
                   <div className={`relative aspect-[4/5] w-full overflow-hidden rounded-2xl bg-gradient-to-br ${m.hue}`}>
                     <div aria-hidden className="absolute inset-0 bg-bridge-noise opacity-[0.25] mix-blend-overlay" />

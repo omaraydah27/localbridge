@@ -52,7 +52,7 @@ export default function Contact() {
                             {cards.map(({ Icon, eyebrow, primary, secondary, hue }) => (
                                 <div
                                     key={eyebrow}
-                                    className="group relative flex items-start gap-4 overflow-hidden rounded-2xl border border-[var(--bridge-border)] bg-[var(--bridge-surface)] p-5 shadow-bridge-tile backdrop-blur-sm transition-all duration-500 hover:-translate-y-0.5 hover:shadow-bridge-card"
+                                    className="group relative flex items-start gap-4 overflow-hidden rounded-2xl border border-[var(--bridge-border)] bg-[var(--bridge-surface)] p-5 shadow-bridge-tile backdrop-blur-sm transition-all duration-500 hover:-translate-y-0.5 hover:shadow-bridge-card cursor-glow"
                                 >
                                     <div aria-hidden className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full bg-gradient-to-br from-orange-400/15 to-transparent opacity-0 blur-2xl transition group-hover:opacity-100" />
                                     <div className={`relative flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br ${hue} text-white shadow-[0_8px_22px_-6px_rgba(234,88,12,0.4)] transition-transform duration-500 group-hover:scale-[1.04]`}>

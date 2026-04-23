@@ -272,7 +272,8 @@ export default function Navbar() {
               </Link>
               <Link
                 to="/register"
-                className="btn-sheen relative inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-orange-600 via-orange-500 to-amber-500 px-4 py-2.5 text-sm font-semibold text-white shadow-[0_6px_18px_-4px_rgba(234,88,12,0.5)] transition-all hover:shadow-[0_10px_28px_-6px_rgba(234,88,12,0.65)] hover:brightness-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400 focus-visible:ring-offset-2"
+                data-magnet="6"
+                className="magnetic btn-sheen relative inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-orange-600 via-orange-500 to-amber-500 px-4 py-2.5 text-sm font-semibold text-white shadow-[0_6px_18px_-4px_rgba(234,88,12,0.5)] hover:shadow-[0_14px_32px_-6px_rgba(234,88,12,0.7)] hover:brightness-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400 focus-visible:ring-offset-2"
               >
                 Sign up
               </Link>
