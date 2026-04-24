@@ -16,7 +16,7 @@
  */
 
 import { useState } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import { Link, Navigate, useLocation } from 'react-router-dom';
 import { LayoutDashboard, CalendarDays, Users, Settings, Plus, X, AlertCircle, Sparkles } from 'lucide-react';
 import { useAuth } from '../../context/useAuth.js';
 import { isMentorAccount } from '../../utils/accountRole.js';
@@ -32,8 +32,12 @@ import { MenteeDashboardContent } from './MenteeDashboardContent.jsx';
 export default function Dashboard() {
   const { user, loading: authLoading, logout } = useAuth();
   const isMentor = isMentorAccount(user);
+  const location = useLocation();
 
   const [activeTab, setActiveTab] = useState('overview');
+
+  // Passed from VideoCall via navigate state; consumed once by MenteeDashboardContent.
+  const initialReviewSession = location.state?.reviewSession ?? null;
 
   const dash = useDashboardData(user, authLoading);
 
@@ -139,7 +143,7 @@ export default function Dashboard() {
           {isMentor ? (
             <MentorDashboardContent dash={dash} activeTab={activeTab} setActiveTab={setActiveTab} logout={logout} user={user} />
           ) : (
-            <MenteeDashboardContent dash={dash} activeTab={activeTab} setActiveTab={setActiveTab} logout={logout} user={user} />
+            <MenteeDashboardContent dash={dash} activeTab={activeTab} setActiveTab={setActiveTab} logout={logout} user={user} initialReviewSession={initialReviewSession} />
           )}
         </Reveal>
       </main>
