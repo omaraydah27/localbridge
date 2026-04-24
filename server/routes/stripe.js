@@ -1,48 +1,80 @@
-import stripeRoutes from './routes/stripe.js';
 import express from 'express';
 import Stripe from 'stripe';
-app.use('/api/stripe', stripeRoutes);
 
 const router = express.Router();
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
-router.post('/create-checkout-session', async (req, res) => {
+const PLAN_PRICES = {
+    Starter: 1200,
+    Pro: 1900,
+    Premium: 4900,
+};
+
+router.post('/create-subscription-checkout', async (req, res) => {
     try {
-        const { planName, price } = req.body;
+        const { planName, userId, userEmail } = req.body;
+
+        if (!PLAN_PRICES[planName]) {
+            return res.status(400).json({ error: 'Invalid plan selected.' });
+        }
 
         const session = await stripe.checkout.sessions.create({
-            mode: 'payment',
-            payment_method_types: ['card'],
+            ui_mode: 'embedded',
+            mode: 'subscription',
+            customer_email: userEmail,
             line_items: [
                 {
                     price_data: {
                         currency: 'usd',
+                        recurring: {
+                            interval: 'month',
+                        },
                         product_data: {
                             name: `${planName} Plan`,
-                            description: 'Bridge payment simulation',
+                            description: 'Bridge subscription plan',
                         },
-                        unit_amount: price * 100,
+                        unit_amount: PLAN_PRICES[planName],
                     },
                     quantity: 1,
                 },
             ],
-            success_url: `${process.env.CLIENT_URL}/pricing?payment=success`,
-            cancel_url: `${process.env.CLIENT_URL}/pricing?payment=cancelled`,
+            metadata: {
+                type: 'subscription',
+                userId,
+                planName,
+            },
+            return_url: `${process.env.CLIENT_URL}/pricing?session_id={CHECKOUT_SESSION_ID}`,
         });
 
-        res.json({ url: session.url });
+        res.json({ clientSecret: session.client_secret });
     } catch (error) {
-        console.error('Stripe checkout error:', error);
-        res.status(500).json({ error: 'Payment simulation failed' });
+        console.error('Subscription checkout error:', error);
+        res.status(500).json({ error: 'Could not create subscription checkout.' });
     }
 });
-router.post('/create-booking-session', async (req, res) => {
+
+router.post('/create-booking-checkout', async (req, res) => {
     try {
-        const { mentorName, sessionPrice, sessionType } = req.body;
+        const {
+            userId,
+            userEmail,
+            mentorId,
+            mentorName,
+            sessionType,
+            scheduledDate,
+            sessionPrice,
+        } = req.body;
+
+        const safePrice = Number(sessionPrice);
+
+        if (!safePrice || safePrice <= 0) {
+            return res.status(400).json({ error: 'Invalid mentor session price.' });
+        }
 
         const session = await stripe.checkout.sessions.create({
+            ui_mode: 'embedded',
             mode: 'payment',
-            payment_method_types: ['card'],
+            customer_email: userEmail,
             line_items: [
                 {
                     price_data: {
@@ -51,19 +83,27 @@ router.post('/create-booking-session', async (req, res) => {
                             name: `Session with ${mentorName}`,
                             description: `${sessionType} mentor booking`,
                         },
-                        unit_amount: sessionPrice * 100,
+                        unit_amount: Math.round(safePrice * 100),
                     },
                     quantity: 1,
                 },
             ],
-            success_url: `${process.env.CLIENT_URL}/mentors?booking=success`,
-            cancel_url: `${process.env.CLIENT_URL}/mentors?booking=cancelled`,
+            metadata: {
+                type: 'mentor_booking',
+                userId,
+                mentorId,
+                mentorName,
+                sessionType,
+                scheduledDate,
+                sessionPrice: String(safePrice),
+            },
+            return_url: `${process.env.CLIENT_URL}/mentors/${mentorId}?session_id={CHECKOUT_SESSION_ID}`,
         });
 
-        res.json({ url: session.url });
+        res.json({ clientSecret: session.client_secret });
     } catch (error) {
-        console.error('Booking payment error:', error);
-        res.status(500).json({ error: 'Booking payment simulation failed' });
+        console.error('Booking checkout error:', error);
+        res.status(500).json({ error: 'Could not create booking checkout.' });
     }
 });
 

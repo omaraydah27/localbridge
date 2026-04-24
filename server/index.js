@@ -6,6 +6,9 @@ import mentorRoutes from './routes/mentors.js';
 import sessionRoutes from './routes/sessions.js';
 import calendarRoutes from './routes/calendar.js';
 import googleAuthRoutes from './routes/googleAuth.js';
+import stripeRoutes from './routes/stripe.js';
+app.use('/api/stripe', stripeRoutes);
+app.use(express.json());
 
 const app = express();
 const PORT = process.env.PORT || 3001;
