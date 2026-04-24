@@ -1,50 +1,40 @@
-import supabase from './supabase';
+const BASE = import.meta.env.VITE_SERVER_URL || '';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
-
-async function getAuthHeader() {
-  const { data: { session } } = await supabase.auth.getSession();
-  if (!session) throw new Error('Not authenticated');
-  return `Bearer ${session.access_token}`;
-}
-
-export async function getGoogleCalendarConnectUrl() {
-  const auth = await getAuthHeader();
-  const res = await fetch(`${API_BASE}/calendar/connect`, {
-    headers: { Authorization: auth },
-  });
+export async function getCalendarAuthUrl(mentorProfileId) {
+  const res = await fetch(
+    `${BASE}/auth/google?mentor_profile_id=${encodeURIComponent(mentorProfileId)}&json=1`,
+  );
   if (!res.ok) {
-    const { error } = await res.json().catch(() => ({}));
-    throw new Error(error || 'Failed to get connect URL');
+    const body = await res.json().catch(() => ({}));
+    throw new Error(body.error || 'Failed to get calendar auth URL');
   }
-  return res.json();
+  const { url } = await res.json();
+  return url;
 }
 
-export async function getMentorAvailability(mentorProfileId) {
+export async function getMentorAvailability(mentorProfileId, date) {
   try {
-    const res = await fetch(`${API_BASE}/calendar/availability/${mentorProfileId}`);
-    if (!res.ok) return { busyTimes: [] };
+    const res = await fetch(`${BASE}/calendar/availability`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ mentor_profile_id: mentorProfileId, date }),
+    });
+    if (!res.ok) return { busy: [] };
     return res.json();
   } catch {
-    return { busyTimes: [] };
+    return { busy: [] };
   }
 }
 
-export async function createCalendarEvent({ mentorProfileId, sessionType, scheduledDate, message }) {
-  try {
-    const auth = await getAuthHeader();
-    const res = await fetch(`${API_BASE}/calendar/event`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: auth,
-      },
-      body: JSON.stringify({ mentorProfileId, sessionType, scheduledDate, message }),
-    });
-    const data = await res.json();
-    if (!res.ok) return { data: null, error: data.error || 'Failed to create calendar event' };
-    return { data, error: null };
-  } catch (err) {
-    return { data: null, error: err.message };
+export async function bookCalendarEvent(payload) {
+  const res = await fetch(`${BASE}/calendar/book`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new Error(body.error || 'Failed to book calendar event');
   }
+  return res.json();
 }

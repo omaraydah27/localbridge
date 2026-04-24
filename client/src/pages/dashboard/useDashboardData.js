@@ -59,6 +59,7 @@ export function useDashboardData(user, authLoading) {
   const [mentorMap, setMentorMap] = useState({});
   /** Mentor-only: primary key of `mentor_profiles` for this auth user (for “View public profile” link). */
   const [mentorProfileId, setMentorProfileId] = useState(null);
+  const [calendarConnected, setCalendarConnected] = useState(false);
   const [dataLoading, setDataLoading] = useState(true);
   const [error, setError] = useState(null);
   /** Which session id is currently mutating (accept/decline/cancel). */
@@ -81,17 +82,19 @@ export function useDashboardData(user, authLoading) {
           // maybeSingle: 0 rows is valid if onboarding insert failed (e.g. schema drift) or race before ensureMentorProfile finishes.
           const { data: profileData, error: profileErr } = await supabase
               .from('mentor_profiles')
-              .select('id')
+              .select('id, calendar_connected')
               .eq('user_id', user.id)
               .maybeSingle();
           if (profileErr) throw profileErr;
           if (!profileData?.id) {
             setMentorProfileId(null);
+            setCalendarConnected(false);
             setSessions([]);
             return;
           }
           const mpId = profileData.id;
           setMentorProfileId(mpId);
+          setCalendarConnected(!!profileData.calendar_connected);
 
           let sessErr;
           let data;
@@ -254,6 +257,7 @@ export function useDashboardData(user, authLoading) {
     sessions,
     mentorMap,
     mentorProfileId,
+    calendarConnected,
     dataLoading,
     error,
     setError,

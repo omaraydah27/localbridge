@@ -12,6 +12,7 @@ import {
     getMentorOnboardingProfile,
     saveMentorOnboardingStep,
     completeMentorOnboarding,
+    polishMentorProfile,
 } from '../api/mentorOnboarding';
 
 const focusRing = 'focus:outline-none focus:ring-2 focus:ring-amber-400/30';
@@ -207,6 +208,7 @@ export default function MentorOnboarding() {
     // Step 2
     const [bio, setBio]             = useState('');
     const [expertise, setExpertise] = useState([]);
+    const [step2Phase, setStep2Phase] = useState('form'); // 'form' | 'polishing' | 'preview'
 
     // Step 3
     const [yearsExp, setYearsExp]       = useState('');
@@ -301,8 +303,23 @@ export default function MentorOnboarding() {
     async function handleStep2() {
         if (bio.trim().length < 30) { setError('Please write at least 30 characters about yourself.'); return; }
         if (expertise.length === 0) { setError('Please add at least one area of expertise.'); return; }
+        setError('');
+        setStep2Phase('polishing');
         try {
-            await save({ bio: bio.trim(), expertise });
+            const polished = await polishMentorProfile({ bio: bio.trim(), expertise });
+            setBio(polished.bio ?? bio);
+            setExpertise((polished.expertise ?? expertise).slice(0, 8));
+            setStep2Phase('preview');
+        } catch (err) {
+            setError(err.message ?? 'AI polish failed. Please try again.');
+            setStep2Phase('form');
+        }
+    }
+
+    async function handleSavePolished() {
+        try {
+            await save({ bio, expertise });
+            setStep2Phase('form');
             advance(3);
         } catch (_) {}
     }
@@ -431,7 +448,9 @@ export default function MentorOnboarding() {
                 )}
 
                 {/* ── Step 2: Your story ── */}
-                {step === 2 && (
+
+                {/* 2a — form */}
+                {step === 2 && step2Phase === 'form' && (
                     <StepCard
                         stepNum={2}
                         title="Your story"
@@ -439,7 +458,7 @@ export default function MentorOnboarding() {
                         footer={
                             <div className="flex items-center justify-between">
                                 <BackBtn onClick={() => { setStep(1); setError(''); }} />
-                                <NextBtn onClick={handleStep2} saving={saving} />
+                                <NextBtn onClick={handleStep2} saving={saving} label="Polish with AI" />
                             </div>
                         }
                     >
@@ -464,6 +483,60 @@ export default function MentorOnboarding() {
                             <p className="mt-1.5 text-xs text-stone-400">
                                 Press Enter or comma after each skill.
                             </p>
+                        </div>
+                    </StepCard>
+                )}
+
+                {/* 2b — polishing */}
+                {step === 2 && step2Phase === 'polishing' && (
+                    <StepCard stepNum={2} title="Your story" Icon={BookOpen} footer={<div />}>
+                        <div className="flex flex-col items-center gap-4 py-10">
+                            <div className="h-10 w-10 animate-spin rounded-full border-4 border-amber-200 border-t-amber-500" />
+                            <p className="text-sm font-semibold text-stone-700">Polishing your profile with AI…</p>
+                            <p className="text-xs text-stone-400">This usually takes a few seconds.</p>
+                        </div>
+                    </StepCard>
+                )}
+
+                {/* 2c — preview */}
+                {step === 2 && step2Phase === 'preview' && (
+                    <StepCard
+                        stepNum={2}
+                        title="AI-polished preview"
+                        Icon={BookOpen}
+                        footer={
+                            <div className="flex items-center justify-between">
+                                <BackBtn onClick={() => { setStep2Phase('form'); setError(''); }} />
+                                <NextBtn onClick={handleSavePolished} saving={saving} label="Accept & continue" />
+                            </div>
+                        }
+                    >
+                        <div className="rounded-2xl border border-emerald-200/80 bg-emerald-50/60 px-4 py-3">
+                            <p className="text-xs font-semibold uppercase tracking-wide text-emerald-700">
+                                AI has polished your profile
+                            </p>
+                            <p className="mt-1 text-xs text-emerald-800">
+                                Review below. Click &quot;Back to edit&quot; if you want to revise your inputs.
+                            </p>
+                        </div>
+                        <div>
+                            <p className={labelCls}>Polished bio</p>
+                            <p className="rounded-2xl border border-stone-200/90 bg-stone-50/50 px-4 py-3.5 text-sm leading-relaxed text-stone-800">
+                                {bio}
+                            </p>
+                        </div>
+                        <div>
+                            <p className={labelCls}>Expertise</p>
+                            <div className="flex flex-wrap gap-2 rounded-2xl border border-stone-200/90 bg-stone-50/50 px-4 py-3">
+                                {expertise.map((tag) => (
+                                    <span
+                                        key={tag}
+                                        className="rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-900"
+                                    >
+                                        {tag}
+                                    </span>
+                                ))}
+                            </div>
                         </div>
                     </StepCard>
                 )}
