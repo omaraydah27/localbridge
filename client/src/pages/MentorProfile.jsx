@@ -14,6 +14,7 @@ import {
   buildAvailabilityCalendar,
   getSlotsForDate,
   normalizeAvailabilitySchedule,
+  localDateStr,
 } from '../utils/mentorAvailability';
 import PageGutterAtmosphere from '../components/PageGutterAtmosphere';
 import Reveal from '../components/Reveal';
@@ -99,10 +100,30 @@ function BookingFlow({ mentor, sessionType, onReset, onRequestConfirm, user, nav
         () => buildAvailabilityCalendar(scheduleNorm, acceptingBookings, 14),
         [scheduleNorm, acceptingBookings],
     );
-    const slots = useMemo(
+    // Base slots from the mentor's weekly schedule
+    const baseSlots = useMemo(
         () => getSlotsForDate(scheduleNorm, pickedDate, acceptingBookings),
         [scheduleNorm, pickedDate, acceptingBookings],
     );
+
+    // Overlay Google Calendar busy blocks: mark slots unavailable if they overlap
+    const slots = useMemo(() => {
+        if (!calBusy || calBusy.length === 0 || !pickedDate) return baseSlots;
+        return baseSlots.map(({ time, available }) => {
+            if (!available) return { time, available: false };
+            const [h, m] = time.split(':').map(Number);
+            const slotStart = new Date(pickedDate);
+            slotStart.setHours(h, m, 0, 0);
+            const slotEnd = new Date(pickedDate);
+            slotEnd.setHours(h + 1, m, 0, 0); // treat each slot as 1 hour
+            const blocked = calBusy.some(({ start, end }) => {
+                const bs = new Date(start);
+                const be = new Date(end);
+                return slotStart < be && slotEnd > bs;
+            });
+            return { time, available: !blocked, calendarBusy: blocked };
+        });
+    }, [baseSlots, calBusy, pickedDate]);
 
     const hasAnyWeeklySlots = useMemo(
         () => Object.values(scheduleNorm.weekly).some((a) => Array.isArray(a) && a.length > 0),
@@ -115,7 +136,7 @@ function BookingFlow({ mentor, sessionType, onReset, onRequestConfirm, user, nav
         if (!pickedDate || !mentor.calendar_connected) { setCalBusy(null); return; }
         setCalLoading(true);
         setCalBusy(null);
-        const dateStr = pickedDate.toISOString().slice(0, 10);
+        const dateStr = localDateStr(pickedDate);
         getMentorAvailability(mentor.id, dateStr)
             .then(({ busy }) => { setCalBusy(busy ?? []); setCalLoading(false); })
             .catch(() => { setCalBusy(null); setCalLoading(false); });
@@ -129,7 +150,7 @@ function BookingFlow({ mentor, sessionType, onReset, onRequestConfirm, user, nav
             navigate('/login', { state: { from: `/mentors/${mentorId}` } });
             return;
         }
-        const iso = `${pickedDate.toISOString().slice(0, 10)}T${pickedTime}`;
+        const iso = `${localDateStr(pickedDate)}T${pickedTime}`;
         onRequestConfirm({ sessionType, isoDate: iso, prettyDate: pickedDate, prettyTime: pickedTime });
     }
 
@@ -217,8 +238,8 @@ function BookingFlow({ mentor, sessionType, onReset, onRequestConfirm, user, nav
                         </div>
                         <div className="grid grid-cols-7 gap-1.5">
                             {availability.map(({ date, status }) => {
-                                const iso = date.toISOString().slice(0, 10);
-                                const isSelected = pickedDate?.toISOString().slice(0, 10) === iso;
+                                const iso = localDateStr(date);
+                                const isSelected = pickedDate ? localDateStr(pickedDate) === iso : false;
                                 const isClickable = status !== 'booked';
                                 const base = 'flex aspect-square flex-col items-center justify-center rounded-lg border p-1 text-xs font-semibold transition';
                                 let tone;
@@ -231,7 +252,7 @@ function BookingFlow({ mentor, sessionType, onReset, onRequestConfirm, user, nav
                                         key={iso}
                                         type="button"
                                         disabled={!isClickable}
-                                        onClick={() => setPickedDate(new Date(date))}
+                                        onClick={() => setPickedDate(date)}
                                         aria-label={`${date.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })} — ${status}`}
                                         aria-pressed={isSelected}
                                         className={`${base} ${tone} ${focusRing}`}
@@ -262,7 +283,7 @@ function BookingFlow({ mentor, sessionType, onReset, onRequestConfirm, user, nav
                                     {pickedDate ? <p className="text-xs font-medium text-stone-700">{pickedDate.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })}</p> : null}
                                 </div>
                                 <div className="grid grid-cols-4 gap-2">
-                                    {slots.map(({ time, available }) => {
+                                    {slots.map(({ time, available, calendarBusy }) => {
                                         const isSelected = pickedTime === time;
                                         return (
                                             <button
@@ -271,20 +292,31 @@ function BookingFlow({ mentor, sessionType, onReset, onRequestConfirm, user, nav
                                                 disabled={!available}
                                                 onClick={() => setPickedTime(time)}
                                                 aria-pressed={isSelected}
-                                                className={`rounded-lg border px-2 py-2.5 text-sm font-semibold transition ${
+                                                title={calendarBusy ? 'Blocked by calendar' : undefined}
+                                                className={`relative rounded-lg border px-2 py-2.5 text-sm font-semibold transition ${
                                                     isSelected
                                                         ? `border-orange-500 bg-gradient-to-br from-orange-100 to-amber-100 text-orange-950 shadow-sm ring-2 ring-orange-400 ${focusRing}`
                                                         : available
                                                             ? `border-stone-200 bg-white text-stone-800 hover:border-orange-300 hover:bg-orange-50/50 ${focusRing}`
-                                                            : 'cursor-not-allowed border-stone-100 bg-stone-100/40 text-stone-300 line-through'
+                                                            : calendarBusy
+                                                                ? 'cursor-not-allowed border-amber-200/60 bg-amber-50/60 text-amber-400'
+                                                                : 'cursor-not-allowed border-stone-100 bg-stone-100/40 text-stone-300'
                                                 }`}
                                             >
                                                 {time}
+                                                {calendarBusy && (
+                                                    <span className="absolute -top-1.5 -right-1.5 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-amber-400 text-[8px] text-white" aria-hidden>!</span>
+                                                )}
                                             </button>
                                         );
                                     })}
                                 </div>
                                 {slots.every((s) => !s.available) ? <p className="mt-3 text-xs text-stone-500">No open slots this day — try another date.</p> : null}
+                                {slots.some((s) => s.calendarBusy) ? (
+                                    <p className="mt-2 text-xs text-amber-700">
+                                        <span className="font-medium">!</span> Some slots are blocked by the mentor&apos;s calendar.
+                                    </p>
+                                ) : null}
                             </div>
                         </div>
 
@@ -482,6 +514,61 @@ export default function MentorProfile() {
         });
 
         return () => { cancelled = true; };
+    }, [id]);
+
+    // Live availability sync: subscribe to Supabase Realtime updates for this mentor
+    useEffect(() => {
+        if (!id) return;
+        const channel = supabase
+            .channel(`mentor-availability-${id}`)
+            .on(
+                'postgres_changes',
+                { event: 'UPDATE', schema: 'public', table: 'mentor_profiles', filter: `id=eq.${id}` },
+                (payload) => {
+                    if (!payload.new) return;
+                    setProfile((prev) => {
+                        if (!prev?.mentor) return prev;
+                        return {
+                            ...prev,
+                            mentor: {
+                                ...prev.mentor,
+                                availability_schedule: payload.new.availability_schedule,
+                                available: payload.new.available,
+                            },
+                        };
+                    });
+                },
+            )
+            .subscribe();
+        return () => { supabase.removeChannel(channel); };
+    }, [id]);
+
+    // Window focus re-fetch: refresh availability fields when user tabs back
+    useEffect(() => {
+        function handleFocus() {
+            if (!id) return;
+            supabase
+                .from('mentor_profiles')
+                .select('availability_schedule, available')
+                .eq('id', id)
+                .single()
+                .then(({ data, error }) => {
+                    if (error || !data) return;
+                    setProfile((prev) => {
+                        if (!prev?.mentor) return prev;
+                        return {
+                            ...prev,
+                            mentor: {
+                                ...prev.mentor,
+                                availability_schedule: data.availability_schedule,
+                                available: data.available,
+                            },
+                        };
+                    });
+                });
+        }
+        window.addEventListener('focus', handleFocus);
+        return () => { window.removeEventListener('focus', handleFocus); };
     }, [id]);
 
     useEffect(() => {

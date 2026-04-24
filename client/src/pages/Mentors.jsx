@@ -794,23 +794,56 @@ export default function Mentors() {
                 </div>
 
                 {!asMentor ? (
-                  <div className="flex flex-col items-start gap-1">
+                  <div className="relative flex items-center gap-2 rounded-2xl border border-[var(--bridge-border)] bg-[var(--bridge-surface)] px-3 py-2 shadow-sm">
+                    {/* Dot indicators */}
                     {remainingUses !== null && (
-                      <p className="text-xs font-medium text-stone-500">
-                        {remainingUses} of {LIMITS.mentor_match} mentor matches remaining
-                      </p>
+                      <div className="flex items-center gap-1" aria-label={`${remainingUses} of ${LIMITS.mentor_match} AI matches remaining`}>
+                        {Array.from({ length: LIMITS.mentor_match }).map((_, i) => {
+                          const used = LIMITS.mentor_match - remainingUses;
+                          const isUsed = i < used;
+                          return (
+                            <span
+                              key={i}
+                              className={`h-2 w-2 rounded-full transition-all duration-300 ${
+                                isUsed
+                                  ? 'bg-stone-300 dark:bg-stone-600'
+                                  : 'bg-gradient-to-br from-orange-500 to-amber-400 shadow-[0_0_6px_rgba(249,115,22,0.5)]'
+                              }`}
+                            />
+                          );
+                        })}
+                      </div>
                     )}
+
+                    {/* Label */}
+                    <span className="text-xs font-medium text-stone-500 tabular-nums">
+                      {remainingUses === null ? (
+                        <span className="inline-block h-3 w-20 animate-pulse rounded bg-stone-200" />
+                      ) : remainingUses === 0 ? (
+                        'No matches left'
+                      ) : (
+                        <>{remainingUses}/{LIMITS.mentor_match} left</>
+                      )}
+                    </span>
+
+                    {/* Divider */}
+                    <span className="h-4 w-px bg-[var(--bridge-border)]" aria-hidden />
+
+                    {/* Button */}
                     {remainingUses === 0 ? (
-                      <p className="rounded-full border border-stone-200 bg-stone-50 px-4 py-2.5 text-sm font-medium text-stone-400">
-                        You&apos;ve used all 3 of your free mentor matches.
-                      </p>
+                      <span className="inline-flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-semibold text-stone-400 cursor-not-allowed select-none" title="Upgrade to get more AI matches">
+                        <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" aria-hidden>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
+                        </svg>
+                        Upgrade
+                      </span>
                     ) : (
                       <button
                         type="button"
                         onClick={handleAiMatchClick}
-                        className={`btn-sheen group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-orange-600 via-orange-500 to-amber-500 px-4 py-2.5 text-sm font-semibold text-white shadow-[0_10px_26px_-6px_rgba(234,88,12,0.55)] transition hover:-translate-y-0.5 hover:shadow-[0_14px_34px_-8px_rgba(234,88,12,0.7)] ${focusRing}`}
+                        className={`btn-sheen group inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-orange-600 via-orange-500 to-amber-500 px-3 py-1.5 text-xs font-semibold text-white shadow-[0_6px_18px_-4px_rgba(234,88,12,0.5)] transition hover:-translate-y-0.5 hover:shadow-[0_10px_24px_-6px_rgba(234,88,12,0.65)] active:translate-y-0 ${focusRing}`}
                       >
-                        <svg className="h-4 w-4 transition group-hover:rotate-12" fill="currentColor" viewBox="0 0 24 24" aria-hidden>
+                        <svg className="h-3.5 w-3.5 transition-transform duration-300 group-hover:rotate-12 group-hover:scale-110" fill="currentColor" viewBox="0 0 24 24" aria-hidden>
                           <path d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09Z" />
                         </svg>
                         AI Match

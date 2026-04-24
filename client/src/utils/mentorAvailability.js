@@ -51,3 +51,18 @@ export function getSlotsForDate(normalized, date, acceptingBookings) {
 }
 
 export const WEEKDAY_LABELS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+/**
+ * Returns a YYYY-MM-DD string using LOCAL time (not UTC).
+ * `date.toISOString()` uses UTC which gives the wrong date for
+ * users in positive UTC offsets (Asia, Australia, etc.).
+ */
+export function localDateStr(date) {
+  return (
+    date.getFullYear() +
+    '-' +
+    String(date.getMonth() + 1).padStart(2, '0') +
+    '-' +
+    String(date.getDate()).padStart(2, '0')
+  );
+}
