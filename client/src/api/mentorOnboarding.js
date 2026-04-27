@@ -144,9 +144,15 @@ Return ONLY valid JSON — no markdown, no preamble, no code fences.`;
 }
 
 export async function updateMentorProfile(profileId, data) {
-  const { error } = await supabase
+  const { data: result, error } = await supabase
     .from('mentor_profiles')
     .update(data)
-    .eq('id', profileId);
-  if (error) throw error;
+    .eq('id', profileId)
+    .select('id')
+    .single();
+  if (error) {
+    console.error('[updateMentorProfile] Supabase error:', error);
+    throw new Error(error.message ?? 'Failed to save profile.');
+  }
+  return result;
 }
