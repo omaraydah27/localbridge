@@ -10,45 +10,46 @@ export async function ensureMentorProfileForUser(user) {
   if (_ensureInFlight.has(user.id)) return _ensureInFlight.get(user.id);
 
   const p = (async () => {
-    const { data: existing } = await supabase
-      .from("mentor_profiles")
-      .select("id")
-      .eq("user_id", user.id)
-      .maybeSingle();
-
-    if (existing?.id) return existing;
-
     const meta = user.user_metadata ?? {};
     const name =
       (typeof meta.full_name === "string" && meta.full_name.trim()) ||
       user.email?.split("@")[0] ||
       "New mentor";
 
-    const { data, error } = await supabase
+    const { error: upsertError } = await supabase
       .from("mentor_profiles")
-      .insert({
-        user_id: user.id,
-        name,
-        email: user.email ?? null,
-        title: "Mentor",
-        company: null,
-        industry: "technology",
-        bio: DEFAULT_BIO,
-        years_experience: null,
-        expertise: [],
-        rating: 0,
-        total_sessions: 0,
-        available: true,
-        tier: "rising",
-        image_url: meta.avatar_url ?? null,
-        onboarding_complete: false,
-        calendar_connected: false,
-      })
-      .select("id")
-      .single();
+      .upsert(
+        {
+          user_id: user.id,
+          name,
+          email: user.email ?? null,
+          title: "Mentor",
+          company: null,
+          industry: "technology",
+          bio: DEFAULT_BIO,
+          years_experience: null,
+          expertise: [],
+          rating: 0,
+          total_sessions: 0,
+          available: true,
+          tier: "rising",
+          image_url: meta.avatar_url ?? null,
+          onboarding_complete: false,
+          calendar_connected: false,
+        },
+        { onConflict: "user_id", ignoreDuplicates: true }
+      );
 
-    if (error) throw error;
-    return data;
+    if (upsertError) throw upsertError;
+
+    const { data: row, error: selectError } = await supabase
+      .from("mentor_profiles")
+      .select("id")
+      .eq("user_id", user.id)
+      .maybeSingle();
+
+    if (selectError) throw selectError;
+    return row;
   })();
 
   _ensureInFlight.set(user.id, p);
