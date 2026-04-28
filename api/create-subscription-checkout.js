@@ -1,6 +1,5 @@
-import Stripe from 'stripe';
-
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+import { getStripe } from './_lib/stripeClient.js';
+import { getPublicOrigin } from './_lib/publicOrigin.js';
 
 const PLAN_PRICES = {
   Starter: 1200,
@@ -11,11 +10,18 @@ const PLAN_PRICES = {
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
+  const stripe = getStripe();
+  if (!stripe) {
+    return res.status(503).json({ error: 'Stripe is not configured on the server.' });
+  }
+
   const { planName, userId, userEmail } = req.body;
 
   if (!PLAN_PRICES[planName]) {
     return res.status(400).json({ error: 'Invalid plan selected.' });
   }
+
+  const origin = getPublicOrigin();
 
   try {
     const session = await stripe.checkout.sessions.create({
@@ -41,12 +47,12 @@ export default async function handler(req, res) {
         userId: String(userId ?? ''),
         planName: String(planName ?? ''),
       },
-      return_url: `${process.env.CLIENT_URL}/pricing?session_id={CHECKOUT_SESSION_ID}`,
+      return_url: `${origin}/pricing?session_id={CHECKOUT_SESSION_ID}`,
     });
 
     res.json({ clientSecret: session.client_secret });
   } catch (error) {
     console.error('Subscription checkout error:', error);
-    res.status(500).json({ error: 'Could not create subscription checkout.' });
+    res.status(500).json({ error: error?.message || 'Could not create subscription checkout.' });
   }
 }

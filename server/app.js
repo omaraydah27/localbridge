@@ -15,8 +15,17 @@ import stripeRoutes from './routes/stripe.js';
 import calendarRoutes from './routes/calendar.js';
 import googleAuthRoutes from './routes/googleAuth.js';
 import devRoutes from './routes/dev.js';
+import createSubscriptionCheckout from '../api/create-subscription-checkout.js';
+import createBookingCheckout from '../api/create-booking-checkout.js';
+import finalizeCheckoutHandler from '../api/finalize-checkout.js';
 
 const app = express();
+
+function wrapApiHandler(handler) {
+  return (req, res, next) => {
+    Promise.resolve(handler(req, res)).catch(next);
+  };
+}
 
 // ── CORS ──────────────────────────────────────────────────────────────────────
 const allowedOrigins = [
@@ -25,6 +34,7 @@ const allowedOrigins = [
   'http://localhost:5175',
   process.env.CLIENT_URL,
   process.env.CLIENT_URL_PROD,
+  ...(process.env.VERCEL_URL ? [`https://${process.env.VERCEL_URL}`] : []),
 ].filter(Boolean);
 
 app.use(
@@ -38,6 +48,11 @@ app.use(
   }),
 );
 app.use(express.json());
+
+// Stripe — same handlers as Vercel `api/*.js` (lightweight; avoids serverless loading full Express + googleapis graph)
+app.post('/api/create-subscription-checkout', wrapApiHandler(createSubscriptionCheckout));
+app.post('/api/create-booking-checkout', wrapApiHandler(createBookingCheckout));
+app.post('/api/finalize-checkout', wrapApiHandler(finalizeCheckoutHandler));
 
 // ── Routes ────────────────────────────────────────────────────────────────────
 // Google OAuth — must be at /auth/google so the redirect URI matches

@@ -1,14 +1,5 @@
-import Stripe from 'stripe';
 import { createClient } from '@supabase/supabase-js';
-
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-
-const SESSION_TYPE_MAP = {
-  career_advice: 'Career Advice',
-  interview_prep: 'Interview Prep',
-  resume_review: 'Resume Review',
-  networking: 'Networking',
-};
+import { getStripe } from './_lib/stripeClient.js';
 
 function getSupabaseAdmin() {
   const url = process.env.SUPABASE_URL;
@@ -19,6 +10,11 @@ function getSupabaseAdmin() {
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+
+  const stripe = getStripe();
+  if (!stripe) {
+    return res.status(503).json({ error: 'Stripe is not configured on the server.' });
+  }
 
   const { sessionId } = req.body;
   if (!sessionId) return res.status(400).json({ error: 'sessionId is required.' });
@@ -99,6 +95,6 @@ export default async function handler(req, res) {
     return res.json({ ok: true, type: meta.type ?? null, sessionId: checkoutSession.id, ...sync });
   } catch (error) {
     console.error('Finalize checkout error:', error);
-    res.status(500).json({ error: 'Could not finalize checkout.' });
+    res.status(500).json({ error: error?.message || 'Could not finalize checkout.' });
   }
 }

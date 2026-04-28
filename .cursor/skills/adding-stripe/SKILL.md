@@ -38,7 +38,7 @@ Restart **both** server and Vite after changing `.env`.
 | Piece | Path |
 |-------|------|
 | Checkout creation + finalize | `server/routes/stripe.js` |
-| Client calls | `client/src/api/stripe.js` (uses `/api/stripe/...`) |
+| Client calls | `client/src/api/stripe.js` → `/api/create-subscription-checkout`, `/api/create-booking-checkout`, `/api/finalize-checkout` (Vercel uses lightweight `api/*.js`; Express mounts the same handlers for local dev) |
 | Embedded UI | `client/src/components/EmbeddedCheckoutPanel.jsx` |
 | Pricing flow | `client/src/pages/Pricing.jsx` |
 | Mentor booking flow | `client/src/pages/MentorProfile.jsx` |
