@@ -59,6 +59,7 @@ export default function IntakeCall() {
   const localStreamRef = useRef(null)
   const transcriptRef = useRef([])
   const [isConnecting, setIsConnecting] = useState(false)
+  const [transcriptItems, setTranscriptItems] = useState([])
 
   // Cleanup on unmount
   useEffect(() => {
@@ -67,6 +68,18 @@ export default function IntakeCall() {
       pcRef.current?.close()
       window.speechSynthesis?.cancel()
     }
+  }, [])
+
+  useEffect(() => {
+    const style = document.createElement('style')
+    style.textContent = `
+      @keyframes pulse {
+        from { transform: scaleY(0.4); }
+        to { transform: scaleY(1); }
+      }
+    `
+    document.head.appendChild(style)
+    return () => style.remove()
   }, [])
 
   // Auth + session fetch
@@ -122,6 +135,16 @@ export default function IntakeCall() {
       const pc = new RTCPeerConnection()
       pcRef.current = pc
 
+      pc.oniceconnectionstatechange = () => {
+        if (
+          pc.iceConnectionState === 'disconnected' ||
+          pc.iceConnectionState === 'failed'
+        ) {
+          setErrorMessage('Connection dropped. Please try again.')
+          setFlowState('error')
+        }
+      }
+
       // 3. Play assistant audio in an audio element
       const audioEl = document.createElement('audio')
       audioEl.autoplay = true
@@ -143,6 +166,21 @@ export default function IntakeCall() {
         try { event = JSON.parse(e.data) } catch { return }
         handleRealtimeEvent(event)
       }
+
+      dc.addEventListener('open', () => {
+        dc.send(JSON.stringify({
+          type: 'session.update',
+          session: {
+            instructions: null
+          }
+        }))
+        dc.send(JSON.stringify({
+          type: 'response.create',
+          response: {
+            modalities: ['audio', 'text']
+          }
+        }))
+      })
 
       // 6. Create SDP offer and get answer from OpenAI
       const offer = await pc.createOffer()
@@ -178,6 +216,7 @@ export default function IntakeCall() {
       event.transcript
     ) {
       transcriptRef.current.push({ role: 'assistant', text: event.transcript })
+      setTranscriptItems(prev => [...prev, { role: 'assistant', text: event.transcript }])
     }
 
     // Capture user transcript
@@ -186,6 +225,7 @@ export default function IntakeCall() {
       event.transcript
     ) {
       transcriptRef.current.push({ role: 'user', text: event.transcript })
+      setTranscriptItems(prev => [...prev, { role: 'user', text: event.transcript }])
       setInterimText(event.transcript)
     }
 
@@ -357,6 +397,135 @@ export default function IntakeCall() {
         error: 'Error',
       }[flowState] ?? ''
 
+  // Connecting loading screen
+  if (isConnecting) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center"
+        style={{ background: 'var(--bridge-canvas)' }}>
+        <div className="relative flex items-center justify-center mb-8">
+          <div className="absolute w-24 h-24 rounded-full border border-amber-400/20 animate-ping" />
+          <div className="absolute w-16 h-16 rounded-full border border-amber-400/40 animate-pulse" />
+          <div className="w-10 h-10 rounded-full bg-amber-500/20 flex items-center justify-center">
+            <Mic size={20} className="text-amber-400" />
+          </div>
+        </div>
+        <p className="text-sm font-semibold tracking-widest uppercase text-amber-400 mb-2">
+          Connecting to Bridge AI
+        </p>
+        <p className="text-xs" style={{ color: 'var(--bridge-text-muted)' }}>
+          Setting up your voice session...
+        </p>
+      </div>
+    )
+  }
+
+  // Active session UI (live)
+  if ((flowState === 'speaking' || flowState === 'listening') && !isConnecting) {
+    return (
+      <div className="min-h-screen flex flex-col" style={{ background: 'var(--bridge-canvas)' }}>
+        {/* Top bar */}
+        <div className="flex items-center justify-between px-6 py-4 border-b"
+          style={{ borderColor: 'var(--bridge-border)' }}>
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-widest text-amber-400">
+              {SESSION_TYPE_LABELS[sessionData?.session_type]} · Intake
+            </p>
+            <p className="text-sm font-medium mt-0.5" style={{ color: 'var(--bridge-text)' }}>
+              Session with {mentorName}
+            </p>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="text-xs font-medium text-emerald-400">Live</span>
+          </div>
+        </div>
+
+        {/* Transcript area — scrollable */}
+        <div className="flex-1 overflow-y-auto px-4 py-6 space-y-3 max-w-2xl mx-auto w-full">
+          {transcriptItems.length === 0 ? (
+            <div className="flex items-center justify-center h-full">
+              <p className="text-sm" style={{ color: 'var(--bridge-text-muted)' }}>
+                Your conversation will appear here...
+              </p>
+            </div>
+          ) : (
+            transcriptItems.map((item, i) => (
+              <div
+                key={i}
+                className={`flex ${item.role === 'user' ? 'justify-end' : 'justify-start'}`}
+              >
+                <div
+                  className={`max-w-xs lg:max-w-md px-4 py-2.5 rounded-2xl text-sm leading-relaxed ${
+                    item.role === 'user'
+                      ? 'bg-amber-500 text-white rounded-br-sm'
+                      : 'rounded-bl-sm'
+                  }`}
+                  style={item.role === 'assistant' ? {
+                    background: 'var(--bridge-surface)',
+                    border: '1px solid var(--bridge-border)',
+                    color: 'var(--bridge-text)'
+                  } : {}}
+                >
+                  {item.text}
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+
+        {/* Bottom bar — visualizer + controls */}
+        <div className="border-t px-6 py-5" style={{ borderColor: 'var(--bridge-border)', background: 'var(--bridge-surface)' }}>
+          {/* Audio visualizer bars */}
+          <div className="flex items-end justify-center gap-1 h-8 mb-4">
+            {[...Array(12)].map((_, i) => (
+              <div
+                key={i}
+                className="w-1 rounded-full bg-amber-400"
+                style={{
+                  height: `${20 + Math.random() * 80}%`,
+                  animation: `pulse ${0.6 + i * 0.08}s ease-in-out infinite alternate`,
+                  opacity: flowState === 'speaking' || flowState === 'listening' ? 1 : 0.2
+                }}
+              />
+            ))}
+          </div>
+          {/* Status + end button */}
+          <div className="flex items-center justify-between">
+            <p className="text-xs font-medium" style={{ color: 'var(--bridge-text-muted)' }}>
+              {flowState === 'speaking' ? 'Bridge AI is speaking...' : 'Listening to you...'}
+            </p>
+            <button
+              onClick={endSessionAndSummarise}
+              className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold text-white bg-red-500/80 hover:bg-red-500 transition-colors"
+            >
+              <MicOff size={14} />
+              End Session
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // Processing screen
+  if (flowState === 'processing') {
+    return (
+      <div className="min-h-screen flex items-center justify-center"
+        style={{ background: 'var(--bridge-canvas)' }}>
+        <div className="text-center">
+          <Loader2 size={36} className="animate-spin text-amber-400 mx-auto mb-4" />
+          <p className="text-sm font-medium" style={{ color: 'var(--bridge-text)' }}>
+            Generating mentor briefing...
+          </p>
+          <p className="text-xs mt-1" style={{ color: 'var(--bridge-text-muted)' }}>
+            This will just take a moment
+          </p>
+        </div>
+      </div>
+    )
+  }
+
+  // Idle card (flowState === 'idle' or 'error')
   return (
     <div className="min-h-screen" style={{ background: 'var(--bridge-canvas)' }}>
       {/* Hero */}
