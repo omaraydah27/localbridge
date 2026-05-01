@@ -34,7 +34,7 @@ const PROMISE_CARDS = [
   {
     icon: '🎯',
     title: 'Sessions with a structure',
-    desc: 'Four named formats so you walk in knowing what you'll walk out with.',
+    desc: "Four named formats so you walk in knowing what you'll walk out with.",
     extra: (
       <div className="mt-3 flex flex-wrap gap-1.5">
         {['Career Advice', 'Interview Prep', 'Resume Review', 'Networking'].map(t => (
