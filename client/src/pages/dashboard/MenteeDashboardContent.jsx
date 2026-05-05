@@ -432,7 +432,7 @@ function NextSessionHero({ session, mentorProfile, heroHint, setHeroHint, onJoin
                 </button>
               </Magnetic>
             ) : (
-              <div className="inline-flex items-center gap-2 rounded-xl bg-white/10 px-6 py-3 text-sm font-black text-white/40 ring-1 ring-white/10 cursor-not-allowed" title="Available 3 hours before the session">
+              <div className="inline-flex items-center gap-2 rounded-xl bg-white/10 px-6 py-3 text-sm font-black text-white/40 ring-1 ring-white/10 cursor-not-allowed">
                 <Video className="h-4 w-4" />
                 Join Meeting
               </div>
