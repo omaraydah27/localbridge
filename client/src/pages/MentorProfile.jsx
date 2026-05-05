@@ -646,7 +646,6 @@ export default function MentorProfile() {
   if (loadError) {
     return (
       <main className="relative min-h-screen overflow-x-hidden px-4 py-16 sm:px-6">
-        <CustomCursor />
         <AuroraBg />
         <Tilt3D max={3} className="mx-auto max-w-lg">
           <div className="bd-card-edge relative mx-auto max-w-lg overflow-hidden rounded-[2rem] border border-[var(--bridge-border)] bg-[var(--bridge-surface)] px-8 py-14 text-center shadow-bridge-card">
@@ -673,7 +672,6 @@ export default function MentorProfile() {
   if (!profile?.mentor) {
     return (
       <main className="relative min-h-screen overflow-x-hidden px-4 py-16 sm:px-6">
-        <CustomCursor />
         <AuroraBg />
         <Tilt3D max={3} className="mx-auto max-w-lg">
           <div className="bd-card-edge relative mx-auto max-w-lg overflow-hidden rounded-[2rem] border border-dashed border-[var(--bridge-border-strong)] bg-[var(--bridge-surface)] px-8 py-14 text-center">
@@ -705,7 +703,6 @@ export default function MentorProfile() {
 
   return (
     <>
-      <CustomCursor />
       <ScrollProgressBar />
       <main id="mentor-profile" className="relative isolate min-h-screen overflow-x-hidden" aria-labelledby="profile-heading">
         <AuroraBg />
