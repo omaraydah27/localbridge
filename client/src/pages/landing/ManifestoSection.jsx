@@ -68,7 +68,7 @@ export default function ManifestoSection() {
         {/* Featured promise */}
         <RevealOnScroll delay={0}>
           <TiltCard n={3} className="group relative mb-4 overflow-hidden rounded-[2rem] border border-orange-500/22 bg-[var(--bridge-surface)] p-7 shadow-bridge-glow sm:p-9">
-            <div aria-hidden className="pointer-events-none absolute inset-0" style={{ background: 'radial-gradient(ellipse 50% 70% at 100% 0%,rgba(234,88,12,.08),transparent 70%)' }} />
+            <div aria-hidden className="pointer-events-none absolute inset-0" style={{ background: 'radial-gradient(ellipse 50% 70% at 100% 0%,color-mix(in srgb, var(--color-primary) 8%, transparent),transparent 70%)' }} />
             <div className="relative grid gap-6 sm:grid-cols-[1fr_auto] sm:items-center">
               <div>
                 <div className="inline-flex items-center gap-2 rounded-full border border-orange-500/22 bg-orange-500/8 px-3 py-1 text-[10px] font-black uppercase tracking-[0.22em] text-[var(--bridge-accent)] mb-4">

@@ -30,7 +30,7 @@ export default function ComparisonSection() {
           <div className="relative overflow-hidden rounded-3xl border border-[var(--bridge-border)] bg-[var(--bridge-surface)] shadow-bridge-card">
             {/* Bridge column glow */}
             <div aria-hidden className="pointer-events-none absolute inset-y-0 right-0 w-1/4 hidden sm:block"
-              style={{ background: 'linear-gradient(180deg,rgba(234,88,12,.05),rgba(234,88,12,.02) 50%,rgba(234,88,12,.06))' }} />
+              style={{ background: 'linear-gradient(180deg,color-mix(in srgb, var(--color-primary) 5%, transparent),color-mix(in srgb, var(--color-primary) 2%, transparent) 50%,color-mix(in srgb, var(--color-primary) 6%, transparent))' }} />
 
             {/* Table header */}
             <div className="relative grid grid-cols-4 border-b-2 border-[var(--bridge-border)] bg-[var(--bridge-surface-muted)]/40">
@@ -43,7 +43,7 @@ export default function ComparisonSection() {
                     <div className="flex flex-col items-center gap-1.5">
                       <div className="flex items-center gap-1.5">
                         <span className="text-[14px] font-black text-orange-500 tracking-tight">{h.label}</span>
-                        <span className="rounded-full bg-gradient-to-r from-orange-500 to-amber-500 px-2 py-0.5 text-[8px] font-black text-white uppercase tracking-widest shadow-[0_0_18px_rgba(234,88,12,.45)]">Best</span>
+                        <span className="rounded-full bg-gradient-to-r from-orange-500 to-amber-500 px-2 py-0.5 text-[8px] font-black text-white uppercase tracking-widest shadow-[0_0_18px_color-mix(in srgb, var(--color-primary) 45%, transparent)]">Best</span>
                       </div>
                       <span className="text-[10px] font-semibold text-orange-400/80">{h.sub}</span>
                     </div>

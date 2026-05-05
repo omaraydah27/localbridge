@@ -74,20 +74,20 @@ export default function HowItWorksSection() {
         <div className="relative grid gap-5 sm:grid-cols-3">
           {/* Animated flow line connecting steps */}
           <div aria-hidden className="pointer-events-none absolute top-[110px] left-[16%] right-[16%] hidden h-[2px] sm:block overflow-hidden rounded-full">
-            <div className="absolute inset-0" style={{ background: 'linear-gradient(90deg,transparent 0%,rgba(234,88,12,.18) 18%,rgba(234,88,12,.18) 82%,transparent 100%)' }} />
-            <div className="absolute inset-y-0 w-1/3 b-pulse-flow" style={{ background: 'linear-gradient(90deg,transparent 0%,rgba(234,88,12,.85) 50%,transparent 100%)' }} />
+            <div className="absolute inset-0" style={{ background: 'linear-gradient(90deg,transparent 0%,color-mix(in srgb, var(--color-primary) 18%, transparent) 18%,color-mix(in srgb, var(--color-primary) 18%, transparent) 82%,transparent 100%)' }} />
+            <div className="absolute inset-y-0 w-1/3 b-pulse-flow" style={{ background: 'linear-gradient(90deg,transparent 0%,color-mix(in srgb, var(--color-primary) 85%, transparent) 50%,transparent 100%)' }} />
           </div>
 
           {STEPS.map((step, i) => (
             <RevealOnScroll key={i} delay={i * 140}>
               <TiltCard n={5} className="group relative h-full overflow-hidden rounded-3xl border border-[var(--bridge-border)] bg-[var(--bridge-surface)] p-7 shadow-bridge-card hover:border-orange-500/30 hover:shadow-bridge-glow transition-all">
                 <div aria-hidden className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-700 group-hover:opacity-100"
-                  style={{ background: 'radial-gradient(ellipse 70% 50% at 50% 0%,rgba(234,88,12,.06),transparent 70%)' }} />
+                  style={{ background: 'radial-gradient(ellipse 70% 50% at 50% 0%,color-mix(in srgb, var(--color-primary) 6%, transparent),transparent 70%)' }} />
                 <div className={`pointer-events-none absolute -top-2 -right-2 font-display text-[8.5rem] font-black leading-none text-transparent bg-clip-text bg-gradient-to-br ${step.accent} opacity-[0.07] transition-all duration-700 group-hover:opacity-[0.18] group-hover:scale-110`}>
                   {step.num}
                 </div>
                 <div className="relative">
-                  <div className={`flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br ${step.accent} text-white shadow-[0_8px_28px_rgba(234,88,12,.32)] ring-2 ${step.ring}`}>
+                  <div className={`flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br ${step.accent} text-white shadow-[0_8px_28px_color-mix(in srgb, var(--color-primary) 32%, transparent)] ring-2 ${step.ring}`}>
                     {step.icon}
                   </div>
                   <div className="mt-5 flex items-baseline gap-2">

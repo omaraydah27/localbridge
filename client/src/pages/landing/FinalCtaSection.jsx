@@ -13,20 +13,20 @@ export default function FinalCtaSection({ user }) {
     <section id="start" className="relative overflow-hidden py-24 sm:py-32 lg:py-40" style={{ backgroundColor: 'var(--bridge-hero-bg)' }}>
       {/* Grid background */}
       <div aria-hidden className="pointer-events-none absolute inset-0"
-        style={{ backgroundImage: 'linear-gradient(rgba(234,88,12,.038) 1px,transparent 1px),linear-gradient(90deg,rgba(234,88,12,.038) 1px,transparent 1px)', backgroundSize: '88px 88px' }} />
+        style={{ backgroundImage: 'linear-gradient(color-mix(in srgb, var(--color-primary) 4%, transparent) 1px,transparent 1px),linear-gradient(90deg,color-mix(in srgb, var(--color-primary) 4%, transparent) 1px,transparent 1px)', backgroundSize: '88px 88px' }} />
 
       {/* Center glow blob */}
       <div aria-hidden className="b-blob pointer-events-none absolute left-1/2 top-1/2 h-[960px] w-[960px] -translate-x-1/2 -translate-y-1/2 rounded-full"
-        style={{ background: 'radial-gradient(circle,rgba(234,88,12,.3) 0%,rgba(234,88,12,.05) 42%,transparent 68%)' }} />
+        style={{ background: 'radial-gradient(circle,color-mix(in srgb, var(--color-primary) 30%, transparent) 0%,color-mix(in srgb, var(--color-primary) 5%, transparent) 42%,transparent 68%)' }} />
 
       {/* Concentric portal rings */}
       {[820, 640, 460, 300].map((size, i) => (
         <div key={i} aria-hidden className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 hidden lg:block">
           <div style={{
             width: size, height: size, borderRadius: '50%',
-            border: `1px solid rgba(234,88,12,${0.16 - i * 0.025})`,
+            border: `1px solid color-mix(in srgb, var(--color-primary) ${(0.16 - i * 0.025) * 100}%, transparent)`,
             animation: `bPortal ${12 + i * 3}s linear infinite ${i % 2 ? 'reverse' : ''}`,
-            boxShadow: `0 0 ${30 + i * 8}px rgba(234,88,12,${0.1 - i * 0.018})`,
+            boxShadow: `0 0 ${30 + i * 8}px color-mix(in srgb, var(--color-primary) ${(0.1 - i * 0.018) * 100}%, transparent)`,
           }} />
         </div>
       ))}
@@ -34,7 +34,7 @@ export default function FinalCtaSection({ user }) {
       {/* Floating ember dots */}
       {[[12, 18, 1], [78, 32, 2], [24, 72, 1.5], [88, 68, 1.2], [52, 12, 1.8], [66, 84, 1.3]].map(([x, y, d], i) => (
         <span key={i} aria-hidden className="b-float pointer-events-none absolute hidden lg:block" style={{ left: `${x}%`, top: `${y}%`, animationDelay: `-${d}s` }}>
-          <span className="flex h-1.5 w-1.5 rounded-full bg-orange-400 shadow-[0_0_18px_rgba(234,88,12,.85)]" />
+          <span className="flex h-1.5 w-1.5 rounded-full bg-orange-400 shadow-[0_0_18px_color-mix(in srgb, var(--color-primary) 85%, transparent)]" />
         </span>
       ))}
 
@@ -54,7 +54,7 @@ export default function FinalCtaSection({ user }) {
           <h2 className="font-display font-black leading-[0.86] tracking-[-0.035em] text-white"
             style={{ fontSize: 'clamp(2.2rem, min(6.5vw, 5.5rem), 5.5rem)' }}>
             One conversation<br />
-            <span className="shimmer-text" style={{ filter: 'drop-shadow(0 0 55px rgba(234,88,12,.7))' }}>
+            <span className="shimmer-text" style={{ filter: 'drop-shadow(0 0 55px color-mix(in srgb, var(--color-primary) 70%, transparent))' }}>
               changes everything.
             </span>
           </h2>
@@ -68,7 +68,7 @@ export default function FinalCtaSection({ user }) {
               <Link
                 to={user ? '/mentors' : '/register'}
                 data-cursor="Start"
-                className="btn-sheen b-pulse inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-orange-500 to-amber-500 px-8 py-4 text-sm font-bold text-white shadow-[0_0_88px_rgba(234,88,12,.65)] transition hover:scale-[1.05] hover:shadow-[0_0_120px_rgba(234,88,12,.9)] active:scale-[.97] sm:gap-3 sm:px-11 sm:py-5 sm:text-base"
+                className="btn-sheen b-pulse inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-orange-500 to-amber-500 px-8 py-4 text-sm font-bold text-white shadow-[0_0_88px_color-mix(in srgb, var(--color-primary) 65%, transparent)] transition hover:scale-[1.05] hover:shadow-[0_0_120px_color-mix(in srgb, var(--color-primary) 90%, transparent)] active:scale-[.97] sm:gap-3 sm:px-11 sm:py-5 sm:text-base"
               >
                 Get started for free
                 <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">

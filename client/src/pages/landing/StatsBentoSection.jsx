@@ -25,7 +25,7 @@ export default function StatsBentoSection() {
           {/* Featured mentor network cell — spans 2 rows */}
           <RevealOnScroll delay={0} className="col-span-2 lg:row-span-2">
             <TiltCard n={4} className="group relative h-full overflow-hidden rounded-[2rem] border border-orange-500/22 bg-[var(--bridge-surface)] p-7 shadow-bridge-glow sm:p-9">
-              <div aria-hidden className="pointer-events-none absolute inset-0" style={{ background: 'radial-gradient(ellipse 60% 80% at 100% 100%,rgba(234,88,12,.08),transparent 70%)' }} />
+              <div aria-hidden className="pointer-events-none absolute inset-0" style={{ background: 'radial-gradient(ellipse 60% 80% at 100% 100%,color-mix(in srgb, var(--color-primary) 8%, transparent),transparent 70%)' }} />
               <div className="relative flex h-full flex-col justify-between gap-6">
                 <div className="flex items-center gap-2">
                   <span className="relative flex h-2 w-2">

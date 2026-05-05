@@ -204,7 +204,7 @@ export function MentorDashboardContent({ dash, activeTab, setActiveTab, logout, 
                     return (
                       <button key={i} type="button" onClick={q.onClick} data-cursor={q.cursor}
                         className={`group flex w-full items-center gap-3 rounded-2xl p-3 transition-all duration-300 ${q.hover}`}>
-                        <div className={`relative flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br ${q.g} text-white shadow-[0_8px_22px_-6px_rgba(234,88,12,0.45)] ring-1 ring-white/15 transition-all duration-300 group-hover:scale-110 group-hover:rotate-[-4deg]`}>
+                        <div className={`relative flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br ${q.g} text-white shadow-[0_8px_22px_-6px_color-mix(in srgb, var(--color-primary) 45%, transparent)] ring-1 ring-white/15 transition-all duration-300 group-hover:scale-110 group-hover:rotate-[-4deg]`}>
                           <Icon className="h-4 w-4" />
                         </div>
                         <div className="min-w-0 flex-1 text-left">
@@ -355,7 +355,7 @@ function MentorNextSessionHero({ session, heroHint, setHeroHint, handleStatusUpd
   const canJoin = canJoinSession(session.scheduled_date);
 
   return (
-    <div className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-stone-950 via-stone-900 to-orange-950 p-7 text-white shadow-[0_24px_60px_-16px_rgba(234,88,12,0.35)] sm:p-8">
+    <div className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-stone-950 via-stone-900 to-orange-950 p-7 text-white shadow-[0_24px_60px_-16px_color-mix(in srgb, var(--color-primary) 35%, transparent)] sm:p-8">
       <div aria-hidden className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-orange-500/20 blur-3xl" />
       <div aria-hidden className="pointer-events-none absolute -bottom-16 -left-16 h-56 w-56 rounded-full bg-amber-500/15 blur-3xl" />
       <div aria-hidden className="pointer-events-none absolute inset-0 opacity-[0.04]"
@@ -463,7 +463,7 @@ function NoSessionCTA({ onSettings }) {
   return (
     <Tilt3D max={4} className="rounded-[2rem]">
       <div className="relative overflow-hidden rounded-[2rem] p-7 sm:p-9"
-        style={{ background: 'linear-gradient(135deg, #f97316 0%, #f59e0b 45%, #ea580c 100%)' }}>
+        style={{ background: 'linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 45%, var(--color-primary-hover) 100%)' }}>
         <div aria-hidden className="pointer-events-none absolute inset-0 opacity-[0.08]"
           style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40' fill='%23000' fill-opacity='1'/%3E%3C/svg%3E\")" }}
         />

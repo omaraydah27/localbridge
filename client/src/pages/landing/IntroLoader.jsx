@@ -4,7 +4,7 @@ import { usePerfTier } from './landingHooks';
 
 const BRIDGE_LETTERS = ['B', 'R', 'I', 'D', 'G', 'E'];
 
-const MOLTEN = 'linear-gradient(135deg,#fff7ed 0%,#fed7aa 12%,#fdba74 24%,#fb923c 40%,#f97316 56%,#ea580c 72%,#c2410c 86%,#7c2d12 100%)';
+const MOLTEN = 'linear-gradient(135deg,#ffffff 0%,color-mix(in srgb, var(--color-accent) 60%, #ffffff) 14%,var(--color-accent) 28%,color-mix(in srgb, var(--color-primary) 60%, var(--color-accent)) 44%,var(--color-primary) 60%,var(--color-primary-hover) 78%,color-mix(in srgb, var(--color-secondary) 70%, var(--color-primary-hover)) 92%,var(--color-secondary) 100%)';
 
 const LETTER_VECTORS = [
   { lx: '-340px', ly: '-160px', rx: '70deg',  ry: '-90deg' },
@@ -155,16 +155,16 @@ export default function IntroLoader() {
       <svg width="0" height="0" style={{ position: 'absolute' }} aria-hidden>
         <defs>
           <linearGradient id="brMolten" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#fff7ed" />
-            <stop offset="18%" stopColor="#fed7aa" />
-            <stop offset="38%" stopColor="#fb923c" />
-            <stop offset="60%" stopColor="#f97316" />
-            <stop offset="80%" stopColor="#ea580c" />
-            <stop offset="100%" stopColor="#7c2d12" />
+            <stop offset="0%" stopColor="#ffffff" />
+            <stop offset="18%" stopColor="var(--color-accent)" />
+            <stop offset="38%" stopColor="var(--color-primary)" />
+            <stop offset="60%" stopColor="var(--color-primary)" />
+            <stop offset="80%" stopColor="var(--color-primary-hover)" />
+            <stop offset="100%" stopColor="var(--color-secondary)" />
           </linearGradient>
           <radialGradient id="brHighlight" cx="35%" cy="30%" r="60%">
-            <stop offset="0%" stopColor="rgba(255,247,237,0.95)" />
-            <stop offset="40%" stopColor="rgba(253,186,116,0.4)" />
+            <stop offset="0%" stopColor="color-mix(in srgb, var(--color-on-primary) 95%, transparent)" />
+            <stop offset="40%" stopColor="color-mix(in srgb, var(--color-accent) 40%, transparent)" />
             <stop offset="100%" stopColor="rgba(124,45,18,0)" />
           </radialGradient>
         </defs>
@@ -196,8 +196,8 @@ export default function IntroLoader() {
               <stop offset="100%" stopColor="#2a1208" />
             </linearGradient>
             <radialGradient id="brHorizonAura" cx="50%" cy="100%" r="65%">
-              <stop offset="0%" stopColor="rgba(251,191,36,0.55)" />
-              <stop offset="35%" stopColor="rgba(234,88,12,0.30)" />
+              <stop offset="0%" stopColor="color-mix(in srgb, var(--color-accent) 55%, transparent)" />
+              <stop offset="35%" stopColor="color-mix(in srgb, var(--color-primary) 30%, transparent)" />
               <stop offset="70%" stopColor="rgba(124,45,18,0.10)" />
               <stop offset="100%" stopColor="transparent" />
             </radialGradient>
@@ -207,14 +207,14 @@ export default function IntroLoader() {
               <stop offset="100%" stopColor="#050201" />
             </linearGradient>
             <linearGradient id="brTowerRim" x1="1" y1="0" x2="0" y2="0">
-              <stop offset="0%" stopColor="rgba(251,191,36,0.85)" />
-              <stop offset="35%" stopColor="rgba(234,88,12,0.45)" />
+              <stop offset="0%" stopColor="color-mix(in srgb, var(--color-accent) 85%, transparent)" />
+              <stop offset="35%" stopColor="color-mix(in srgb, var(--color-primary) 45%, transparent)" />
               <stop offset="100%" stopColor="transparent" />
             </linearGradient>
             <linearGradient id="brCableMain" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stopColor="rgba(251,191,36,0.85)" />
-              <stop offset="50%" stopColor="rgba(255,247,237,0.95)" />
-              <stop offset="100%" stopColor="rgba(234,88,12,0.7)" />
+              <stop offset="0%" stopColor="color-mix(in srgb, var(--color-accent) 85%, transparent)" />
+              <stop offset="50%" stopColor="color-mix(in srgb, var(--color-on-primary) 95%, transparent)" />
+              <stop offset="100%" stopColor="color-mix(in srgb, var(--color-primary) 70%, transparent)" />
             </linearGradient>
             <linearGradient id="brDeckGrad" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stopColor="#2a1208" />
@@ -228,12 +228,12 @@ export default function IntroLoader() {
             </linearGradient>
             <linearGradient id="brFogGrad" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stopColor="transparent" />
-              <stop offset="60%" stopColor="rgba(251,146,60,0.10)" />
-              <stop offset="100%" stopColor="rgba(251,146,60,0.22)" />
+              <stop offset="60%" stopColor="color-mix(in srgb, var(--color-primary) 10%, transparent)" />
+              <stop offset="100%" stopColor="color-mix(in srgb, var(--color-primary) 22%, transparent)" />
             </linearGradient>
             <radialGradient id="brBeaconGlow" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="rgba(251,191,36,1)" />
-              <stop offset="40%" stopColor="rgba(234,88,12,0.6)" />
+              <stop offset="0%" stopColor="var(--color-accent)" />
+              <stop offset="40%" stopColor="color-mix(in srgb, var(--color-primary) 60%, transparent)" />
               <stop offset="100%" stopColor="transparent" />
             </radialGradient>
             <filter id="brBloom" x="-50%" y="-50%" width="200%" height="200%">
@@ -251,7 +251,7 @@ export default function IntroLoader() {
           {/* Stars — fewer + no twinkle on mid */}
           <g>
             {BRIDGE_STARS.slice(0, isMid ? 24 : BRIDGE_STARS.length).map((s, i) => (
-              <circle key={i} cx={s.x} cy={s.y} r={s.r} fill="#fff7ed" style={{
+              <circle key={i} cx={s.x} cy={s.y} r={s.r} fill="#ffffff" style={{
                 animation: isMid ? 'none' : `brStarTwinkle ${s.dur}s ease-in-out ${s.delay}s infinite`,
                 opacity: isMid ? 0.55 : 0.4,
               }} />
@@ -274,19 +274,19 @@ export default function IntroLoader() {
             {/* far cable */}
             <path
               d="M540,340 Q850,470 1160,360"
-              stroke="rgba(251,191,36,0.5)"
+              stroke="color-mix(in srgb, var(--color-accent) 50%, transparent)"
               strokeWidth="1"
               fill="none"
             />
             {/* far hangers */}
             {BRIDGE_HANGERS_FAR.map((h, i) => (
-              <line key={i} x1={h.x} y1={h.y} x2={h.x} y2="490" stroke="rgba(251,146,60,0.18)" strokeWidth="0.6" />
+              <line key={i} x1={h.x} y1={h.y} x2={h.x} y2="490" stroke="color-mix(in srgb, var(--color-primary) 18%, transparent)" strokeWidth="0.6" />
             ))}
             {/* far towers */}
             <rect x="535" y="340" width="10" height="150" fill="#0a0402" />
             <rect x="1155" y="360" width="9" height="130" fill="#0a0402" />
-            <rect x="540" y="340" width="2" height="150" fill="rgba(251,191,36,0.35)" />
-            <rect x="1158" y="360" width="2" height="130" fill="rgba(251,191,36,0.30)" />
+            <rect x="540" y="340" width="2" height="150" fill="color-mix(in srgb, var(--color-accent) 35%, transparent)" />
+            <rect x="1158" y="360" width="2" height="130" fill="color-mix(in srgb, var(--color-accent) 30%, transparent)" />
             {/* far deck */}
             <rect x="500" y="488" width="700" height="3" fill="#0a0402" />
           </g>
@@ -296,10 +296,10 @@ export default function IntroLoader() {
 
           {/* Water highlights — horizontal streaks */}
           <g opacity="0.4">
-            <line x1="0" y1="600" x2="1600" y2="600" stroke="rgba(251,191,36,0.18)" strokeWidth="0.8" strokeDasharray="40 60" />
-            <line x1="0" y1="640" x2="1600" y2="640" stroke="rgba(234,88,12,0.15)" strokeWidth="0.6" strokeDasharray="30 80" />
-            <line x1="0" y1="700" x2="1600" y2="700" stroke="rgba(251,146,60,0.10)" strokeWidth="0.5" strokeDasharray="60 40" />
-            <line x1="0" y1="780" x2="1600" y2="780" stroke="rgba(251,191,36,0.08)" strokeWidth="0.4" strokeDasharray="20 70" />
+            <line x1="0" y1="600" x2="1600" y2="600" stroke="color-mix(in srgb, var(--color-accent) 18%, transparent)" strokeWidth="0.8" strokeDasharray="40 60" />
+            <line x1="0" y1="640" x2="1600" y2="640" stroke="color-mix(in srgb, var(--color-primary) 15%, transparent)" strokeWidth="0.6" strokeDasharray="30 80" />
+            <line x1="0" y1="700" x2="1600" y2="700" stroke="color-mix(in srgb, var(--color-primary) 10%, transparent)" strokeWidth="0.5" strokeDasharray="60 40" />
+            <line x1="0" y1="780" x2="1600" y2="780" stroke="color-mix(in srgb, var(--color-accent) 8%, transparent)" strokeWidth="0.4" strokeDasharray="20 70" />
           </g>
 
           {/* MAIN BRIDGE — primary suspension cables (no sway on mid) */}
@@ -315,7 +315,7 @@ export default function IntroLoader() {
             {/* Secondary cable (slightly offset for thickness/depth) */}
             <path
               d="M300,184 Q800,524 1300,224"
-              stroke="rgba(234,88,12,0.5)"
+              stroke="color-mix(in srgb, var(--color-primary) 50%, transparent)"
               strokeWidth="1.2"
               fill="none"
             />
@@ -327,7 +327,7 @@ export default function IntroLoader() {
                 y1={h.y}
                 x2={h.x}
                 y2="540"
-                stroke="rgba(251,146,60,0.55)"
+                stroke="color-mix(in srgb, var(--color-primary) 55%, transparent)"
                 strokeWidth="0.8"
               />
             ))}
@@ -356,7 +356,7 @@ export default function IntroLoader() {
               animation: 'brBeacon 2.4s ease-in-out infinite',
               transformOrigin: '300px 158px',
             }} />
-            <circle cx="300" cy="158" r="2.5" fill="#fff7ed" />
+            <circle cx="300" cy="158" r="2.5" fill="#ffffff" />
           </g>
 
           {/* Tower 2 — farther (right) */}
@@ -375,13 +375,13 @@ export default function IntroLoader() {
               animation: 'brBeacon 2.8s ease-in-out 0.6s infinite',
               transformOrigin: '1300px 202px',
             }} />
-            <circle cx="1300" cy="202" r="2" fill="#fff7ed" />
+            <circle cx="1300" cy="202" r="2" fill="#ffffff" />
           </g>
 
           {/* BRIDGE DECK — silhouette stretching across */}
           <rect x="0" y="538" width="1600" height="22" fill="url(#brDeckGrad)" />
           {/* Deck top edge — bright rim */}
-          <rect x="0" y="537" width="1600" height="1.5" fill="rgba(251,191,36,0.7)" filter={isMid ? undefined : 'url(#brBloom)'} />
+          <rect x="0" y="537" width="1600" height="1.5" fill="color-mix(in srgb, var(--color-accent) 70%, transparent)" filter={isMid ? undefined : 'url(#brBloom)'} />
           {/* Deck bottom truss shadow */}
           <rect x="0" y="556" width="1600" height="6" fill="rgba(0,0,0,0.7)" />
 
@@ -405,8 +405,8 @@ export default function IntroLoader() {
                 animation: isMid ? 'none' : `brDeckLight ${2.5 + (i % 3) * 0.3}s ease-in-out ${l.delay}s infinite`,
                 opacity: isMid ? 0.85 : 1,
               }} />
-              <circle cx={l.x} cy="535" r="0.8" fill="#fff7ed" />
-              {!isMid && <ellipse cx={l.x} cy="572" rx="2.5" ry="14" fill="rgba(251,191,36,0.20)" style={{
+              <circle cx={l.x} cy="535" r="0.8" fill="#ffffff" />
+              {!isMid && <ellipse cx={l.x} cy="572" rx="2.5" ry="14" fill="color-mix(in srgb, var(--color-accent) 20%, transparent)" style={{
                 animation: `brDeckLight ${3 + (i % 3) * 0.3}s ease-in-out ${l.delay}s infinite`,
               }} />}
             </g>
@@ -414,9 +414,9 @@ export default function IntroLoader() {
 
           {/* Atmospheric fog over water — static on mid */}
           <g style={isMid ? undefined : { animation: 'brFogDrift 18s linear infinite' }}>
-            <ellipse cx="200" cy="600" rx="380" ry="40" fill="rgba(251,146,60,0.10)" />
-            <ellipse cx="800" cy="610" rx="500" ry="50" fill="rgba(251,191,36,0.08)" />
-            <ellipse cx="1400" cy="600" rx="380" ry="38" fill="rgba(251,146,60,0.10)" />
+            <ellipse cx="200" cy="600" rx="380" ry="40" fill="color-mix(in srgb, var(--color-primary) 10%, transparent)" />
+            <ellipse cx="800" cy="610" rx="500" ry="50" fill="color-mix(in srgb, var(--color-accent) 8%, transparent)" />
+            <ellipse cx="1400" cy="600" rx="380" ry="38" fill="color-mix(in srgb, var(--color-primary) 10%, transparent)" />
           </g>
 
           {/* Bottom fog gradient overlay */}
@@ -436,22 +436,22 @@ export default function IntroLoader() {
         top: '50%',
         height: '2px',
         transform: 'translateY(-1px)',
-        background: 'linear-gradient(90deg,transparent,rgba(251,191,36,0.95) 30%,rgba(255,247,237,1) 50%,rgba(251,191,36,0.95) 70%,transparent)',
-        boxShadow: '0 0 30px rgba(234,88,12,0.9),0 0 60px rgba(251,191,36,0.7)',
+        background: 'linear-gradient(90deg,transparent,color-mix(in srgb, var(--color-accent) 95%, transparent) 30%,var(--color-on-primary) 50%,color-mix(in srgb, var(--color-accent) 95%, transparent) 70%,transparent)',
+        boxShadow: '0 0 30px color-mix(in srgb, var(--color-primary) 90%, transparent),0 0 60px color-mix(in srgb, var(--color-accent) 70%, transparent)',
         opacity: 0,
         animation: `brFlash 0.9s cubic-bezier(0.22,1,0.36,1) ${flashAt}s forwards`,
       }} />
 
       {/* Atmosphere orbs — fewer + no infinite drift on lite */}
       {(isLow ? [
-        { x: '50%', y: '50%', c: 'rgba(234,88,12,0.30)', s: '60vmin', d: '14s', delay: 0.0 },
+        { x: '50%', y: '50%', c: 'color-mix(in srgb, var(--color-primary) 30%, transparent)', s: '60vmin', d: '14s', delay: 0.0 },
       ] : isMid ? [
-        { x: '30%', y: '38%', c: 'rgba(234,88,12,0.28)', s: '54vmin', d: '14s', delay: 0.0 },
-        { x: '70%', y: '62%', c: 'rgba(251,146,60,0.22)', s: '58vmin', d: '18s', delay: 0.1 },
+        { x: '30%', y: '38%', c: 'color-mix(in srgb, var(--color-primary) 28%, transparent)', s: '54vmin', d: '14s', delay: 0.0 },
+        { x: '70%', y: '62%', c: 'color-mix(in srgb, var(--color-primary) 22%, transparent)', s: '58vmin', d: '18s', delay: 0.1 },
       ] : [
-        { x: '28%', y: '32%', c: 'rgba(234,88,12,0.30)', s: '50vmin', d: '14s', delay: 0.0 },
-        { x: '72%', y: '68%', c: 'rgba(251,146,60,0.24)', s: '56vmin', d: '18s', delay: 0.1 },
-        { x: '50%', y: '50%', c: 'rgba(251,191,36,0.18)', s: '64vmin', d: '22s', delay: 0.2 },
+        { x: '28%', y: '32%', c: 'color-mix(in srgb, var(--color-primary) 30%, transparent)', s: '50vmin', d: '14s', delay: 0.0 },
+        { x: '72%', y: '68%', c: 'color-mix(in srgb, var(--color-primary) 24%, transparent)', s: '56vmin', d: '18s', delay: 0.1 },
+        { x: '50%', y: '50%', c: 'color-mix(in srgb, var(--color-accent) 18%, transparent)', s: '64vmin', d: '22s', delay: 0.2 },
       ]).map((o, i) => (
         <div key={i} aria-hidden className="absolute z-[2] rounded-full pointer-events-none" style={{
           left: o.x, top: o.y, width: o.s, height: o.s,
@@ -488,7 +488,7 @@ export default function IntroLoader() {
         <div aria-hidden className="absolute pointer-events-none" style={{
           left: '50%', top: '50%',
           width: '70vmin', height: '70vmin',
-          background: 'radial-gradient(circle,rgba(234,88,12,0.45) 0%,rgba(251,146,60,0.22) 32%,transparent 65%)',
+          background: 'radial-gradient(circle,color-mix(in srgb, var(--color-primary) 45%, transparent) 0%,color-mix(in srgb, var(--color-primary) 22%, transparent) 32%,transparent 65%)',
           filter: lite ? 'blur(36px)' : 'blur(70px)',
           animation: lite ? 'none' : 'brAura 2.6s ease-in-out infinite',
           transform: 'translate(-50%,-50%)',
@@ -499,8 +499,8 @@ export default function IntroLoader() {
           <div key={i} aria-hidden className="absolute rounded-full pointer-events-none" style={{
             left: '50%', top: '50%',
             width: `${p.size}px`, height: `${p.size}px`,
-            background: i % 3 === 0 ? '#fff7ed' : i % 3 === 1 ? '#fbbf24' : '#fb923c',
-            boxShadow: isMid ? 'none' : `0 0 ${p.size * 3}px ${i % 3 === 0 ? 'rgba(255,247,237,0.95)' : i % 3 === 1 ? 'rgba(251,191,36,0.85)' : 'rgba(251,146,60,0.85)'}`,
+            background: i % 3 === 0 ? '#ffffff' : i % 3 === 1 ? 'var(--color-accent)' : 'var(--color-primary)',
+            boxShadow: isMid ? 'none' : `0 0 ${p.size * 3}px ${i % 3 === 0 ? 'color-mix(in srgb, var(--color-on-primary) 95%, transparent)' : i % 3 === 1 ? 'color-mix(in srgb, var(--color-accent) 85%, transparent)' : 'color-mix(in srgb, var(--color-primary) 85%, transparent)'}`,
             opacity: 0,
             '--px': `${Math.cos(p.angle) * p.radius}px`,
             '--py': `${Math.sin(p.angle) * p.radius}px`,
@@ -512,8 +512,8 @@ export default function IntroLoader() {
         {(lite ? [0] : [0, 0.08, 0.16]).map((delay, i) => (
           <div key={i} aria-hidden className="absolute rounded-full pointer-events-none" style={{
             width: '20vmin', height: '20vmin',
-            border: `${3 - i}px solid ${i === 0 ? 'rgba(251,191,36,0.85)' : i === 1 ? 'rgba(234,88,12,0.65)' : 'rgba(251,146,60,0.5)'}`,
-            boxShadow: lite ? 'none' : `0 0 ${36 - i * 8}px rgba(234,88,12,0.55)`,
+            border: `${3 - i}px solid ${i === 0 ? 'color-mix(in srgb, var(--color-accent) 85%, transparent)' : i === 1 ? 'color-mix(in srgb, var(--color-primary) 65%, transparent)' : 'color-mix(in srgb, var(--color-primary) 50%, transparent)'}`,
+            boxShadow: lite ? 'none' : `0 0 ${36 - i * 8}px color-mix(in srgb, var(--color-primary) 55%, transparent)`,
             opacity: 0,
             animation: `brShockwave ${1.0 + i * 0.12}s cubic-bezier(0.22,1,0.36,1) ${1.2 + delay}s forwards`,
           }} />
@@ -533,7 +533,7 @@ export default function IntroLoader() {
             inset: 0,
             overflow: 'visible',
             animation: lite ? 'none' : 'brBlobBreathe 2.4s ease-in-out infinite',
-            filter: lite ? 'drop-shadow(0 0 26px rgba(234,88,12,0.65))' : 'drop-shadow(0 0 50px rgba(234,88,12,0.7)) drop-shadow(0 0 90px rgba(251,191,36,0.45))',
+            filter: lite ? 'drop-shadow(0 0 26px color-mix(in srgb, var(--color-primary) 65%, transparent))' : 'drop-shadow(0 0 50px color-mix(in srgb, var(--color-primary) 70%, transparent)) drop-shadow(0 0 90px color-mix(in srgb, var(--color-accent) 45%, transparent))',
           }}>
             <path
               d="M100,30 C145,32 175,68 175,108 C175,154 145,180 100,180 C58,182 25,150 28,108 C25,68 58,28 100,30 Z"
@@ -547,7 +547,7 @@ export default function IntroLoader() {
           {/* Embossed "B" inside the liquid shape */}
           <span className="relative font-display font-black leading-none" style={{
             fontSize: 'clamp(7rem,15vw,11rem)',
-            background: 'linear-gradient(160deg,rgba(255,247,237,0.95) 0%,rgba(251,191,36,0.4) 50%,rgba(124,45,18,0.85) 100%)',
+            background: 'linear-gradient(160deg,color-mix(in srgb, var(--color-on-primary) 95%, transparent) 0%,color-mix(in srgb, var(--color-accent) 40%, transparent) 50%,rgba(124,45,18,0.85) 100%)',
             backgroundSize: '200% 200%',
             WebkitBackgroundClip: 'text',
             backgroundClip: 'text',
@@ -576,7 +576,7 @@ export default function IntroLoader() {
                 color: 'transparent',
                 opacity: 0,
                 display: 'inline-block',
-                filter: 'drop-shadow(0 0 24px rgba(234,88,12,0.5)) drop-shadow(0 2px 0 rgba(124,45,18,0.4))',
+                filter: 'drop-shadow(0 0 24px color-mix(in srgb, var(--color-primary) 50%, transparent)) drop-shadow(0 2px 0 rgba(124,45,18,0.4))',
                 '--lx': v.lx,
                 '--ly': v.ly,
                 '--rx': v.rx,
@@ -596,7 +596,7 @@ export default function IntroLoader() {
         }}>
           <div style={{
             height: '100%',
-            background: 'linear-gradient(90deg,transparent,rgba(234,88,12,0.95) 25%,rgba(255,247,237,1) 50%,rgba(251,191,36,1) 75%,transparent)',
+            background: 'linear-gradient(90deg,transparent,color-mix(in srgb, var(--color-primary) 95%, transparent) 25%,var(--color-on-primary) 50%,var(--color-accent) 75%,transparent)',
             transformOrigin: 'left',
             transform: 'scaleX(0)',
             opacity: 0,
@@ -607,7 +607,7 @@ export default function IntroLoader() {
         {/* Tagline */}
         <div className="mt-5 px-5 py-2 rounded-full" style={{
           background: 'rgba(255,255,255,0.04)',
-          border: '1px solid rgba(255,247,237,0.10)',
+          border: '1px solid color-mix(in srgb, var(--color-on-primary) 10%, transparent)',
           backdropFilter: 'blur(14px)',
           WebkitBackdropFilter: 'blur(14px)',
           opacity: 0,
@@ -616,7 +616,7 @@ export default function IntroLoader() {
           <p className="text-center font-display font-semibold uppercase" style={{
             fontSize: 'clamp(0.55rem,0.95vw,0.7rem)',
             letterSpacing: '0.42em',
-            color: 'rgba(255,247,237,0.78)',
+            color: 'color-mix(in srgb, var(--color-on-primary) 78%, transparent)',
           }}>
             Mentorship · Networking · Outcomes
           </p>
