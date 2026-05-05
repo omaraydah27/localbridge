@@ -8,7 +8,7 @@ import { isMentorAccount } from '../utils/accountRole';
 import { devLogin } from './DevPortal/devAuth.js';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const inputClass = 'w-full rounded-2xl border border-stone-200 bg-white/80 px-12 py-4 text-sm font-bold text-stone-950 shadow-[inset_0_1px_0_rgba(255,255,255,0.95),0_16px_38px_-32px_rgba(28,25,23,0.8)] outline-none transition placeholder:text-stone-300 focus:border-amber-300 focus:bg-white focus:shadow-[0_0_0_4px_rgba(251,191,36,0.18),0_18px_45px_-32px_rgba(28,25,23,0.9)]';
+const inputClass = 'w-full rounded-2xl border border-stone-200 bg-white/80 px-12 py-4 text-sm font-bold text-stone-950 shadow-[inset_0_1px_0_rgba(255,255,255,0.95),0_16px_38px_-32px_color-mix(in srgb, var(--color-secondary) 80%, transparent)] outline-none transition placeholder:text-stone-300 focus:border-amber-300 focus:bg-white focus:shadow-[0_0_0_4px_color-mix(in srgb, var(--color-accent) 18%, transparent),0_18px_45px_-32px_color-mix(in srgb, var(--color-secondary) 90%, transparent)]';
 const labelClass = 'mb-2 block text-[11px] font-black uppercase tracking-[0.18em] text-stone-400 group-focus-within:text-stone-950';
 
 function LoginAlreadySignedIn({ user }) {
@@ -17,7 +17,7 @@ function LoginAlreadySignedIn({ user }) {
 
   return (
     <FuturisticAuthFrame mode="login" title="You are already in" subtitle={`Signed in as ${display}. Continue to Bridge without authenticating again.`}>
-      <Link to={navigateTo} className="group inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-stone-950 px-5 py-4 text-sm font-black text-white shadow-[0_18px_45px_-22px_rgba(28,25,23,0.9)] transition hover:-translate-y-0.5 hover:bg-stone-800">
+      <Link to={navigateTo} className="group inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-stone-950 px-5 py-4 text-sm font-black text-white shadow-[0_18px_45px_-22px_color-mix(in srgb, var(--color-secondary) 90%, transparent)] transition hover:-translate-y-0.5 hover:bg-stone-800">
         Continue to Bridge
         <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" />
       </Link>
@@ -94,7 +94,7 @@ export default function Login() {
             <div className="mb-2 flex items-center justify-between"><label htmlFor="login-password" className="block text-[11px] font-black uppercase tracking-[0.18em] text-stone-400 group-focus-within:text-stone-950">Password</label><Link to="/contact" className="text-xs font-black text-stone-500 hover:text-stone-950">Forgot?</Link></div>
             <div className="relative"><Lock className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-stone-300 group-focus-within:text-amber-600" /><input id="login-password" type={showPassword ? 'text' : 'password'} autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" className={inputClass} /><button type="button" onClick={() => setShowPassword((v) => !v)} className="absolute right-3 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-xl text-stone-400 transition hover:bg-stone-100 hover:text-stone-950" aria-label={showPassword ? 'Hide password' : 'Show password'}>{showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}</button></div>
           </div>
-          <button type="submit" disabled={submitting} className="group relative inline-flex w-full items-center justify-center gap-2 overflow-hidden rounded-2xl bg-stone-950 px-5 py-4 text-sm font-black text-white shadow-[0_20px_48px_-24px_rgba(28,25,23,0.95)] transition hover:-translate-y-0.5 hover:bg-stone-800 disabled:pointer-events-none disabled:opacity-55">
+          <button type="submit" disabled={submitting} className="group relative inline-flex w-full items-center justify-center gap-2 overflow-hidden rounded-2xl bg-stone-950 px-5 py-4 text-sm font-black text-white shadow-[0_20px_48px_-24px_color-mix(in srgb, var(--color-secondary) 95%, transparent)] transition hover:-translate-y-0.5 hover:bg-stone-800 disabled:pointer-events-none disabled:opacity-55">
             <span className="absolute inset-0 bg-gradient-to-r from-amber-300/0 via-amber-300/20 to-amber-300/0 opacity-0 transition group-hover:opacity-100" />
             <span className="relative flex items-center gap-2">{submitting ? <><span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />Signing in…</> : <>Sign In<ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" /></>}</span>
           </button>

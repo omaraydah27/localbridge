@@ -11,7 +11,7 @@ const HERO_CSS = `
   @keyframes heroOrb2{0%,100%{transform:translate3d(0,0,0) scale(1);}50%{transform:translate3d(-2%,2%,0) scale(1.05);}}
   @keyframes heroLetterIn{0%{opacity:0;transform:translate3d(0,80px,-220px) rotateX(-55deg) scale(0.78);filter:blur(18px);}55%{opacity:1;filter:blur(2px);}82%{transform:translate3d(0,-3px,0) rotateX(2deg) scale(1.015);filter:blur(0);}100%{opacity:1;transform:translate3d(0,0,0) rotateX(0deg) scale(1);filter:blur(0);}}
   @keyframes heroCtaIn{0%{opacity:0;transform:translateY(28px) scale(0.92);filter:blur(10px);}100%{opacity:1;transform:translateY(0) scale(1);filter:blur(0);}}
-  @keyframes heroCtaPulse{0%,100%{box-shadow:0 0 0 0 rgba(234,88,12,0),0 18px 50px -10px rgba(234,88,12,0.55),0 0 60px rgba(234,88,12,0.4),0 0 100px rgba(251,191,36,0.18),inset 0 1px 0 rgba(255,255,255,0.32);}50%{box-shadow:0 0 0 6px rgba(234,88,12,0),0 22px 60px -8px rgba(234,88,12,0.7),0 0 90px rgba(234,88,12,0.55),0 0 140px rgba(251,191,36,0.32),inset 0 1px 0 rgba(255,255,255,0.4);}}
+  @keyframes heroCtaPulse{0%,100%{box-shadow:0 0 0 0 transparent,0 18px 50px -10px color-mix(in srgb, var(--color-primary) 55%, transparent),0 0 60px color-mix(in srgb, var(--color-primary) 40%, transparent),0 0 100px color-mix(in srgb, var(--color-accent) 18%, transparent),inset 0 1px 0 rgba(255,255,255,0.32);}50%{box-shadow:0 0 0 6px transparent,0 22px 60px -8px color-mix(in srgb, var(--color-primary) 70%, transparent),0 0 90px color-mix(in srgb, var(--color-primary) 55%, transparent),0 0 140px color-mix(in srgb, var(--color-accent) 32%, transparent),inset 0 1px 0 rgba(255,255,255,0.4);}}
   @keyframes heroNeonRotate{0%{--neon-angle:0deg;}100%{--neon-angle:360deg;}}
   @keyframes heroSheen{0%{background-position:-200% 50%;}100%{background-position:200% 50%;}}
   @keyframes heroFadeUp{0%{opacity:0;transform:translateY(24px);filter:blur(6px);}100%{opacity:1;transform:translateY(0);filter:blur(0);}}
@@ -26,19 +26,19 @@ const HERO_CSS = `
   .hero-bg-zoom{animation:heroZoom 28s cubic-bezier(0.45,0,0.55,1) forwards;will-change:transform;}
   .hero-bg-drift{animation:heroDrift 18s ease-in-out infinite;will-change:transform;}
   .hero-cta{position:relative;isolation:isolate;animation:heroCtaIn 1s cubic-bezier(0.22,1,0.36,1) 1.05s both, heroCtaPulse 2.6s ease-in-out 2.0s infinite;will-change:transform,box-shadow,filter,opacity;}
-  .hero-cta::before{content:"";position:absolute;inset:-2px;border-radius:9999px;padding:2px;background:conic-gradient(from var(--neon-angle,0deg),rgba(251,191,36,1),rgba(255,247,237,1),rgba(234,88,12,1),rgba(251,146,60,1),rgba(251,191,36,1));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);mask-composite:exclude;animation:heroNeonRotate 3.5s linear infinite;z-index:-1;filter:drop-shadow(0 0 12px rgba(234,88,12,0.85)) drop-shadow(0 0 26px rgba(251,191,36,0.55));pointer-events:none;}
+  .hero-cta::before{content:"";position:absolute;inset:-2px;border-radius:9999px;padding:2px;background:conic-gradient(from var(--neon-angle,0deg),var(--color-accent),#ffffff,var(--color-primary),var(--color-primary-hover),var(--color-accent));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);mask-composite:exclude;animation:heroNeonRotate 3.5s linear infinite;z-index:-1;filter:drop-shadow(0 0 12px color-mix(in srgb, var(--color-primary) 85%, transparent)) drop-shadow(0 0 26px color-mix(in srgb, var(--color-accent) 55%, transparent));pointer-events:none;}
   .hero-cta::after{content:"";position:absolute;inset:0;border-radius:9999px;background:linear-gradient(110deg,transparent 0%,transparent 38%,rgba(255,255,255,0.55) 50%,transparent 62%,transparent 100%);background-size:220% 100%;animation:heroSheen 4.5s ease-in-out 2.4s infinite;mix-blend-mode:overlay;pointer-events:none;}
-  .hero-cta-glow{position:absolute;inset:-12px;border-radius:9999px;background:radial-gradient(ellipse 80% 100% at 50% 50%,rgba(234,88,12,0.45) 0%,rgba(251,191,36,0.18) 35%,transparent 70%);filter:blur(18px);z-index:-2;pointer-events:none;animation:heroFadeUp 1.4s cubic-bezier(0.22,1,0.36,1) 1.4s both;}
-  .hero-cta-lite{position:relative;animation:heroCtaIn 0.7s cubic-bezier(0.22,1,0.36,1) 0.6s both,heroCtaPulse 2.6s ease-in-out 1.4s infinite;will-change:transform,box-shadow,opacity;border:1px solid rgba(255,247,237,0.35);box-shadow:0 12px 32px -8px rgba(234,88,12,0.55),0 0 28px rgba(234,88,12,0.35);}
+  .hero-cta-glow{position:absolute;inset:-12px;border-radius:9999px;background:radial-gradient(ellipse 80% 100% at 50% 50%,color-mix(in srgb, var(--color-primary) 45%, transparent) 0%,color-mix(in srgb, var(--color-accent) 18%, transparent) 35%,transparent 70%);filter:blur(18px);z-index:-2;pointer-events:none;animation:heroFadeUp 1.4s cubic-bezier(0.22,1,0.36,1) 1.4s both;}
+  .hero-cta-lite{position:relative;animation:heroCtaIn 0.7s cubic-bezier(0.22,1,0.36,1) 0.6s both,heroCtaPulse 2.6s ease-in-out 1.4s infinite;will-change:transform,box-shadow,opacity;border:1px solid rgba(255,255,255,0.35);box-shadow:0 12px 32px -8px color-mix(in srgb, var(--color-primary) 55%, transparent),0 0 28px color-mix(in srgb, var(--color-primary) 35%, transparent);}
   .hero-secondary{animation:heroCtaIn 1s cubic-bezier(0.22,1,0.36,1) 1.25s both;}
   .hero-desc{animation:heroFadeUp 1.0s cubic-bezier(0.22,1,0.36,1) 0.85s both;}
   .hero-trust{animation:heroFadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 1.5s both;}
   .hero-status-chip{animation:heroChipIn 0.9s cubic-bezier(0.22,1,0.36,1) 0.4s both;}
   .hero-rating-chip{animation:heroChipIn 0.9s cubic-bezier(0.22,1,0.36,1) 0.55s both;}
-  .hero-grid{background-image:linear-gradient(rgba(234,88,12,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(234,88,12,0.05) 1px,transparent 1px);background-size:60px 60px;animation:heroGridDrift 60s linear infinite;mask-image:radial-gradient(ellipse 70% 60% at 50% 40%,#000 0%,transparent 75%);-webkit-mask-image:radial-gradient(ellipse 70% 60% at 50% 40%,#000 0%,transparent 75%);}
+  .hero-grid{background-image:linear-gradient(color-mix(in srgb, var(--color-primary) 5%, transparent) 1px,transparent 1px),linear-gradient(90deg,color-mix(in srgb, var(--color-primary) 5%, transparent) 1px,transparent 1px);background-size:60px 60px;animation:heroGridDrift 60s linear infinite;mask-image:radial-gradient(ellipse 70% 60% at 50% 40%,#000 0%,transparent 75%);-webkit-mask-image:radial-gradient(ellipse 70% 60% at 50% 40%,#000 0%,transparent 75%);}
   .hero-orb-1{animation:heroOrb1 14s ease-in-out infinite;will-change:transform;}
   .hero-orb-2{animation:heroOrb2 18s ease-in-out infinite;will-change:transform;}
-  .hero-arrow-glow{filter:drop-shadow(0 0 6px rgba(255,247,237,0.7));}
+  .hero-arrow-glow{filter:drop-shadow(0 0 6px rgba(255,255,255,0.7));}
 
   @media (prefers-reduced-motion:reduce){
     .hero-bg-zoom,.hero-bg-drift,.hero-orb-1,.hero-orb-2,.hero-grid,.hero-cta,.hero-cta::before,.hero-cta::after{animation:none!important;}
@@ -103,7 +103,14 @@ export default function HeroSection({ user, isDark, ready }) {
       {/* CINEMATIC BACKGROUND with subtle Ken Burns zoom — reduced on lite */}
       <div aria-hidden className="absolute inset-0 overflow-hidden">
         <div className={`${lite ? '' : 'hero-bg-zoom'} absolute inset-0`}>
-          <div className={`absolute inset-0 ${isDark ? 'bg-gradient-to-br from-[#0a0604] via-[#120a06] to-[#050302]' : 'bg-gradient-to-br from-stone-50 via-orange-50/60 to-amber-50/40'}`} />
+          <div
+            className="absolute inset-0"
+            style={
+              isDark
+                ? { background: 'linear-gradient(135deg, var(--color-bg) 0%, color-mix(in srgb, var(--color-bg) 70%, var(--color-secondary)) 50%, var(--color-bg) 100%)' }
+                : { background: 'linear-gradient(135deg, var(--color-surface-muted) 0%, color-mix(in srgb, var(--color-primary) 8%, var(--color-surface)) 60%, color-mix(in srgb, var(--color-accent) 6%, var(--color-surface)) 100%)' }
+            }
+          />
 
           {/* Atmospheric orbs — fewer + smaller blur on lite */}
           <div className={`${lite ? '' : 'hero-orb-1'} absolute top-[8%] left-[6%] w-[520px] h-[520px] rounded-full ${lite ? 'blur-[40px]' : 'blur-[80px]'} ${isDark ? 'bg-gradient-to-br from-orange-500/22 to-amber-500/12 opacity-80' : 'bg-gradient-to-br from-orange-400/22 to-amber-300/15 opacity-65'}`} />
@@ -163,7 +170,10 @@ export default function HeroSection({ user, isDark, ready }) {
             <span
               className="block"
               style={isDark
-                ? { filter: lite ? 'drop-shadow(0 0 26px rgba(234,88,12,.45))' : 'drop-shadow(0 0 80px rgba(234,88,12,.55)) drop-shadow(0 0 30px rgba(251,191,36,.35))', overflow: 'visible' }
+                ? { filter: lite
+                    ? 'drop-shadow(0 0 26px color-mix(in srgb, var(--color-primary) 45%, transparent))'
+                    : 'drop-shadow(0 0 80px color-mix(in srgb, var(--color-primary) 55%, transparent)) drop-shadow(0 0 30px color-mix(in srgb, var(--color-accent) 35%, transparent))',
+                    overflow: 'visible' }
                 : { overflow: 'visible' }}
             >
               {lines.l2.map((t, i) => (

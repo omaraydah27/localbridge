@@ -32,7 +32,7 @@ export function SocialAuthButtons({ onSocialAuth }) {
           key={provider.name}
           type="button"
           onClick={() => onSocialAuth?.(provider.name)}
-          className="group relative flex items-center justify-center gap-2 overflow-hidden rounded-2xl border border-orange-950/10 bg-white/90 px-3 py-3 text-xs font-black text-stone-600 shadow-[0_14px_34px_-28px_rgba(28,25,23,0.75)] transition duration-300 hover:-translate-y-0.5 hover:border-orange-300 hover:bg-orange-50 hover:text-stone-950"
+          className="group relative flex items-center justify-center gap-2 overflow-hidden rounded-2xl border border-orange-950/10 bg-white/90 px-3 py-3 text-xs font-black text-stone-600 shadow-[0_14px_34px_-28px_color-mix(in srgb, var(--color-secondary) 75%, transparent)] transition duration-300 hover:-translate-y-0.5 hover:border-orange-300 hover:bg-orange-50 hover:text-stone-950"
         >
           <span className="absolute inset-0 opacity-0 transition group-hover:opacity-100 bg-[radial-gradient(circle_at_50%_120%,rgba(249,115,22,0.14),transparent_65%)]" />
           <span className="relative">{provider.icon}</span>
@@ -79,7 +79,7 @@ export default function FuturisticAuthFrame({ mode, title, subtitle, children, f
                 </div>
               ))}
             </div>
-            <div className="mt-8 max-w-xl rounded-[2rem] border border-stone-900/10 bg-[#120c08] p-5 text-white shadow-[0_30px_90px_-44px_rgba(28,25,23,0.98)]">
+            <div className="mt-8 max-w-xl rounded-[2rem] border border-stone-900/10 bg-[#120c08] p-5 text-white shadow-[0_30px_90px_-44px_color-mix(in srgb, var(--color-secondary) 98%, transparent)]">
               <div className="flex items-center gap-1 text-orange-300">
                 {Array.from({ length: 5 }).map((_, i) => <Star key={i} className="h-4 w-4 fill-current" />)}
               </div>
@@ -117,8 +117,8 @@ export default function FuturisticAuthFrame({ mode, title, subtitle, children, f
                 </Link>
 
                 <div className="mt-7 grid grid-cols-2 rounded-2xl border border-orange-950/10 bg-orange-50/70 p-1">
-                  <Link className={`rounded-xl px-4 py-2.5 text-center text-xs font-black uppercase tracking-[0.16em] transition ${!isSignup ? 'bg-stone-950 text-white shadow-[0_16px_32px_-20px_rgba(28,25,23,0.85)]' : 'text-orange-900/45 hover:text-stone-950'}`} to="/login">Sign In</Link>
-                  <Link className={`rounded-xl px-4 py-2.5 text-center text-xs font-black uppercase tracking-[0.16em] transition ${isSignup ? 'bg-stone-950 text-white shadow-[0_16px_32px_-20px_rgba(28,25,23,0.85)]' : 'text-orange-900/45 hover:text-stone-950'}`} to="/register">Create Account</Link>
+                  <Link className={`rounded-xl px-4 py-2.5 text-center text-xs font-black uppercase tracking-[0.16em] transition ${!isSignup ? 'bg-stone-950 text-white shadow-[0_16px_32px_-20px_color-mix(in srgb, var(--color-secondary) 85%, transparent)]' : 'text-orange-900/45 hover:text-stone-950'}`} to="/login">Sign In</Link>
+                  <Link className={`rounded-xl px-4 py-2.5 text-center text-xs font-black uppercase tracking-[0.16em] transition ${isSignup ? 'bg-stone-950 text-white shadow-[0_16px_32px_-20px_color-mix(in srgb, var(--color-secondary) 85%, transparent)]' : 'text-orange-900/45 hover:text-stone-950'}`} to="/register">Create Account</Link>
                 </div>
 
                 <div className="mt-7">
