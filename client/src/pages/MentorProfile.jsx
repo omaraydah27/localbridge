@@ -147,6 +147,21 @@ function ProfileSkeleton() {
 
 // ─── Booking flow ──────────────────────────────────────────────────────────────
 
+/** Converts a YYYY-MM-DD date + HH:mm time (in America/New_York) to a UTC ISO string. */
+function toNewYorkUtcIso(dateStr, timeStr) {
+  const [yr, mo, dy] = dateStr.split('-').map(Number);
+  const [hr, mn] = timeStr.split(':').map(Number);
+  const utcGuess = new Date(Date.UTC(yr, mo - 1, dy, hr, mn, 0));
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'America/New_York',
+    hour: 'numeric', minute: 'numeric', hour12: false,
+  }).formatToParts(utcGuess);
+  const nyH = parseInt(parts.find((p) => p.type === 'hour').value) % 24;
+  const nyM = parseInt(parts.find((p) => p.type === 'minute').value);
+  const diffMs = ((hr * 60 + mn) - (nyH * 60 + nyM)) * 60_000;
+  return new Date(utcGuess.getTime() + diffMs).toISOString();
+}
+
 function BookingFlow({ mentor, sessionType, onReset, onRequestConfirm, user, navigate, mentorId }) {
   const [pickedDate, setPickedDate] = useState(null);
   const [pickedTime, setPickedTime] = useState(null);
@@ -158,17 +173,28 @@ function BookingFlow({ mentor, sessionType, onReset, onRequestConfirm, user, nav
   const baseSlots      = useMemo(() => getSlotsForDate(scheduleNorm, pickedDate, acceptingBookings), [scheduleNorm, pickedDate, acceptingBookings]);
 
   const slots = useMemo(() => {
-    if (!calBusy || calBusy.length === 0 || !pickedDate) return baseSlots;
+    const now = new Date();
     return baseSlots.map(({ time, available }) => {
       if (!available) return { time, available: false };
-      const [h, m] = time.split(':').map(Number);
-      const slotStart = new Date(pickedDate); slotStart.setHours(h, m, 0, 0);
-      const slotEnd   = new Date(pickedDate); slotEnd.setHours(h + 1, m, 0, 0);
-      const blocked = calBusy.some(({ start, end }) => {
-        const bs = new Date(start); const be = new Date(end);
-        return slotStart < be && slotEnd > bs;
-      });
-      return { time, available: !blocked, calendarBusy: blocked };
+      // Block slots that are already in the past
+      if (pickedDate) {
+        const [h, m] = time.split(':').map(Number);
+        const slotDate = new Date(pickedDate);
+        slotDate.setHours(h, m, 0, 0);
+        if (slotDate <= now) return { time, available: false };
+      }
+      // Block slots that conflict with the mentor's Google Calendar
+      if (calBusy && calBusy.length > 0 && pickedDate) {
+        const [h, m] = time.split(':').map(Number);
+        const slotStart = new Date(pickedDate); slotStart.setHours(h, m, 0, 0);
+        const slotEnd   = new Date(pickedDate); slotEnd.setHours(h + 1, m, 0, 0);
+        const blocked = calBusy.some(({ start, end }) => {
+          const bs = new Date(start); const be = new Date(end);
+          return slotStart < be && slotEnd > bs;
+        });
+        if (blocked) return { time, available: false, calendarBusy: true };
+      }
+      return { time, available: true };
     });
   }, [baseSlots, calBusy, pickedDate]);
 
@@ -200,7 +226,7 @@ function BookingFlow({ mentor, sessionType, onReset, onRequestConfirm, user, nav
   function handleBookClick() {
     if (!canBook) return;
     if (!user) { navigate('/login', { state: { from: `/mentors/${mentorId}` } }); return; }
-    const iso = `${localDateStr(pickedDate)}T${pickedTime}`;
+    const iso = toNewYorkUtcIso(localDateStr(pickedDate), pickedTime);
     onRequestConfirm({ sessionType, isoDate: iso, prettyDate: pickedDate, prettyTime: pickedTime });
   }
 

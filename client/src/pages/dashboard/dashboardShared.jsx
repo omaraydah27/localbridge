@@ -12,8 +12,7 @@ import { focusRing } from '../../ui';
 import { SESSION_TYPE_MAP, getAvatarColor, getInitials, formatSessionDate } from './dashboardUtils';
 
 export function canJoinSession(scheduledDate) {
-  if (!scheduledDate) return false;
-  return Date.now() >= new Date(scheduledDate).getTime() - 3 * 60 * 60 * 1000;
+  return Boolean(scheduledDate);
 }
 
 // Session type → left accent bar gradient
