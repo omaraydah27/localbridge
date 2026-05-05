@@ -37,7 +37,7 @@ export default function FloatingDock() {
         transition: 'transform 500ms cubic-bezier(0.16,1,0.3,1),opacity 380ms ease',
       }}
     >
-      <nav className="pointer-events-auto flex items-center gap-1 rounded-full border border-white/[0.07] bg-[#0c0906]/95 px-2 py-2 shadow-[0_24px_80px_rgba(0,0,0,0.85),0_0_100px_rgba(234,88,12,0.12)] backdrop-blur-2xl">
+      <nav className="pointer-events-auto flex items-center gap-1 rounded-full border border-white/[0.07] bg-[#0c0906]/95 px-2 py-2 shadow-[0_24px_80px_rgba(0,0,0,0.85),0_0_100px_color-mix(in srgb, var(--color-primary) 12%, transparent)] backdrop-blur-2xl">
         {NAV_ITEMS.map((item, i) => (
           <button
             key={i}
@@ -45,7 +45,7 @@ export default function FloatingDock() {
             data-cursor="hover"
             className={`whitespace-nowrap rounded-full px-4 py-2 text-[11px] font-semibold transition-all duration-200 ${
               item.primary
-                ? 'bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-[0_0_30px_rgba(234,88,12,0.5)]'
+                ? 'bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-[0_0_30px_color-mix(in srgb, var(--color-primary) 50%, transparent)]'
                 : 'text-white/38 hover:bg-white/[0.06] hover:text-white/80'
             }`}
           >

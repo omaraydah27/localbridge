@@ -81,7 +81,7 @@ export function tierBadge(tier) {
     case 'rising':      return 'bg-emerald-500/10 text-emerald-600 ring-1 ring-emerald-400/30 dark:text-emerald-300';
     case 'established': return 'bg-sky-500/10 text-sky-600 ring-1 ring-sky-400/30 dark:text-sky-300';
     case 'expert':      return 'bg-violet-500/10 text-violet-600 ring-1 ring-violet-400/30 dark:text-violet-300';
-    case 'elite':       return 'bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-[0_2px_10px_rgba(234,88,12,0.45)]';
+    case 'elite':       return 'bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-[0_2px_10px_color-mix(in srgb, var(--color-primary) 45%, transparent)]';
     default:            return 'bg-[var(--bridge-surface-muted)] text-[var(--bridge-text-muted)] ring-1 ring-[var(--bridge-border)]';
   }
 }

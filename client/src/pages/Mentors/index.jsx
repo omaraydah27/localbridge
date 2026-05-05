@@ -314,7 +314,7 @@ export default function Mentors() {
       {/* Sticky control bar */}
       <div className={`sticky top-[3.75rem] z-30 border-b border-[var(--bridge-border)] bg-[var(--bridge-canvas)]/92 shadow-[0_10px_30px_-28px_rgba(120,45,8,0.6)] backdrop-blur-xl sm:top-16 ${aiMode ? 'opacity-60 pointer-events-none' : ''}`}>
         <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px opacity-0 dark:opacity-100"
-          style={{ background: 'linear-gradient(90deg, transparent, rgba(251,146,60,0.12) 40%, rgba(251,146,60,0.12) 60%, transparent)' }} />
+          style={{ background: 'linear-gradient(90deg, transparent, color-mix(in srgb, var(--color-primary) 12%, transparent) 40%, color-mix(in srgb, var(--color-primary) 12%, transparent) 60%, transparent)' }} />
 
         <div className="mx-auto max-w-[90rem] px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-2 py-2.5">
@@ -325,7 +325,7 @@ export default function Mentors() {
                 <circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" strokeLinecap="round" />
               </svg>
               <input type="text" placeholder="Search by name, role, company…" value={search} onChange={e => setSearch(e.target.value)}
-                className="h-10 w-full rounded-xl border border-[var(--bridge-border)] bg-[var(--bridge-surface)]/88 py-0 pl-9 pr-8 text-[13px] font-medium text-[var(--bridge-text)] shadow-bridge-tile placeholder:text-[var(--bridge-text-faint)] transition focus:border-orange-400/60 focus:outline-none focus:shadow-[0_0_0_3px_rgba(251,146,60,0.12)]" />
+                className="h-10 w-full rounded-xl border border-[var(--bridge-border)] bg-[var(--bridge-surface)]/88 py-0 pl-9 pr-8 text-[13px] font-medium text-[var(--bridge-text)] shadow-bridge-tile placeholder:text-[var(--bridge-text-faint)] transition focus:border-orange-400/60 focus:outline-none focus:shadow-[0_0_0_3px_color-mix(in srgb, var(--color-primary) 12%, transparent)]" />
               {search && (
                 <button type="button" onClick={() => setSearch('')} aria-label="Clear"
                   className="absolute right-2 top-1/2 flex h-5 w-5 -translate-y-1/2 items-center justify-center rounded text-[var(--bridge-text-faint)] transition hover:text-[var(--bridge-text)]">

@@ -67,13 +67,13 @@ export default function Navbar() {
         {/* Prismatic top-edge glow */}
         <div aria-hidden
           className="pointer-events-none h-[1.5px] w-full"
-          style={{ background: 'linear-gradient(90deg, transparent 0%, rgba(234,88,12,0.35) 20%, rgba(251,146,60,0.9) 50%, rgba(234,88,12,0.35) 80%, transparent 100%)' }} />
+          style={{ background: 'linear-gradient(90deg, transparent 0%, color-mix(in srgb, var(--color-primary) 35%, transparent) 20%, color-mix(in srgb, var(--color-primary) 90%, transparent) 50%, color-mix(in srgb, var(--color-primary) 35%, transparent) 80%, transparent 100%)' }} />
 
         {/* Glass bar */}
         <div
           className={`relative border-b backdrop-blur-2xl transition-all duration-300 ${
             scrolled
-              ? 'border-orange-500/10 bg-[var(--bridge-canvas)]/92 shadow-[0_18px_60px_-42px_rgba(28,25,23,0.7),0_1px_0_rgba(255,255,255,0.42)_inset] dark:shadow-[0_18px_70px_-38px_rgba(234,88,12,0.36)]'
+              ? 'border-orange-500/10 bg-[var(--bridge-canvas)]/92 shadow-[0_18px_60px_-42px_color-mix(in srgb, var(--color-secondary) 70%, transparent),0_1px_0_rgba(255,255,255,0.42)_inset] dark:shadow-[0_18px_70px_-38px_color-mix(in srgb, var(--color-primary) 36%, transparent)]'
               : 'border-[var(--bridge-border)]/70 bg-[var(--bridge-canvas)]/78'
           }`}
         >
@@ -82,7 +82,7 @@ export default function Navbar() {
 
           {/* Ambient bottom-edge glow (dark mode only) */}
           <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-px opacity-0 dark:opacity-100"
-            style={{ background: 'linear-gradient(90deg, transparent, rgba(251,146,60,0.22) 40%, rgba(251,146,60,0.22) 60%, transparent)' }} />
+            style={{ background: 'linear-gradient(90deg, transparent, color-mix(in srgb, var(--color-primary) 22%, transparent) 40%, color-mix(in srgb, var(--color-primary) 22%, transparent) 60%, transparent)' }} />
 
           <nav className="relative mx-auto flex h-[4.25rem] max-w-bridge items-center justify-between gap-3 px-4 sm:h-[4.5rem] sm:px-6 lg:px-8">
 
@@ -90,7 +90,7 @@ export default function Navbar() {
             <Link to="/"
               className="group relative flex shrink-0 items-center gap-3 rounded-2xl outline-none transition-transform duration-300 hover:-translate-y-0.5 focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bridge-canvas)]">
               {/* Icon */}
-              <span className="relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br from-orange-600 via-orange-500 to-amber-400 text-white shadow-[0_10px_28px_-10px_rgba(234,88,12,0.85),0_1px_0_rgba(255,255,255,0.35)_inset] ring-1 ring-white/35 transition-all duration-300 group-hover:scale-[1.03] group-hover:shadow-[0_16px_40px_-12px_rgba(234,88,12,0.95)] group-hover:brightness-105 sm:h-11 sm:w-11">
+              <span className="relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br from-orange-600 via-orange-500 to-amber-400 text-white shadow-[0_10px_28px_-10px_color-mix(in srgb, var(--color-primary) 85%, transparent),0_1px_0_rgba(255,255,255,0.35)_inset] ring-1 ring-white/35 transition-all duration-300 group-hover:scale-[1.03] group-hover:shadow-[0_16px_40px_-12px_color-mix(in srgb, var(--color-primary) 95%, transparent)] group-hover:brightness-105 sm:h-11 sm:w-11">
                 <span aria-hidden className="bridge-shine-overlay" />
                 <span aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/30 to-transparent" />
                 <span className="relative font-display text-[1.18rem] font-black tracking-tight sm:text-[1.28rem]">B</span>
@@ -104,7 +104,7 @@ export default function Navbar() {
 
             {/* ── Center pill nav ── */}
             <div className="hidden flex-1 items-center justify-center md:flex">
-              <div className="relative flex items-center gap-1 rounded-full border border-[var(--bridge-border)]/80 bg-[var(--bridge-surface-raised)]/72 p-1.5 shadow-[0_12px_34px_-24px_rgba(28,25,23,0.8),0_1px_0_rgba(255,255,255,0.56)_inset] backdrop-blur-xl dark:bg-white/[0.045]">
+              <div className="relative flex items-center gap-1 rounded-full border border-[var(--bridge-border)]/80 bg-[var(--bridge-surface-raised)]/72 p-1.5 shadow-[0_12px_34px_-24px_color-mix(in srgb, var(--color-secondary) 80%, transparent),0_1px_0_rgba(255,255,255,0.56)_inset] backdrop-blur-xl dark:bg-white/[0.045]">
                 <span aria-hidden className="pointer-events-none absolute inset-0 rounded-full bg-gradient-to-r from-white/50 via-transparent to-orange-500/5 dark:from-white/10" />
                 {navItems.map(item => {
                   const active = isActive(item.path);
@@ -113,7 +113,7 @@ export default function Navbar() {
                       aria-current={active ? 'page' : undefined}
                       className={`relative flex items-center gap-1.5 rounded-full px-4 py-2 text-[13px] font-bold tracking-[-0.01em] transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bridge-canvas)] ${
                         active
-                          ? 'bg-gradient-to-r from-orange-600 via-orange-500 to-amber-500 text-white shadow-[0_8px_24px_-10px_rgba(234,88,12,0.9),0_0_0_1px_rgba(255,255,255,0.26)_inset]'
+                          ? 'bg-gradient-to-r from-orange-600 via-orange-500 to-amber-500 text-white shadow-[0_8px_24px_-10px_color-mix(in srgb, var(--color-primary) 90%, transparent),0_0_0_1px_rgba(255,255,255,0.26)_inset]'
                           : 'text-[var(--bridge-text-muted)] hover:-translate-y-px hover:bg-[var(--bridge-surface)]/90 hover:text-[var(--bridge-text)]'
                       }`}>
                       {active && <span aria-hidden className="bridge-shine-overlay rounded-full" />}
@@ -122,7 +122,7 @@ export default function Navbar() {
                         <span className={`relative inline-flex items-center rounded-full px-1.5 py-px text-[8px] font-black uppercase tracking-[0.12em] ${
                           active
                             ? 'bg-white/30 text-white'
-                            : 'bg-gradient-to-r from-orange-600 to-amber-500 text-white shadow-[0_2px_8px_rgba(234,88,12,0.45)]'
+                            : 'bg-gradient-to-r from-orange-600 to-amber-500 text-white shadow-[0_2px_8px_color-mix(in srgb, var(--color-primary) 45%, transparent)]'
                         }`}>
                           <Zap className="mr-0.5 h-2 w-2" />AI
                         </span>
@@ -151,12 +151,12 @@ export default function Navbar() {
                       onBlur={() => setTimeout(() => setMenuOpen(false), 160)}
                       aria-expanded={menuOpen}
                       aria-haspopup="menu"
-                      className="group relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-orange-500 to-amber-500 text-white shadow-[0_10px_24px_-14px_rgba(234,88,12,0.9)] ring-2 ring-[var(--bridge-border)] transition-all duration-200 hover:-translate-y-0.5 hover:ring-orange-400/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500">
+                      className="group relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-orange-500 to-amber-500 text-white shadow-[0_10px_24px_-14px_color-mix(in srgb, var(--color-primary) 90%, transparent)] ring-2 ring-[var(--bridge-border)] transition-all duration-200 hover:-translate-y-0.5 hover:ring-orange-400/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500">
                       {/* Spinning conic ring on open */}
                       <span aria-hidden
                         className={`pointer-events-none absolute -inset-[2px] rounded-full transition-opacity duration-300 ${menuOpen ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}
                         style={{
-                          background: 'conic-gradient(from 0deg, rgba(234,88,12,1), rgba(251,146,60,0.6), rgba(253,186,116,1), rgba(234,88,12,1))',
+                          background: 'conic-gradient(from 0deg, var(--color-primary), color-mix(in srgb, var(--color-primary) 60%, transparent), var(--color-accent), var(--color-primary))',
                           WebkitMask: 'linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)',
                           WebkitMaskComposite: 'xor',
                           maskComposite: 'exclude',
@@ -175,7 +175,7 @@ export default function Navbar() {
                     {/* Dropdown */}
                     {menuOpen && (
                       <div role="menu"
-                        className="animate-pop-in absolute right-0 top-12 z-50 w-72 overflow-hidden rounded-3xl border border-[var(--bridge-border)]/80 bg-[var(--bridge-surface-raised)]/97 shadow-[0_24px_70px_-18px_rgba(28,25,23,0.32),0_0_0_1px_rgba(234,88,12,0.06)] backdrop-blur-2xl dark:shadow-[0_24px_90px_-18px_rgba(0,0,0,0.66),0_0_0_1px_rgba(234,88,12,0.1)]">
+                        className="animate-pop-in absolute right-0 top-12 z-50 w-72 overflow-hidden rounded-3xl border border-[var(--bridge-border)]/80 bg-[var(--bridge-surface-raised)]/97 shadow-[0_24px_70px_-18px_color-mix(in srgb, var(--color-secondary) 32%, transparent),0_0_0_1px_color-mix(in srgb, var(--color-primary) 6%, transparent)] backdrop-blur-2xl dark:shadow-[0_24px_90px_-18px_rgba(0,0,0,0.66),0_0_0_1px_color-mix(in srgb, var(--color-primary) 10%, transparent)]">
                         {/* Top accent line */}
                         <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-orange-500/60 to-transparent" />
 
@@ -183,7 +183,7 @@ export default function Navbar() {
                         <div className="relative overflow-hidden px-4 pb-4 pt-4">
                           <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-br from-orange-500/6 via-transparent to-transparent" />
                           <div className="relative flex items-center gap-3">
-                            <div className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br from-orange-500 to-amber-500 text-sm font-black text-white shadow-[0_10px_24px_-14px_rgba(234,88,12,0.9)] ring-1 ring-white/35">
+                            <div className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br from-orange-500 to-amber-500 text-sm font-black text-white shadow-[0_10px_24px_-14px_color-mix(in srgb, var(--color-primary) 90%, transparent)] ring-1 ring-white/35">
                               {user.user_metadata?.avatar_url
                                 ? <img src={user.user_metadata.avatar_url} alt="" className="h-full w-full object-cover" />
                                 : getInitials(user.user_metadata?.full_name || user.email)}
@@ -243,7 +243,7 @@ export default function Navbar() {
                     Log in
                   </Link>
                   <Link to="/register" data-magnet="6"
-                    className="btn-sheen magnetic relative inline-flex items-center gap-1.5 overflow-hidden rounded-full bg-gradient-to-r from-orange-600 via-orange-500 to-amber-500 px-5 py-2.5 text-[13px] font-black text-white shadow-[0_12px_30px_-12px_rgba(234,88,12,0.85)] ring-1 ring-white/25 transition hover:-translate-y-0.5 hover:shadow-[0_18px_38px_-12px_rgba(234,88,12,0.85)] hover:brightness-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400 focus-visible:ring-offset-2">
+                    className="btn-sheen magnetic relative inline-flex items-center gap-1.5 overflow-hidden rounded-full bg-gradient-to-r from-orange-600 via-orange-500 to-amber-500 px-5 py-2.5 text-[13px] font-black text-white shadow-[0_12px_30px_-12px_color-mix(in srgb, var(--color-primary) 85%, transparent)] ring-1 ring-white/25 transition hover:-translate-y-0.5 hover:shadow-[0_18px_38px_-12px_color-mix(in srgb, var(--color-primary) 85%, transparent)] hover:brightness-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400 focus-visible:ring-offset-2">
                     Get started
                   </Link>
                 </div>
@@ -254,7 +254,7 @@ export default function Navbar() {
                 onClick={() => setMobileOpen(v => !v)}
                 aria-expanded={mobileOpen}
                 aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
-                className="relative flex h-10 w-10 items-center justify-center rounded-2xl border border-[var(--bridge-border)] bg-[var(--bridge-surface)]/76 text-[var(--bridge-text-muted)] shadow-[0_8px_24px_-18px_rgba(28,25,23,0.8)] transition hover:border-orange-400/40 hover:bg-[var(--bridge-surface-raised)] hover:text-[var(--bridge-text)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 md:hidden">
+                className="relative flex h-10 w-10 items-center justify-center rounded-2xl border border-[var(--bridge-border)] bg-[var(--bridge-surface)]/76 text-[var(--bridge-text-muted)] shadow-[0_8px_24px_-18px_color-mix(in srgb, var(--color-secondary) 80%, transparent)] transition hover:border-orange-400/40 hover:bg-[var(--bridge-surface-raised)] hover:text-[var(--bridge-text)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 md:hidden">
                 <span className={`absolute transition-all duration-200 ${mobileOpen ? 'scale-100 opacity-100' : 'scale-75 opacity-0'}`}>
                   <X className="h-5 w-5" />
                 </span>
@@ -290,7 +290,7 @@ export default function Navbar() {
             {/* Header */}
             <div className="relative flex shrink-0 items-center justify-between border-b border-[var(--bridge-border)]/80 px-5 py-4">
               <Link to="/" onClick={() => setMobileOpen(false)} className="group flex items-center gap-3 rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400">
-                <span className="relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br from-orange-600 via-orange-500 to-amber-400 text-base font-black text-white shadow-[0_10px_26px_-10px_rgba(234,88,12,0.85)] ring-1 ring-white/35">
+                <span className="relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br from-orange-600 via-orange-500 to-amber-400 text-base font-black text-white shadow-[0_10px_26px_-10px_color-mix(in srgb, var(--color-primary) 85%, transparent)] ring-1 ring-white/35">
                   <span aria-hidden className="bridge-shine-overlay" />
                   <span className="relative">B</span>
                 </span>
@@ -315,7 +315,7 @@ export default function Navbar() {
                     <Link key={item.path} to={item.path} onClick={() => setMobileOpen(false)}
                       className={`group relative flex items-center justify-between overflow-hidden rounded-2xl px-4 py-3.5 text-sm font-bold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400 ${
                         active
-                          ? 'bg-gradient-to-r from-orange-500/16 to-amber-500/10 text-orange-600 shadow-[0_10px_28px_-18px_rgba(234,88,12,0.65)] ring-1 ring-orange-400/18 dark:text-orange-300'
+                          ? 'bg-gradient-to-r from-orange-500/16 to-amber-500/10 text-orange-600 shadow-[0_10px_28px_-18px_color-mix(in srgb, var(--color-primary) 65%, transparent)] ring-1 ring-orange-400/18 dark:text-orange-300'
                           : 'text-[var(--bridge-text-secondary)] hover:translate-x-0.5 hover:bg-[var(--bridge-surface-muted)] hover:text-[var(--bridge-text)]'
                       }`}>
                       {active && <span aria-hidden className="pointer-events-none absolute inset-y-0 left-0 w-0.5 rounded-r bg-orange-500" />}
@@ -347,8 +347,8 @@ export default function Navbar() {
               {user ? (
                 <div className="space-y-1">
                   {/* User card */}
-                  <div className="mb-3 flex items-center gap-3 rounded-3xl border border-[var(--bridge-border)] bg-[var(--bridge-surface-raised)]/82 p-3 shadow-[0_14px_32px_-24px_rgba(28,25,23,0.8)]">
-                    <div className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br from-orange-500 to-amber-500 text-sm font-black text-white shadow-[0_10px_24px_-14px_rgba(234,88,12,0.9)] ring-1 ring-white/35">
+                  <div className="mb-3 flex items-center gap-3 rounded-3xl border border-[var(--bridge-border)] bg-[var(--bridge-surface-raised)]/82 p-3 shadow-[0_14px_32px_-24px_color-mix(in srgb, var(--color-secondary) 80%, transparent)]">
+                    <div className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br from-orange-500 to-amber-500 text-sm font-black text-white shadow-[0_10px_24px_-14px_color-mix(in srgb, var(--color-primary) 90%, transparent)] ring-1 ring-white/35">
                       {user.user_metadata?.avatar_url
                         ? <img src={user.user_metadata.avatar_url} alt="" className="h-full w-full object-cover" />
                         : getInitials(user.user_metadata?.full_name || user.email)}
@@ -377,7 +377,7 @@ export default function Navbar() {
               ) : (
                 <div className="flex flex-col gap-2">
                   <Link to="/register" onClick={() => setMobileOpen(false)}
-                    className="btn-sheen flex items-center justify-center gap-1.5 rounded-2xl bg-gradient-to-r from-orange-600 via-orange-500 to-amber-500 px-4 py-3.5 text-sm font-black text-white shadow-[0_14px_34px_-14px_rgba(234,88,12,0.9)] ring-1 ring-white/25 transition hover:-translate-y-0.5 hover:brightness-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400">
+                    className="btn-sheen flex items-center justify-center gap-1.5 rounded-2xl bg-gradient-to-r from-orange-600 via-orange-500 to-amber-500 px-4 py-3.5 text-sm font-black text-white shadow-[0_14px_34px_-14px_color-mix(in srgb, var(--color-primary) 90%, transparent)] ring-1 ring-white/25 transition hover:-translate-y-0.5 hover:brightness-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400">
                     Get started free
                     <ChevronRight className="h-4 w-4" />
                   </Link>

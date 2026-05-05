@@ -48,7 +48,7 @@ function TabBar({ tabs, activeTab, setActiveTab }) {
           style={{ left: pill.left, width: pill.width, opacity: pill.width ? 1 : 0 }} />
         {/* Sliding underline glow */}
         <div aria-hidden
-          className="pointer-events-none absolute bottom-0 h-[2px] rounded-full bg-gradient-to-r from-orange-500 via-amber-400 to-orange-500 shadow-[0_0_18px_rgba(234,88,12,0.7)] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
+          className="pointer-events-none absolute bottom-0 h-[2px] rounded-full bg-gradient-to-r from-orange-500 via-amber-400 to-orange-500 shadow-[0_0_18px_color-mix(in srgb, var(--color-primary) 70%, transparent)] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
           style={{ left: pill.left, width: pill.width }} />
 
         {tabs.map((tab) => {
@@ -70,7 +70,7 @@ function TabBar({ tabs, activeTab, setActiveTab }) {
               {tab.count > 0 && (
                 <span className={`flex h-[18px] min-w-[18px] items-center justify-center rounded-full px-1 text-[10px] font-black tabular-nums transition-colors ${
                   active
-                    ? 'bg-gradient-to-br from-orange-500 to-amber-500 text-white shadow-[0_0_12px_rgba(234,88,12,0.55)]'
+                    ? 'bg-gradient-to-br from-orange-500 to-amber-500 text-white shadow-[0_0_12px_color-mix(in srgb, var(--color-primary) 55%, transparent)]'
                     : 'bg-[var(--bridge-surface-muted)] text-[var(--bridge-text-muted)] ring-1 ring-[var(--bridge-border)]'
                 }`}>
                   {tab.count}
@@ -148,7 +148,7 @@ export default function Dashboard() {
 
       {/* Ambient base layer for color cohesion */}
       <div aria-hidden className="pointer-events-none fixed inset-0 -z-10"
-        style={{ background: 'radial-gradient(ellipse 80% 50% at 60% -10%, rgba(251,146,60,0.05), transparent 65%)' }} />
+        style={{ background: 'radial-gradient(ellipse 80% 50% at 60% -10%, color-mix(in srgb, var(--color-primary) 5%, transparent), transparent 65%)' }} />
 
       {/* ═══════════════════════════════════════════════════════
           DASHBOARD HEADER — sticky under main navbar
@@ -159,7 +159,7 @@ export default function Dashboard() {
         <div className="relative border-b border-[var(--bridge-border)] bg-[var(--bridge-canvas)]/82 shadow-bridge-tile backdrop-blur-2xl">
           {/* Top accent */}
           <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px"
-            style={{ background: 'linear-gradient(90deg, transparent, rgba(251,146,60,0.32) 35%, rgba(251,191,36,0.32) 65%, transparent)' }} />
+            style={{ background: 'linear-gradient(90deg, transparent, color-mix(in srgb, var(--color-primary) 32%, transparent) 35%, color-mix(in srgb, var(--color-accent) 32%, transparent) 65%, transparent)' }} />
           {/* Noise */}
           <div aria-hidden className="pointer-events-none absolute inset-0 bg-bridge-noise opacity-[0.018]" />
 
@@ -221,13 +221,13 @@ export default function Dashboard() {
               <Magnetic strength={0.18}>
                 {!isMentor ? (
                   <Link to="/mentors" data-cursor="Browse"
-                    className="btn-sheen relative inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-orange-600 via-orange-500 to-amber-500 pl-4 pr-5 py-2.5 text-[12px] font-black text-white shadow-[0_8px_28px_-6px_rgba(234,88,12,0.65)] ring-1 ring-white/15 transition-all hover:-translate-y-0.5 hover:shadow-[0_12px_36px_-6px_rgba(234,88,12,0.85)]">
+                    className="btn-sheen relative inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-orange-600 via-orange-500 to-amber-500 pl-4 pr-5 py-2.5 text-[12px] font-black text-white shadow-[0_8px_28px_-6px_color-mix(in srgb, var(--color-primary) 65%, transparent)] ring-1 ring-white/15 transition-all hover:-translate-y-0.5 hover:shadow-[0_12px_36px_-6px_color-mix(in srgb, var(--color-primary) 85%, transparent)]">
                     <Plus className="h-3.5 w-3.5" />
                     Find a Mentor
                   </Link>
                 ) : (
                   <button type="button" onClick={() => setActiveTab('sessions')} data-cursor="Schedule"
-                    className="btn-sheen relative inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-orange-600 via-orange-500 to-amber-500 pl-4 pr-5 py-2.5 text-[12px] font-black text-white shadow-[0_8px_28px_-6px_rgba(234,88,12,0.65)] ring-1 ring-white/15 transition-all hover:-translate-y-0.5 hover:shadow-[0_12px_36px_-6px_rgba(234,88,12,0.85)]">
+                    className="btn-sheen relative inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-orange-600 via-orange-500 to-amber-500 pl-4 pr-5 py-2.5 text-[12px] font-black text-white shadow-[0_8px_28px_-6px_color-mix(in srgb, var(--color-primary) 65%, transparent)] ring-1 ring-white/15 transition-all hover:-translate-y-0.5 hover:shadow-[0_12px_36px_-6px_color-mix(in srgb, var(--color-primary) 85%, transparent)]">
                     <CalendarDays className="h-3.5 w-3.5" />
                     View Schedule
                   </button>
