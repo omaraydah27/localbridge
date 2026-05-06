@@ -122,9 +122,14 @@ export default function IntakeCall() {
 
     try {
       // 1. Fetch ephemeral token from our backend
+      const { data: { session: authSession } } = await supabase.auth.getSession()
+      const token = authSession?.access_token
       const res = await fetch('/api/realtime-session', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
         body: JSON.stringify({
           sessionType: sessionData.session_type,
           sessionId: sessionId,
