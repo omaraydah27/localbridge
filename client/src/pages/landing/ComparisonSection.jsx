@@ -26,8 +26,8 @@ export default function ComparisonSection() {
           </div>
         </RevealOnScroll>
 
-        <RevealOnScroll delay={120}>
-          <div className="relative overflow-hidden rounded-3xl border border-[var(--bridge-border)] bg-[var(--bridge-surface)] shadow-bridge-card">
+        <RevealOnScroll delay={120} variant="zoom">
+          <div className="relative overflow-hidden rounded-3xl border border-[var(--bridge-border)] bg-[var(--bridge-surface)] shadow-bridge-card b-glow-border">
             {/* Bridge column glow */}
             <div aria-hidden className="pointer-events-none absolute inset-y-0 right-0 w-1/4 hidden sm:block"
               style={{ background: 'linear-gradient(180deg,color-mix(in srgb, var(--color-primary) 5%, transparent),color-mix(in srgb, var(--color-primary) 2%, transparent) 50%,color-mix(in srgb, var(--color-primary) 6%, transparent))' }} />

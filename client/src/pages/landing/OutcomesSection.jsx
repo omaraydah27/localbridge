@@ -26,8 +26,12 @@ export default function OutcomesSection() {
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {OUTCOMES.map((o, i) => (
-            <RevealOnScroll key={i} delay={i * 60}>
-              <div className="group relative flex flex-col h-full overflow-hidden rounded-2xl border border-[var(--bridge-border)] bg-[var(--bridge-surface)] p-6 shadow-bridge-card hover:border-orange-500/28 hover:shadow-bridge-glow transition-all">
+            <RevealOnScroll
+              key={i}
+              delay={i * 90}
+              variant={i % 3 === 0 ? 'left' : i % 3 === 1 ? 'zoom' : 'right'}
+            >
+              <div className="group relative flex flex-col h-full overflow-hidden rounded-2xl border border-[var(--bridge-border)] bg-[var(--bridge-surface)] p-6 shadow-bridge-card hover:border-orange-500/28 hover:shadow-bridge-glow transition-all b-flare">
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex gap-0.5">
                     {[0, 1, 2, 3, 4].map(k => (

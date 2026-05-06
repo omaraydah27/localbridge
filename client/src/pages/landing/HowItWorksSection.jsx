@@ -79,7 +79,7 @@ export default function HowItWorksSection() {
           </div>
 
           {STEPS.map((step, i) => (
-            <RevealOnScroll key={i} delay={i * 140}>
+            <RevealOnScroll key={i} delay={i * 140} variant={i === 0 ? 'flip-right' : i === 1 ? 'zoom' : 'flip-left'}>
               <TiltCard n={5} className="group relative h-full overflow-hidden rounded-3xl border border-[var(--bridge-border)] bg-[var(--bridge-surface)] p-7 shadow-bridge-card hover:border-orange-500/30 hover:shadow-bridge-glow transition-all">
                 <div aria-hidden className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-700 group-hover:opacity-100"
                   style={{ background: 'radial-gradient(ellipse 70% 50% at 50% 0%,color-mix(in srgb, var(--color-primary) 6%, transparent),transparent 70%)' }} />

@@ -66,8 +66,8 @@ export default function ManifestoSection() {
         </RevealOnScroll>
 
         {/* Featured promise */}
-        <RevealOnScroll delay={0}>
-          <TiltCard n={3} className="group relative mb-4 overflow-hidden rounded-[2rem] border border-orange-500/22 bg-[var(--bridge-surface)] p-7 shadow-bridge-glow sm:p-9">
+        <RevealOnScroll delay={0} variant="flip">
+          <TiltCard n={3} className="group relative mb-4 overflow-hidden rounded-[2rem] border border-orange-500/22 bg-[var(--bridge-surface)] p-7 shadow-bridge-glow sm:p-9 b-glow-border b-flare">
             <div aria-hidden className="pointer-events-none absolute inset-0" style={{ background: 'radial-gradient(ellipse 50% 70% at 100% 0%,color-mix(in srgb, var(--color-primary) 8%, transparent),transparent 70%)' }} />
             <div className="relative grid gap-6 sm:grid-cols-[1fr_auto] sm:items-center">
               <div>
@@ -93,8 +93,13 @@ export default function ManifestoSection() {
         {/* Supporting promise cards */}
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {PROMISE_CARDS.map((card, i) => (
-            <RevealOnScroll key={i} delay={80 + i * 60} className={card.wide ? 'sm:col-span-1 lg:col-span-2' : ''}>
-              <TiltCard n={3} className="group relative h-full overflow-hidden rounded-3xl border border-[var(--bridge-border)] bg-[var(--bridge-surface)] p-6 shadow-bridge-card transition-all hover:-translate-y-1 hover:border-orange-500/28 hover:shadow-bridge-glow">
+            <RevealOnScroll
+              key={i}
+              delay={80 + i * 70}
+              variant={i % 2 === 0 ? 'flip-right' : 'flip-left'}
+              className={card.wide ? 'sm:col-span-1 lg:col-span-2' : ''}
+            >
+              <TiltCard n={3} className="group relative h-full overflow-hidden rounded-3xl border border-[var(--bridge-border)] bg-[var(--bridge-surface)] p-6 shadow-bridge-card transition-all hover:-translate-y-1 hover:border-orange-500/28 hover:shadow-bridge-glow b-flare">
                 <div className="flex items-start gap-4">
                   <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[var(--bridge-surface-muted)] text-xl ring-1 ring-[var(--bridge-border)]">
                     {card.icon}
