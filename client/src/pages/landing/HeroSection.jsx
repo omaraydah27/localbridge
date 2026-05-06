@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { gsap } from 'gsap';
 import MagneticWrapper from './MagneticWrapper';
 import { usePerfTier } from './landingHooks';
+import HeroCanvas from './HeroCanvas';
 
 const HERO_CSS = `
   @keyframes heroZoom{0%{transform:scale(1.0) translate3d(0,0,0);}100%{transform:scale(1.12) translate3d(0,-1.5%,0);}}
@@ -100,31 +101,44 @@ export default function HeroSection({ user, isDark, ready }) {
     <section className="relative flex flex-col overflow-hidden min-h-[90vh]">
       <style>{HERO_CSS}</style>
 
-      {/* CINEMATIC BACKGROUND with subtle Ken Burns zoom — reduced on lite */}
+      {/* CINEMATIC BACKGROUND — multi-layer atmospheric depth */}
       <div aria-hidden className="absolute inset-0 overflow-hidden">
         <div className={`${lite ? '' : 'hero-bg-zoom'} absolute inset-0`}>
+          {/* Rich layered gradient base */}
           <div
             className="absolute inset-0"
             style={
               isDark
-                ? { background: 'linear-gradient(135deg, var(--color-bg) 0%, color-mix(in srgb, var(--color-bg) 70%, var(--color-secondary)) 50%, var(--color-bg) 100%)' }
-                : { background: 'linear-gradient(135deg, var(--color-surface-muted) 0%, color-mix(in srgb, var(--color-primary) 8%, var(--color-surface)) 60%, color-mix(in srgb, var(--color-accent) 6%, var(--color-surface)) 100%)' }
+                ? { background: 'linear-gradient(145deg, color-mix(in srgb, var(--color-primary) 14%, var(--color-bg)) 0%, var(--color-bg) 30%, color-mix(in srgb, var(--color-secondary) 10%, var(--color-bg)) 60%, color-mix(in srgb, var(--color-primary) 7%, var(--color-bg)) 100%)' }
+                : { background: 'linear-gradient(145deg, color-mix(in srgb, var(--color-primary) 5%, var(--color-bg)) 0%, var(--color-bg) 38%, color-mix(in srgb, var(--color-accent) 4%, var(--color-bg)) 68%, var(--color-bg) 100%)' }
             }
           />
 
-          {/* Atmospheric orbs — fewer + smaller blur on lite */}
-          <div className={`${lite ? '' : 'hero-orb-1'} absolute top-[8%] left-[6%] w-[520px] h-[520px] rounded-full ${lite ? 'blur-[40px]' : 'blur-[80px]'} ${isDark ? 'bg-gradient-to-br from-orange-500/22 to-amber-500/12 opacity-80' : 'bg-gradient-to-br from-orange-400/22 to-amber-300/15 opacity-65'}`} />
-          {!isLow && <div className={`${lite ? '' : 'hero-orb-2'} absolute top-[28%] right-[2%] w-[380px] h-[380px] rounded-full ${lite ? 'blur-[36px]' : 'blur-[70px]'} ${isDark ? 'bg-gradient-to-br from-amber-500/18 to-orange-500/10 opacity-75' : 'bg-gradient-to-br from-amber-400/18 to-orange-300/10 opacity-55'}`} />}
-          {!lite && <div className="hero-orb-1 absolute bottom-[12%] left-[35%] w-[440px] h-[440px] rounded-full blur-[90px] bg-gradient-to-br from-orange-600/14 to-rose-500/8 opacity-70" />}
+          {/* Orb 1 — primary, top-left, bleeds offscreen for seamless blend with area above */}
+          <div className={`${lite ? '' : 'hero-orb-1'} absolute -top-[12%] -left-[6%] w-[700px] h-[700px] rounded-full ${lite ? 'blur-[60px]' : 'blur-[110px]'} ${isDark ? 'bg-gradient-to-br from-[var(--color-primary)]/30 to-[var(--color-accent)]/10 opacity-85' : 'bg-gradient-to-br from-[var(--color-primary)]/14 to-[var(--color-accent)]/6 opacity-75'}`} />
 
-          {/* Subtle grid that drifts — high tier only */}
+          {/* Orb 2 — amber/warm, right edge */}
+          {!isLow && <div className={`${lite ? '' : 'hero-orb-2'} absolute top-[18%] -right-[8%] w-[580px] h-[580px] rounded-full ${lite ? 'blur-[50px]' : 'blur-[100px]'} ${isDark ? 'bg-gradient-to-br from-amber-500/24 to-[var(--color-primary)]/10 opacity-80' : 'bg-gradient-to-br from-amber-400/16 to-orange-300/8 opacity-65'}`} />}
+
+          {/* Orb 3 — warm bottom-center (high tier only) */}
+          {!lite && <div className="hero-orb-1 absolute bottom-[8%] left-[28%] w-[580px] h-[580px] rounded-full blur-[115px] bg-gradient-to-br from-orange-600/18 to-rose-500/8 opacity-70" />}
+
+          {/* Orb 4 — secondary/accent hue for depth (mid+ only) */}
+          {!isLow && <div className={`${lite ? '' : 'hero-orb-2'} absolute top-[48%] right-[18%] w-[400px] h-[400px] rounded-full ${lite ? 'blur-[40px]' : 'blur-[85px]'} ${isDark ? 'bg-gradient-to-br from-[var(--color-secondary)]/18 to-[var(--color-accent)]/6 opacity-55' : 'bg-gradient-to-br from-[var(--color-accent)]/10 to-transparent opacity-45'}`} />}
+
+          {/* Drifting grid — dark + high tier */}
           {isDark && !lite && <div aria-hidden className="hero-grid absolute inset-0 opacity-40" />}
 
-          {/* Vignette + grain — skip the noise SVG on lite (it's a giant data URL paint) */}
+          {/* Noise grain */}
           {!lite && <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")` }} />}
-          {isDark && <div aria-hidden className="absolute inset-0" style={{ background: 'radial-gradient(ellipse 95% 70% at 50% 35%,transparent 30%,rgba(0,0,0,0.5) 100%)' }} />}
+
+          {/* Radial vignette (dark mode) */}
+          {isDark && <div aria-hidden className="absolute inset-0" style={{ background: 'radial-gradient(ellipse 95% 70% at 50% 35%,transparent 30%,rgba(0,0,0,0.45) 100%)' }} />}
         </div>
       </div>
+
+      {/* Three.js interactive particle network — mid+ devices */}
+      {!isLow && <HeroCanvas isDark={isDark} isMid={isMid} />}
 
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[var(--bridge-canvas)] to-transparent z-[1]" />
 

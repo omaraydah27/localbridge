@@ -23,8 +23,8 @@ export default function StatsBentoSection() {
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:auto-rows-[190px] lg:grid-cols-4">
           {/* Featured mentor network cell — spans 2 rows */}
-          <RevealOnScroll delay={0} className="col-span-2 lg:row-span-2">
-            <TiltCard n={4} className="group relative h-full overflow-hidden rounded-[2rem] border border-orange-500/22 bg-[var(--bridge-surface)] p-7 shadow-bridge-glow sm:p-9">
+          <RevealOnScroll delay={0} variant="left" className="col-span-2 lg:row-span-2">
+            <TiltCard n={4} className="group relative h-full overflow-hidden rounded-[2rem] border border-orange-500/22 bg-[var(--bridge-surface)] p-7 shadow-bridge-glow sm:p-9 b-glow-border">
               <div aria-hidden className="pointer-events-none absolute inset-0" style={{ background: 'radial-gradient(ellipse 60% 80% at 100% 100%,color-mix(in srgb, var(--color-primary) 8%, transparent),transparent 70%)' }} />
               <div className="relative flex h-full flex-col justify-between gap-6">
                 <div className="flex items-center gap-2">
@@ -51,8 +51,8 @@ export default function StatsBentoSection() {
             </TiltCard>
           </RevealOnScroll>
 
-          <RevealOnScroll delay={120}>
-            <TiltCard n={3} className="relative h-full overflow-hidden rounded-[1.75rem] border border-[var(--bridge-border)] bg-[var(--bridge-surface)] p-6 shadow-bridge-card transition-all hover:-translate-y-1 hover:border-orange-500/30 hover:shadow-bridge-glow">
+          <RevealOnScroll delay={80} variant="flip">
+            <TiltCard n={3} className="relative h-full overflow-hidden rounded-[1.75rem] border border-[var(--bridge-border)] bg-[var(--bridge-surface)] p-6 shadow-bridge-card transition-all hover:-translate-y-1 hover:border-orange-500/30 hover:shadow-bridge-glow b-flare">
               <div className="relative flex h-full flex-col justify-between">
                 <p className="text-[10px] font-black uppercase tracking-[0.24em] text-[var(--bridge-text-muted)]">Total bookings</p>
                 <StatCell target={4800} suffix="+" label="Sessions booked" accent="from-orange-500 to-amber-400" />
@@ -60,7 +60,7 @@ export default function StatsBentoSection() {
             </TiltCard>
           </RevealOnScroll>
 
-          <RevealOnScroll delay={200}>
+          <RevealOnScroll delay={160} variant="right">
             <TiltCard n={3} className="relative h-full overflow-hidden rounded-[1.75rem] border border-[var(--bridge-border)] bg-[var(--bridge-surface)] p-6 shadow-bridge-card transition-all hover:-translate-y-1 hover:border-orange-500/30 hover:shadow-bridge-glow">
               <div className="relative flex h-full flex-col justify-between">
                 <div className="flex items-center gap-1">
@@ -75,8 +75,8 @@ export default function StatsBentoSection() {
             </TiltCard>
           </RevealOnScroll>
 
-          <RevealOnScroll delay={280}>
-            <TiltCard n={3} className="relative h-full overflow-hidden rounded-[1.75rem] border border-[var(--bridge-border)] bg-[var(--bridge-surface)] p-6 shadow-bridge-card transition-all hover:-translate-y-1 hover:border-orange-500/30 hover:shadow-bridge-glow">
+          <RevealOnScroll delay={240} variant="flip">
+            <TiltCard n={3} className="relative h-full overflow-hidden rounded-[1.75rem] border border-[var(--bridge-border)] bg-[var(--bridge-surface)] p-6 shadow-bridge-card transition-all hover:-translate-y-1 hover:border-orange-500/30 hover:shadow-bridge-glow b-flare">
               <div className="relative flex h-full flex-col justify-between">
                 <p className="text-[10px] font-black uppercase tracking-[0.24em] text-[var(--bridge-text-muted)]">Recommend</p>
                 <StatCell target={97} suffix="%" label="Would recommend" accent="from-orange-500 to-amber-400" />
@@ -84,7 +84,7 @@ export default function StatsBentoSection() {
             </TiltCard>
           </RevealOnScroll>
 
-          <RevealOnScroll delay={360}>
+          <RevealOnScroll delay={320} variant="right">
             <TiltCard n={3} className="relative h-full overflow-hidden rounded-[1.75rem] border border-[var(--bridge-border)] bg-[var(--bridge-surface)] p-6 shadow-bridge-card transition-all hover:-translate-y-1 hover:border-orange-500/30 hover:shadow-bridge-glow">
               <div className="relative flex h-full flex-col justify-between">
                 <p className="text-[10px] font-black uppercase tracking-[0.24em] text-[var(--bridge-text-muted)]">Response time</p>

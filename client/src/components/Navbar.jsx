@@ -64,21 +64,21 @@ export default function Navbar() {
       ═══════════════════════════════════════════════════ */}
       <header className="sticky top-0 z-50 isolate">
 
-        {/* Prismatic top-edge glow */}
+        {/* Prismatic top-edge glow — only visible once scrolled */}
         <div aria-hidden
-          className="pointer-events-none h-[1.5px] w-full"
+          className={`pointer-events-none h-[1.5px] w-full transition-opacity duration-500 ${scrolled ? 'opacity-100' : 'opacity-0'}`}
           style={{ background: 'linear-gradient(90deg, transparent 0%, color-mix(in srgb, var(--color-primary) 35%, transparent) 20%, color-mix(in srgb, var(--color-primary) 90%, transparent) 50%, color-mix(in srgb, var(--color-primary) 35%, transparent) 80%, transparent 100%)' }} />
 
         {/* Glass bar */}
         <div
-          className={`relative border-b backdrop-blur-2xl transition-all duration-300 ${
+          className={`relative border-b transition-all duration-500 ${
             scrolled
-              ? 'border-orange-500/10 bg-[var(--bridge-canvas)]/92 shadow-[0_18px_60px_-42px_color-mix(in srgb, var(--color-secondary) 70%, transparent),0_1px_0_rgba(255,255,255,0.42)_inset] dark:shadow-[0_18px_70px_-38px_color-mix(in srgb, var(--color-primary) 36%, transparent)]'
-              : 'border-[var(--bridge-border)]/70 bg-[var(--bridge-canvas)]/78'
+              ? 'border-[var(--bridge-border)]/20 bg-[var(--bridge-canvas)]/90 backdrop-blur-2xl shadow-[0_18px_60px_-42px_color-mix(in srgb, var(--color-secondary) 70%, transparent),0_1px_0_rgba(255,255,255,0.42)_inset] dark:shadow-[0_18px_70px_-38px_color-mix(in srgb, var(--color-primary) 36%, transparent)]'
+              : 'border-transparent bg-transparent'
           }`}
         >
-          {/* Noise grain */}
-          <div aria-hidden className="pointer-events-none absolute inset-0 bg-bridge-noise opacity-[0.02]" />
+          {/* Noise grain — only when scrolled */}
+          <div aria-hidden className={`pointer-events-none absolute inset-0 bg-bridge-noise transition-opacity duration-500 ${scrolled ? 'opacity-[0.02]' : 'opacity-0'}`} />
 
           {/* Ambient bottom-edge glow (dark mode only) */}
           <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-px opacity-0 dark:opacity-100"
